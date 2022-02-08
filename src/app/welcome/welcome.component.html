@@ -1,0 +1,19 @@
+<div class="container bg-ligh py-5">
+  <h1 class="dispay-5 fw-bold">Welcome to Angular Quiz App</h1>
+  <p class="col-md-8 fs-4">This quiz will having total 20 question and each question will hold 1 point</p>
+  <h4>Rules</h4>
+  <ol>
+    <li>Correct Question Give 1 point</li>
+    <li>Incorrect Question Give -1 point</li>
+    <li>you will have 30 sec for each question</li>
+    <li>You can not go back</li>
+  </ol>
+  <h2 class="text-center">All the best!!</h2>
+  <div class="name col-md-4 my-3">
+    <label for="">Enter your name </label>
+    <input #name type="text" class="form-control">
+  </div>
+  <button class="btn btn-primary btn-lg"
+   (click)="startQuiz()"
+   routerLink="/question">Start the Quiz!!</button>
+</div>
