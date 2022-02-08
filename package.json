@@ -9,6 +9,12 @@
     "test": "ng test"
   },
   "private": true,
+  "engines": {
+    "node": "16.x"
+  },
+  "overrides": {
+    "caniuse-lite": "1.0.30001303"
+  },
   "dependencies": {
     "@angular/animations": "~13.1.0",
     "@angular/common": "~13.1.0",
