@@ -1,0 +1,45 @@
+<app-header></app-header>
+<main>
+      <div class="libs-container">
+        <div class="libs-container__libs-list libs-container__left">
+          <div class="libs-container__libs-list-header">Available libraries</div>
+          <div (click)="setSelectedLibrary(lib, $event,true)"
+            class="libs-container__item "
+            *ngFor="let lib of availableLibraries"
+          >{{lib.name}}</div>
+        </div>
+
+        <div class="libs-container__controls">
+          <button (click)="onMoveRightClick()"
+            type="button"
+            aria-label="Right arrow"
+            class="libs-container__arrow-right"
+           >
+            <svg viewBox="0 0 24 24">
+              <path d="M9.5 17l5-5-5-5v10z" />
+            </svg>
+          </button>
+          <button (click)="onMoveLeftClick()"
+            type="button"
+            aria-label="Left arrow"
+            class="libs-container__arrow-left"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M9.5 17l5-5-5-5v10z" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="libs-container__libs-list libs-container__right">
+          <div class="libs-container__libs-list-header">Selected for installation</div>
+          <div (click)="setSelectedLibrary(lib, $event,false)"
+            class="libs-container__item"
+            *ngFor="let lib of librariesSelectedForInstallation"
+          >{{lib.name}}</div>
+        </div>
+      </div>
+
+      <div class="controls-container">
+        <button type="button" (click)="installLibs()" class="controls-container__install-btn">Install</button>
+      </div>
+    </main>

@@ -1,0 +1,85 @@
+.libs-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .libs-container__libs-list {
+      background-color: lightgray;
+      width: 30%;
+      position: relative;
+      border: 1px solid white;
+      padding: 10px;
+      color:white;
+      cursor: pointer;
+  }
+  
+  .libs-container_item--selected{
+    background-color: blue !important;
+  }
+  
+  .libs-container__left {
+    float: left;
+  }
+  
+  .libs-container__libs-list-header {
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    color:black;
+    font-weight: 700;
+  }
+  
+  
+  .libs-container__controls{
+    display: flex;
+    align-items: center;
+    position: relative;
+    border: 1px solid black;
+    padding: 10px;
+  }
+  
+  .libs-container__arrow-right{
+    width: 50px;
+    height: 50px;
+    top: 50%;
+    margin-top: -25px; /* Half this element's height */
+  
+  }
+  
+  .libs-container__arrow-left {
+    width: 50px;
+    height: 50px;
+    margin-top: -25px; /* Half this element's height */
+    transform: rotate(180deg);
+  }
+  
+  .libs-container__right{
+    float: right;
+  }
+  
+  .libs-container__libs-list-header{
+  
+  }
+  
+  .libs-container__item{
+    background-color: gray;
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .controls-container{
+    background: black;
+    display: flex;
+    justify-content: right;
+    padding: 10px;
+    width: 70%;
+  }
+  
+  .controls-container__install-btn{
+      position: relative;
+      float: right;
+  }
+  

@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LoginHeaderComponent } from './header/login-header/login-header.component';
+import { MultiSelectionComponent } from './components/multi-selection/multi-selection.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import { LoginHeaderComponent } from './header/login-header/login-header.compone
     WordGameComponent,
     DashboardComponent,
     LoginHeaderComponent,
+    MultiSelectionComponent,
   ],
   imports: [
     BrowserModule,

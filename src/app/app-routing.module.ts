@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { QuestionComponent } from './question/question.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-
+import { MultiSelectionComponent } from './components/multi-selection/multi-selection.component';
 const routes: Routes = [
   {
     path: "welcome",
@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login',component: LoginComponent },
   {path: 'dice-game', component: DiceGameComponent},
+  {path: 'multi-selection', component: MultiSelectionComponent},
   {path: 'dashboard', component: DashboardComponent},
   { path:'word-game', component: WordGameComponent}
 ];
