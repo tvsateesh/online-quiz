@@ -1,0 +1,33 @@
+.error-msg {
+    color: red;
+    padding: 10px;
+  }
+  
+  .container {
+      margin-top: 20px;
+      border:1px solid gray;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      padding:50px;
+      border-radius: 50px;
+      width:30%;
+  }
+  header {
+    position: absolute;    
+    top:10%;
+    margin-left:50px;
+    font-size: 25px;
+    font-weight: 500;
+    padding:10px;
+  }
+  .input{      
+      background-color: lightgray;
+      
+      padding:20px;
+      margin-right: 10px;
+      margin-left: 10px;
+      label{
+          margin-right: 20px;
+      }
+  }

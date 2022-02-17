@@ -1,0 +1,61 @@
+<app-header></app-header>
+
+
+<div class="container">
+    <header>
+      <h1>Dice Game</h1>
+    </header>
+    <main class="main-container">
+      <form>
+        <div class="user-details">
+          <div>
+            <label>
+              Enter Player Name
+            </label>
+            <input type="text" name="username" [(ngModel)]="username">
+          </div>
+          <div class="button-container" type="submit">
+            <input class="button" type="submit" (click)="createDices()" value="Roll">
+            <input class="button" type="submit" (click)="restartGame()" value="Restart">
+          </div>
+        </div>
+        <div class="main">
+          <div class="winner" *ngIf="winner">
+            <h2>You got 100 score you are the winner of this match</h2>
+          </div>
+          <div class="lost" *ngIf="lost">
+            <h2>
+              You got 1,1,1 on 3 dices, please continue again
+            </h2>
+          </div>
+          <div class="lost" *ngIf="errorMsg">
+            <h2>
+              {{errorMsg}}
+            </h2>
+          </div>
+          <div class="" *ngIf="dices.length">
+            <div class="score-board">
+              Current Score is : <span class="score">{{currentDicesNumberCount}}</span>
+            </div>
+            <div class="dice-container">
+              <div *ngFor="let dice of dices" class="dice-item ">
+                <div class="dice">
+                  {{dice.number}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="users-list" *ngIf="users.length">
+          <h2>Player's Score Board</h2>
+          <div *ngFor="let user of users;let i = index" class="user">
+            <span class="rank">{{i+1}}
+            </span>
+            <span class="player-name">{{user.username}}</span>
+            <span class="score">{{user.score}}</span>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+  

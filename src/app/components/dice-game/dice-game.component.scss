@@ -1,0 +1,108 @@
+.user-details{
+
+}
+
+.main {
+  display: block;
+}
+
+.button-container{
+  margin-top:10px;
+  background-color: black;
+  padding:10px;
+  width:200px;
+  margin-left: 10px;
+}
+
+.dice-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  padding:10px;
+}
+
+.users-list{
+  margin-top: 20px;
+  display: block;
+  padding:10px;
+  border: 1px solid gray;
+  div:nth-child(odd) {
+    background-color: lightblue;
+  }
+  div:nth-child(even) {
+    background-color: lightgray;
+  }
+}
+
+.user {
+  padding:10px;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.rank {
+    position: relative;
+    width: 100px;
+    text-align: center;
+    border-right: 1px solid gray;
+}
+
+.player-name {
+  margin-left:10px;
+  position: relative;
+  width:200px;
+  text-transform: uppercase;
+  border-right: 1px solid gray;
+}
+
+.score {
+  border-right: 1px solid gray;
+  width:100px;
+
+  text-align: center;
+}
+
+.button{
+  margin-left:10px;
+  margin-top:10px;
+}
+
+.score-board {
+  padding:10px;
+  margin-left: 0px;
+  margin-top:10px;
+}
+
+.score{
+  font-size: 20px;
+  font-weight: 700;
+  color: green;
+}
+
+.dice-item {
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.dice{
+  position:absolute;
+  border:1px solid black;
+  outline-width: 5px;
+  outline-color: black;
+  padding:40px
+}
+.winner {
+  color: green;
+  padding:10px;
+}
+
+.lost {
+  color:red;
+  padding:10px;
+}

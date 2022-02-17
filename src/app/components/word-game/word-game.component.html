@@ -1,0 +1,43 @@
+<app-header></app-header>
+
+<div class="wrapper">
+
+  <button (click)="getWord()" >Get New Word</button>
+  <button (click)="verifySolvedWord()" >Verify Word</button>
+  <!-- <div>
+    Reordering lists
+    <div cdkDropList class="movie-list" (cdkDropListDropped)="drop($event)">
+      <div class="movie-block" *ngFor="let movieName of Movies" cdkDrag>{{movieName}}</div>
+    </div>
+  </div> -->
+
+  <!-- <select formControlName>
+    <option [ngValue]="telugu" >Telugu</option>
+    <option [ngValue]="english" >English</option>
+  </select> -->
+
+  <div>
+    <h2>Solve the Word</h2>
+    <div class="container">
+      <h2>Letters</h2>
+      <div cdkDropList #moviesList="cdkDropList" [cdkDropListData]="letters"
+        [cdkDropListConnectedTo]="[doneMovieList]" class="movie-list" (cdkDropListDropped)="onDrop($event)">
+        <div class="movie-block" *ngFor="let letter of letters" cdkDrag>{{letter}}</div>
+      </div>
+    </div>
+    <div class="container">
+      <h2>Solved Word</h2>
+      <div cdkDropList #doneMovieList="cdkDropList" [cdkDropListData]="solvedWord"
+        [cdkDropListConnectedTo]="[moviesList]" class="movie-list" (cdkDropListDropped)="onDrop($event)">
+        <div class="movie-block" *ngFor="let solved of solvedWord" cdkDrag>{{solved}}</div>
+      </div>
+
+      <button (click)="resetLetters()" >Reset</button>
+
+    </div>
+    <h2 *ngIf="solved" class="success">Correct answer, word is : {{word}}</h2>
+      <h2 *ngIf="errorMsg" class="error">Wrong answer, please try again</h2>
+  </div>
+
+
+</div>

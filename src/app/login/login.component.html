@@ -1,0 +1,30 @@
+<app-login-header>
+</app-login-header>
+<div class="container">
+    <header class="header">
+        User Login
+      </header>    
+    <div class="login-container">
+      <form >
+        <div class="input">
+          <label>
+            UserName
+          </label>
+          <input type="text" maxlength="10" required name="username" [(ngModel)]="userName" >
+        </div>
+        <div class="input">
+          <label>
+            Password
+          </label>
+          <input type="password" maxlength="10" required name="password" [(ngModel)]="password">
+        </div>
+        <div class="error-msg" *ngIf="errorMsg">
+            {{errorMsg}}
+        </div>
+        <div class="input">
+          <input type="submit" value="Login" (click)="loginUser()"/>
+        </div>
+      </form>
+    </div>
+  </div>
+  
