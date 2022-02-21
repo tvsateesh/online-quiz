@@ -1,18 +1,34 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from "@angular/cdk/drag-drop";
+import { Component, OnInit } from "@angular/core";
+import { DictionaryService } from "src/app/service/dictionary.service";
 
 @Component({
-  selector: 'app-word-game',
-  templateUrl: './word-game.component.html',
-  styleUrls: ['./word-game.component.scss']
+  selector: "app-word-game",
+  templateUrl: "./word-game.component.html",
+  styleUrls: ["./word-game.component.scss"],
 })
 export class WordGameComponent implements OnInit {
-
-  constructor() { }
+  constructor(private dictionary: DictionaryService) {}
   // wordGameForm: any = '' ;
-  lang : string = 'english';
+  lang: string = "english";
+  allWords: any = {};
+
   ngOnInit(): void {
-    this.getWord();
+    this.dictionary.getWords().subscribe((result: any) => {
+      if (result) {
+        console.log(result);
+        this.allWords = result;
+        this.wordList = Object.keys(this.allWords);
+        this.wordList = this.wordList.filter(
+          (word: string) => word.length <= 4
+        );
+        this.getWord();
+      }
+    });
     // this.wordGameForm = this.fb.group(
     //   {'lang': [null]}
     // );
@@ -22,9 +38,7 @@ export class WordGameComponent implements OnInit {
     // })
   }
 
-  onLangChange(f: any){
-
-  }
+  onLangChange(f: any) {}
 
   // allowDrop(ev:any) {
   //   ev.preventDefault();
@@ -40,78 +54,77 @@ export class WordGameComponent implements OnInit {
   //   ev.target.appendChild(document.getElementById(data));
   // }
 
-
   Movies = [
-    'Blade Runner',
-    'Cool Hand Luke',
-    'Heat',
-    'Juice',
-    'The Far Side of the World',
-    'Morituri',
-    'Napoleon Dynamite',
-    'Pulp Fiction'
+    
   ];
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.Movies, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.Movies,  event.currentIndex,event.previousIndex);
   }
 
   // Transfer Items Between Lists
-  wordList = [
-    'World',
-    'Dynamite',
-    'Fiction',
-    'Runner',
-    'Blade',
-    'Cool',
-    'Hand',
-    'Heat',
-    'Juice'
-  ];
-  word : string = '';
+  wordList: any = [];
+  word: string = "";
   letters: any[] = [];
   solved: boolean = false;
-  errorMsg: string = '';
+  errorMsg: string = "";
 
-  solvedWord = [
-    'Place Here'
-  ];
+  solvedWord = [];
 
   onDrop(event: any) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,                
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
-      transferArrayItem(event.previousContainer.data,
+      transferArrayItem(
+        event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex);
+        event.currentIndex,
+      );
     }
   }
 
-  getWord(){
+  getWord() {
     // Math.floor(Math.random() * 6) + 1
     //this.word = Math.random() + '' //* this.wordList.length-1 + '';//(Math.floor(Math.random() * this.wordList.length-1)+1).toString();
-     this.word = this.wordList[Math.floor(Math.random() * this.wordList.length-1)+1].split('').join('').toUpperCase();
-     this.letters = this.splitWord2Letters(this.word);
-     this.solvedWord = ['Place Here'];
-  }
-
-  splitWord2Letters(word:string){
-    return word.split('').sort(function(){return 0.5-Math.random()});
-  }
-
-  verifySolvedWord(){
-      let solved = this.solvedWord.filter(el => el !== 'Place Here');
-      if ( solved.join('') === this.word ) {
-          this.solved = true;
-          this.errorMsg = '';
-      }else {
-        this.errorMsg = 'Wrong answer';
-      }
-  }
-
-  resetLetters(){
-    this.solvedWord = ['Place Here'];
+    this.errorMsg = "";
+    this.solved = false;
+    this.word = this.wordList[
+      Math.floor(Math.random() * this.wordList.length - 1) + 1
+    ]
+      .split("")
+      .join("")
+      .toUpperCase();
     this.letters = this.splitWord2Letters(this.word);
+    this.solvedWord = [];
+  }
+
+  splitWord2Letters(word: string) {
+    return word.split("").sort(function () {
+      return 0.5 - Math.random();
+    });
+  }
+
+  verifySolvedWord() {
+    if (this.solvedWord.join("") === this.word) {
+      this.solved = true;
+      this.errorMsg = "";
+    } else {
+      this.errorMsg = "Wrong answer";
+    }
+  }
+
+  resetLetters() {
+    this.solvedWord = [];
+    this.letters = this.splitWord2Letters(this.word);
+    this.errorMsg = "";
+  }
+
+  getDescription(){
+    return this.allWords[this.word.toLocaleLowerCase()];
   }
 }

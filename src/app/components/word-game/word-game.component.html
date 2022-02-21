@@ -6,8 +6,8 @@
   <button (click)="verifySolvedWord()" >Verify Word</button>
   <!-- <div>
     Reordering lists
-    <div cdkDropList class="movie-list" (cdkDropListDropped)="drop($event)">
-      <div class="movie-block" *ngFor="let movieName of Movies" cdkDrag>{{movieName}}</div>
+    <div cdkDropList class="word-list" (cdkDropListDropped)="drop($event)">
+      <div class="word-block" *ngFor="let wordName of words" cdkDrag>{{wordName}}</div>
     </div>
   </div> -->
 
@@ -20,22 +20,29 @@
     <h2>Solve the Word</h2>
     <div class="container">
       <h2>Letters</h2>
-      <div cdkDropList #moviesList="cdkDropList" [cdkDropListData]="letters"
-        [cdkDropListConnectedTo]="[doneMovieList]" class="movie-list" (cdkDropListDropped)="onDrop($event)">
-        <div class="movie-block" *ngFor="let letter of letters" cdkDrag>{{letter}}</div>
+      <div cdkDropList #wordList="cdkDropList" [cdkDropListData]="letters"
+        [cdkDropListConnectedTo]="[donewordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
+        <div class="word-block" *ngFor="let letter of letters" cdkDrag>{{letter}}</div>
       </div>
     </div>
     <div class="container">
       <h2>Solved Word</h2>
-      <div cdkDropList #doneMovieList="cdkDropList" [cdkDropListData]="solvedWord"
-        [cdkDropListConnectedTo]="[moviesList]" class="movie-list" (cdkDropListDropped)="onDrop($event)">
-        <div class="movie-block" *ngFor="let solved of solvedWord" cdkDrag>{{solved}}</div>
+      <div cdkDropList #donewordList="cdkDropList" [cdkDropListData]="solvedWord"
+        [cdkDropListConnectedTo]="[wordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
+        <div class="word-block" *ngFor="let fixedWord of solvedWord" cdkDrag>{{fixedWord}}</div>
       </div>
 
-      <button (click)="resetLetters()" >Reset</button>
+      <button (click)="resetLetters()" class="rest-btn">Reset</button>
+      <input type="hidden" value={{word}}>
 
     </div>
-    <h2 *ngIf="solved" class="success">Correct answer, word is : {{word}}</h2>
+    <h2 *ngIf="solved" >
+      <span class="success">Correct answer, word is : {{word}}</span>
+      <br>
+      <h4><span class="detail">{{getDescription()}}</span></h4>
+    </h2>
+    
+
       <h2 *ngIf="errorMsg" class="error">Wrong answer, please try again</h2>
   </div>
 
