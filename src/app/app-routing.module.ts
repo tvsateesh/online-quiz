@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { QuestionComponent } from './question/question.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { MultiSelectionComponent } from './components/multi-selection/multi-selection.component';
+import { FormComponent } from './components/form/form.component';
+import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.component';
 const routes: Routes = [
   {
     path: "welcome",
@@ -20,8 +22,11 @@ const routes: Routes = [
   { path: 'login',component: LoginComponent },
   {path: 'dice-game', component: DiceGameComponent},
   {path: 'multi-selection', component: MultiSelectionComponent},
+  {path: 'form', component: FormComponent},
   {path: 'dashboard', component: DashboardComponent},
-  { path:'word-game', component: WordGameComponent}
+  { path:'word-game', component: WordGameComponent},
+  {path: 'tic-tac-toe', component: TicTacToeComponent},
+
 ];
 
 @NgModule({

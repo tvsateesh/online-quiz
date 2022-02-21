@@ -17,6 +17,10 @@ import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LoginHeaderComponent } from './header/login-header/login-header.component';
 import { MultiSelectionComponent } from './components/multi-selection/multi-selection.component';
+import { FormComponent } from './components/form/form.component';
+import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.component';
+import { SquareComponent } from './components/tic-tac-toe/square/square.component';
+import { BoardComponent } from './components/tic-tac-toe/board/board.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +34,10 @@ import { MultiSelectionComponent } from './components/multi-selection/multi-sele
     DashboardComponent,
     LoginHeaderComponent,
     MultiSelectionComponent,
+    FormComponent,
+    TicTacToeComponent,
+    SquareComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,
