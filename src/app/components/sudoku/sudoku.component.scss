@@ -1,0 +1,24 @@
+.board-row {
+
+}
+
+.board-col {
+    border:1px solid white;
+    text-align: center;
+    font-weight: 700;
+    font-size: larger;
+    margin-left: 5px;
+}
+
+
+.board-row:nth-child(3),.board-row:nth-child(2), .board-row:nth-child(1){
+    background-color: red;    
+}
+
+.board-row:nth-child(4),.board-row:nth-child(5), .board-row:nth-child(6){
+    background-color: green;    
+}
+.board-row:nth-child(7),.board-row:nth-child(8), .board-row:nth-child(9){
+    background-color: blue;
+}
+

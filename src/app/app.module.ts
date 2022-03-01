@@ -21,6 +21,7 @@ import { FormComponent } from './components/form/form.component';
 import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.component';
 import { SquareComponent } from './components/tic-tac-toe/square/square.component';
 import { BoardComponent } from './components/tic-tac-toe/board/board.component';
+import { SudokuComponent } from './components/sudoku/sudoku.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +39,7 @@ import { BoardComponent } from './components/tic-tac-toe/board/board.component';
     TicTacToeComponent,
     SquareComponent,
     BoardComponent,
+    SudokuComponent,
   ],
   imports: [
     BrowserModule,

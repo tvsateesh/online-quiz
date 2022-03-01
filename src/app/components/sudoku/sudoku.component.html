@@ -1,0 +1,12 @@
+<app-header></app-header>
+<div class="container border bg-dark text-white p-2">
+    <h1>Su-du-ku</h1>
+    <p>This is sudoku game.</p>
+    <div class="board ">
+        <div class="d-flex justify-content-center board-row p-1" *ngFor="let r of board; let i = index">
+            <div class="p-1 board-col  bg-dark text-white " *ngFor="let j of board[i]; let k = index">
+                {{board[i][k]}}
+            </div>            
+        </div>
+    </div>    
+</div>
