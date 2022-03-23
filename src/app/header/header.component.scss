@@ -1,21 +1,19 @@
-a{
-    padding:10px;
-    text-decoration: underline;
-    color:blue;
-    opacity: 1;
-    transform: scale(1);
-  }
-  
-  a:hover {
-    color: gray;
-    opacity: 0.75;
-    transform: scale(1.2);
-    transition: 1s ease-in transform;
-  }
-  
-  .nav-container {
-    background-color: bisque;
-    padding:10px;
-    margin-top: 25px;
-  }
-  
+a {
+  padding: 10px;
+  text-decoration: underline;
+  color: rgb(210, 210, 216);
+  opacity: 1;
+  transform: scale(1);
+}
+
+a:hover {
+  color: yellow;
+  opacity: 0.75;
+  transform: scale(1.2);
+  transition: 1s ease-in transform;
+}
+
+.nav-container {
+  background-color: rgb(20, 19, 17);
+  padding: 5px;
+}

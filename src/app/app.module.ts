@@ -22,6 +22,8 @@ import { TicTacToeComponent } from './components/tic-tac-toe/tic-tac-toe.compone
 import { SquareComponent } from './components/tic-tac-toe/square/square.component';
 import { BoardComponent } from './components/tic-tac-toe/board/board.component';
 import { SudokuComponent } from './components/sudoku/sudoku.component';
+import { AngularComponent } from './components/angular/angular.component';
+import { GamesComponent } from './components/games/games.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,8 @@ import { SudokuComponent } from './components/sudoku/sudoku.component';
     SquareComponent,
     BoardComponent,
     SudokuComponent,
+    AngularComponent,
+    GamesComponent,
   ],
   imports: [
     BrowserModule,

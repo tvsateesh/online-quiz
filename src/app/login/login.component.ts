@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   loginUser(){
       if( this.userName == 'admin' && this.password == 'admin') {
         console.log("Welcome");
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['games']);
       }else {
         this.errorMsg = 'Invalid Login Details';
       }

@@ -10,6 +10,8 @@ import { MultiSelectionComponent } from "./components/multi-selection/multi-sele
 import { FormComponent } from "./components/form/form.component";
 import { TicTacToeComponent } from "./components/tic-tac-toe/tic-tac-toe.component";
 import { SudokuComponent } from "./components/sudoku/sudoku.component";
+import { AngularComponent } from "./components/angular/angular.component";
+import { GamesComponent } from "./components/games/games.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -28,6 +30,8 @@ const routes: Routes = [
   { path: "word-game", component: WordGameComponent },
   { path: "sudoku", component: SudokuComponent },
   { path: "tic-tac-toe", component: TicTacToeComponent },
+  { path: "games", component: GamesComponent},
+  { path: "angular", component: AngularComponent },
 ];
 
 @NgModule({
