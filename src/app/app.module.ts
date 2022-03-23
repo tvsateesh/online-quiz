@@ -24,6 +24,9 @@ import { BoardComponent } from './components/tic-tac-toe/board/board.component';
 import { SudokuComponent } from './components/sudoku/sudoku.component';
 import { AngularComponent } from './components/angular/angular.component';
 import { GamesComponent } from './components/games/games.component';
+import { HtmlComponent } from './components/html/html.component';
+import { JavascriptComponent } from './components/javascript/javascript.component';
+import { CssComponent } from './components/css/css.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +47,9 @@ import { GamesComponent } from './components/games/games.component';
     SudokuComponent,
     AngularComponent,
     GamesComponent,
+    HtmlComponent,
+    JavascriptComponent,
+    CssComponent,
   ],
   imports: [
     BrowserModule,

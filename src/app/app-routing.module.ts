@@ -12,6 +12,8 @@ import { TicTacToeComponent } from "./components/tic-tac-toe/tic-tac-toe.compone
 import { SudokuComponent } from "./components/sudoku/sudoku.component";
 import { AngularComponent } from "./components/angular/angular.component";
 import { GamesComponent } from "./components/games/games.component";
+import { HtmlComponent } from "./components/html/html.component";
+import { JavascriptComponent } from "./components/javascript/javascript.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -32,6 +34,8 @@ const routes: Routes = [
   { path: "tic-tac-toe", component: TicTacToeComponent },
   { path: "games", component: GamesComponent},
   { path: "angular", component: AngularComponent },
+  { path: "html", component: HtmlComponent},
+  { path: "javascript", component: JavascriptComponent}
 ];
 
 @NgModule({
