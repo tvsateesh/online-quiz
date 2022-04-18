@@ -8,12 +8,13 @@ import { Component, OnInit } from '@angular/core';
 export class WordHuntComponent implements OnInit {
 
   board:any | undefined;
-  hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical",
-  "Opera","Parking","Plane","Queue","Raffle",
-  "Skiing","Speeding","Theatre","Train","Zoo",
-  // "AmusementPark","ArtShow","Ballet","Baseball"
-];
-  // hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
+  foundCount : number = 0;
+//   hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical",
+//   "Opera","Parking","Plane","Queue","Raffle",
+//   "Skiing","Speeding","Theatre","Train","Zoo",
+//   // "AmusementPark","ArtShow","Ballet","Baseball"
+// ];
+  hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
   
   gameThemeName = 'Got A Ticket'
   //Store the board metadata like position of Sateesh like row and col. inside keep the string index.
@@ -22,19 +23,22 @@ export class WordHuntComponent implements OnInit {
   defaultFillingChar = '0'
   randamLetters: any;
 
+  isHighLight: boolean = false;
+  startGameTimer:any = '';
+//TODO update this at the end of the solution verification 
+  endGameDuration:number = 0;
+
   boardMetadata: number[][] = [];
   boardMetadataByName: string[]=[];
+  solvedWords: string[] = [];
   row: number = 19;
   col: number = 11;
   fillingRow = 0;
   fillingCol = 0;
+  completed: boolean = false;
 
   constructor() { 
-    this.board = Array(this.row).fill(null).map(()=>Array(this.col).fill(this.defaultFillingChar))
-    this.generateBoard();
-    let letters = this.hiddenWords.toString().toUpperCase().replace(/,/g,'')
-    this.randamLetters = [...new Set(letters)];
-    this.updateRandamLetters();
+    
 
   }
 
@@ -43,14 +47,36 @@ export class WordHuntComponent implements OnInit {
 
   }
 
+  time: number = 0;
+  timer: any = '';
+
+  startGame(){
+    this.completed = false;
+    this.board = Array(this.row).fill(null).map(()=>Array(this.col).fill(this.defaultFillingChar))
+    this.generateBoard();
+    let letters = this.hiddenWords.toString().toUpperCase().replace(/,/g,'')
+    this.randamLetters = [...new Set(letters)];
+    this.updateRandamLetters();
+    let that = this;
+    this.startGameTimer = new Date();
+    this.timer = setInterval(function(){
+      that.time++;
+    },1000)
+  }
+
+  endGame(){
+    let end:any = new Date();
+    this.endGameDuration = Math.round(((end - this.startGameTimer)/1000)/60);
+    clearInterval(this.timer);
+    this.time = 0;
+  }
+
   generateBoard(): void {
 
-    const startGameTimer = new Date()
-    //TODO update this at the end of the solution verification 
-    const endGameTimer = new Date();
-
+   
     const solvedNames = [];
-    let words = Object.assign([],this.hiddenWords);
+    let words  = Object.assign([],this.hiddenWords);
+    this.solvedWords = Object.assign([],this.hiddenWords)
 
     while(words.length){
       const delPos = this.getRandomNumber(words.length-1,0);
@@ -218,7 +244,35 @@ export class WordHuntComponent implements OnInit {
   }
 
   verifyGame(): void {
+    var word = '';
     // Check all the name are found or not 
+    let letters = this.getSelectedLetters();
+    for(var i=0; i< letters.length; i++){
+      word += letters[i].innerText;
+    }
+    let found:any=[];
+     this.solvedWords.forEach( (ele, index) => {
+      if(  ele.toUpperCase().split('').reverse().join().replace(/,/g,"")  === word || ele.toUpperCase() === word) {
+        found.push(this.solvedWords.splice(index,1));
+      }
+     
+    });
+
+    console.log("Found "+ found)
+    if(found.length){
+      for(var i=0; i< letters.length; i++){
+         letters[i].classList.add('done');
+      }
+      let element = window.document.getElementById(found[0])!;
+      element.classList.add("strick");
+      this.foundCount = this.hiddenWords.length - this.solvedWords.length;
+    }
+
+
+    if ( this.solvedWords.length === 0 ) {
+      this.completed = true;
+      this.endGame();
+    }
 
   }
 
@@ -226,5 +280,62 @@ export class WordHuntComponent implements OnInit {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+
+
+  mouseDown(ele:any){
+    console.log("mouseDown")
+    this.isHighLight = true;
+    if( this.isHighLight ){
+      console.log(ele.target)
+      ele.target.classList.add('highlight');
+      console.log("adding highlight " + ele);
+    }  
+    // ele.stopPropagation();
+
+  }
+
+  mouseUp(ele: any){
+    console.log("mouseUp")
+    this.verifyGame();
+    this.removeElementsByClass('highlight');
+    this.isHighLight = false;
+    // ele.stopPropagation();
+  }
+
+  getSelectedLetters(): any{
+    let eles =  document.getElementsByClassName('highlight');
+    console.log(eles);
+    return eles;
+  }
+  
+  removeElementsByClass(className:string){
+    var elements = this.getSelectedLetters();
+
+    for(var i=0; i<elements.length; i++){
+      elements[i].classList.remove(className); 
+    }
+
+    // console.log(elements)
+
+    // while(elements.length > 0){
+    //     // elements[0].parentNode.removeChild(elements[0]);
+    //     console.log(elements)
+    // }
+  }
+
+  onMouseOver(ele:any){
+    if( this.isHighLight ){
+      console.log(ele.target)
+      ele.target.classList.add('highlight');
+      console.log("adding highlight " + ele);
+    } else {
+      this.removeElementsByClass('highlight');
+    }   
+    //  ele.stopPropagation();
+
+    // console.log(ele.target.classList.add('highlight'));
+  }
+
+ 
  
 }

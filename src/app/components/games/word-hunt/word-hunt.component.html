@@ -2,19 +2,40 @@
 
 <h4>Word Search</h4>
 
-<h6>Theme : {{gameThemeName}}</h6>
+<h5>Theme : {{gameThemeName}}</h5>
 
-<div class="container">
+<div *ngIf="time ||completed ">
+    <h6>Found {{foundCount}} Of {{hiddenWords.length}}</h6>
+    <div>Timer : {{time}}</div>
+    <h6 *ngIf="completed" class="success">Found all words in {{ endGameDuration  }} mins</h6>
+
+</div>
+<div *ngIf="time === 0">
+    <!-- <select *ngModel="">
+        <option value="5"></option>
+        <option value="10"></option>
+        <option value="20"></option>
+    </select> -->
+    <button (click)="startGame()">Start Game</button>
+</div>
+
+
+<div *ngIf="time > 0"><button (click)="endGame()">End Game</button></div>
+
+
+
+<div class="container" *ngIf="time">
     <div class="wordContainer">
         <ol type="1" >
-            <li *ngFor="let word of hiddenWords">{{word}}</li>
+            <li id="{{word}}" *ngFor="let word of hiddenWords" >{{word}}</li>
         </ol>
     </div>
     
-    <div class="wordHuntBoard" >
-        <table>
+    <div class="wordHuntBoard"  >
+        <table >
             <tr *ngFor="let row of board; let i = index "> 
-                <td *ngFor="let col of board[i]; let j = index"> {{col}} </td>
+                <td *ngFor="let col of board[i]; let j = index" (mousedown)="mouseDown($event)"
+                (mouseup)="mouseUp($event)" (mouseover)="onMouseOver($event)" > {{col}} </td>
             </tr>
         </table>
     </div>

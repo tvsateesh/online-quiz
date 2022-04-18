@@ -3,11 +3,28 @@
     padding:2px;
     text-align: center;
     font-weight: bold;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
 
+
+.done {
+    background-color: green;
+}
+
+
+.highlight {
+    background-color: red;
 }
 
 table {
     width: 60%;
+    border: 1px solid gray;
 }
 
 .wordHuntBoard {
@@ -29,4 +46,12 @@ table {
 
 .wordContainer {
     width:5%
+}
+
+.success{
+    background-color: lightgreen;
+
+}
+.strick {
+    text-decoration:line-through; 
 }
