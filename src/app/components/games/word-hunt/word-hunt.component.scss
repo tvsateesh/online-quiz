@@ -1,0 +1,32 @@
+ td {
+    border: 0px solid gray;
+    padding:2px;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+table {
+    width: 60%;
+}
+
+.wordHuntBoard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wordHuntBoard {
+    width: 100%;
+}
+
+.wordContainer {
+    width:5%
+}

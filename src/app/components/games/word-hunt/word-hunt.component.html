@@ -1,0 +1,22 @@
+<app-header></app-header>
+
+<h4>Word Search</h4>
+
+<h6>Theme : {{gameThemeName}}</h6>
+
+<div class="container">
+    <div class="wordContainer">
+        <ol type="1" >
+            <li *ngFor="let word of hiddenWords">{{word}}</li>
+        </ol>
+    </div>
+    
+    <div class="wordHuntBoard" >
+        <table>
+            <tr *ngFor="let row of board; let i = index "> 
+                <td *ngFor="let col of board[i]; let j = index"> {{col}} </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
