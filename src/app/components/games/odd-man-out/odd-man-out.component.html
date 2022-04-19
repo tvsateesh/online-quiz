@@ -1,0 +1,36 @@
+<app-header></app-header>
+
+<h4>Find Odd Man Out </h4>
+<div *ngIf="time ||completed ">
+    <h6>Found {{foundCount}} Of {{totalHiddenNumbers}}</h6>
+    <div>Timer : {{time}}</div>
+    <h6 *ngIf="completed" class="success">Found all words in {{ endGameDuration  }} mins</h6>
+
+</div>
+
+<div *ngIf="time === 0">
+    <!-- <select *ngModel="">
+        <option value="5"></option>
+        <option value="10"></option>
+        <option value="20"></option>
+    </select> -->
+    <button (click)="startGame()">Start Game</button>
+</div>
+
+
+<div *ngIf="time > 0"><button (click)="endGame()">End Game</button></div>
+
+
+
+<div class="container " *ngIf="time > 0">
+    <div class="side-menu">
+
+    </div>
+    <div class="content-area">
+        <table >
+            <tr *ngFor="let row of board; let i = index " > 
+                <td *ngFor="let col of board[i]; let j = index" (click)="verifyValue($event)"> {{col}} </td>
+            </tr>
+        </table>
+    </div>
+</div>

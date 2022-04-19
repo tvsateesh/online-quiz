@@ -1,0 +1,20 @@
+.container {
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+table {
+    width:100%
+}
+
+td{
+    font-weight: bold;
+    padding:5px;
+
+}
+
+.done {
+    background-color: green;
+    color: white;
+}
