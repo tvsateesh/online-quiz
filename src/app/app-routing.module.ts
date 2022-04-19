@@ -15,6 +15,7 @@ import { GamesComponent } from "./components/games/games.component";
 import { HtmlComponent } from "./components/html/html.component";
 import { JavascriptComponent } from "./components/javascript/javascript.component";
 import { WordHuntComponent } from "./components/games/word-hunt/word-hunt.component";
+import { OddManOutComponent } from "./components/games/odd-man-out/odd-man-out.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: "dashboard", component: DashboardComponent },
   { path: "word-game", component: WordGameComponent },
   { path: "word-hunt", component: WordHuntComponent},
+  { path: "odd-man-out", component: OddManOutComponent},
   { path: "sudoku", component: SudokuComponent },
   { path: "tic-tac-toe", component: TicTacToeComponent },
   { path: "games", component: GamesComponent},
