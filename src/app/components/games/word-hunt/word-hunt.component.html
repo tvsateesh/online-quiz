@@ -34,8 +34,17 @@
     <div class="wordHuntBoard"  >
         <table >
             <tr *ngFor="let row of board; let i = index "> 
-                <td *ngFor="let col of board[i]; let j = index" (mousedown)="mouseDown($event)"
-                (mouseup)="mouseUp($event)" (mouseover)="onMouseOver($event)" > {{col}} </td>
+                <td *ngFor="let col of board[i]; let j = index" 
+                (touchstart)="mouseDown($event)"
+                (mousedown)="mouseDown($event)"
+
+                (touchmove)="onMouseOver($event)"
+                (mouseover)="onMouseOver($event)" 
+
+                (touchend)="mouseUp($event)"
+                (mouseup)="mouseUp($event)" 
+               
+                > {{col}} </td>
             </tr>
         </table>
     </div>

@@ -14,7 +14,8 @@ export class WordHuntComponent implements OnInit {
 //   "Skiing","Speeding","Theatre","Train","Zoo",
 //   // "AmusementPark","ArtShow","Ballet","Baseball"
 // ];
-  hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
+  // hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
+  hiddenWords:string[] = ["Rupa","Roshan","Prabha","Sateesh","Malli"];
   
   gameThemeName = 'Got A Ticket'
   //Store the board metadata like position of Sateesh like row and col. inside keep the string index.
@@ -283,14 +284,15 @@ export class WordHuntComponent implements OnInit {
 
 
   mouseDown(ele:any){
-    console.log("mouseDown")
     this.isHighLight = true;
     if( this.isHighLight ){
-      console.log(ele.target)
-      ele.target.classList.add('highlight');
-      console.log("adding highlight " + ele);
+      let target = ele.target || ele.currentTarget ;
+      console.log("mouseDown")
+      console.log(target)
+      target.classList.add('highlight');
+      // console.log("adding highlight " + ele);
     }  
-    // ele.stopPropagation();
+    ele.stopPropagation();
 
   }
 
@@ -299,7 +301,7 @@ export class WordHuntComponent implements OnInit {
     this.verifyGame();
     this.removeElementsByClass('highlight');
     this.isHighLight = false;
-    // ele.stopPropagation();
+    ele.stopPropagation();
   }
 
   getSelectedLetters(): any{
@@ -325,13 +327,14 @@ export class WordHuntComponent implements OnInit {
 
   onMouseOver(ele:any){
     if( this.isHighLight ){
-      console.log(ele.target)
-      ele.target.classList.add('highlight');
-      console.log("adding highlight " + ele);
+      let target = ele.target || ele.currentTarget ;
+      console.log("Move over");
+      console.log(target)
+      target.classList.add('highlight');
     } else {
       this.removeElementsByClass('highlight');
     }   
-    //  ele.stopPropagation();
+     ele.stopPropagation();
 
     // console.log(ele.target.classList.add('highlight'));
   }
