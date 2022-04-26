@@ -14,8 +14,8 @@ export class WordHuntComponent implements OnInit {
 //   "Skiing","Speeding","Theatre","Train","Zoo",
 //   // "AmusementPark","ArtShow","Ballet","Baseball"
 // ];
-  // hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
-  hiddenWords:string[] = ["Rupa","Roshan","Prabha","Sateesh","Malli"];
+  hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
+  // hiddenWords:string[] = ["Rupa","Roshan","Prabha","Sateesh","Malli"];
   
   gameThemeName = 'Got A Ticket'
   //Store the board metadata like position of Sateesh like row and col. inside keep the string index.

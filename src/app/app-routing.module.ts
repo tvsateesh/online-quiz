@@ -16,6 +16,7 @@ import { HtmlComponent } from "./components/html/html.component";
 import { JavascriptComponent } from "./components/javascript/javascript.component";
 import { WordHuntComponent } from "./components/games/word-hunt/word-hunt.component";
 import { OddManOutComponent } from "./components/games/odd-man-out/odd-man-out.component";
+import { ChessComponent } from "./components/games/chess/chess.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: "word-game", component: WordGameComponent },
   { path: "word-hunt", component: WordHuntComponent},
   { path: "odd-man-out", component: OddManOutComponent},
+  { path: "chess-game", component: ChessComponent},
   { path: "sudoku", component: SudokuComponent },
   { path: "tic-tac-toe", component: TicTacToeComponent },
   { path: "games", component: GamesComponent},

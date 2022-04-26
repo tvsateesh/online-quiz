@@ -29,6 +29,7 @@ import { JavascriptComponent } from './components/javascript/javascript.componen
 import { CssComponent } from './components/css/css.component';
 import { WordHuntComponent } from './components/games/word-hunt/word-hunt.component';
 import { OddManOutComponent } from './components/games/odd-man-out/odd-man-out.component';
+import { ChessComponent } from './components/games/chess/chess.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +55,7 @@ import { OddManOutComponent } from './components/games/odd-man-out/odd-man-out.c
     CssComponent,
     WordHuntComponent,
     OddManOutComponent,
+    ChessComponent,
   ],
   imports: [
     BrowserModule,
