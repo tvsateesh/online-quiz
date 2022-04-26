@@ -17,6 +17,7 @@ import { JavascriptComponent } from "./components/javascript/javascript.componen
 import { WordHuntComponent } from "./components/games/word-hunt/word-hunt.component";
 import { OddManOutComponent } from "./components/games/odd-man-out/odd-man-out.component";
 import { ChessComponent } from "./components/games/chess/chess.component";
+import { CheckersComponent } from "./components/games/checkers/checkers.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: "word-hunt", component: WordHuntComponent},
   { path: "odd-man-out", component: OddManOutComponent},
   { path: "chess-game", component: ChessComponent},
+  { path: "checkers-game", component: CheckersComponent},
   { path: "sudoku", component: SudokuComponent },
   { path: "tic-tac-toe", component: TicTacToeComponent },
   { path: "games", component: GamesComponent},
