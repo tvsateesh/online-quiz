@@ -51,6 +51,8 @@ const routes: Routes = [
       { path: "tic-tac-toe", component: TicTacToeComponent },
     ]
   },
+  // Stock/Finance section
+  { path: 'stocks', loadChildren: () => import('./stock/stock.module').then(m => m.StockModule) },
   // Redirect old game routes to new nested structure
   { path: "dice-game", redirectTo: "games/dice-game" },
   { path: "word-game", redirectTo: "games/word-game" },

@@ -13,7 +13,14 @@ import { DiceGameComponent } from './components/dice-game/dice-game.component';
 import { LoginComponent } from './login/login.component';
 import { WordGameComponent } from './components/word-game/word-game.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LoginHeaderComponent } from './header/login-header/login-header.component';
@@ -69,7 +76,15 @@ import { EscapeRoomComponent } from './components/games/escape-room/escape-room.
     HttpClientModule,
     FormsModule,
     RouterModule,
-    DragDropModule
+    DragDropModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatListModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
