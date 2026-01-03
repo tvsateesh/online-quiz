@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DictionaryService } from 'src/app/service/dictionary.service';
 
 @Component({
   selector: 'app-word-hunt',
@@ -9,18 +10,11 @@ export class WordHuntComponent implements OnInit {
 
   board:any | undefined;
   foundCount : number = 0;
-//   hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical",
-//   "Opera","Parking","Plane","Queue","Raffle",
-//   "Skiing","Speeding","Theatre","Train","Zoo",
-//   // "AmusementPark","ArtShow","Ballet","Baseball"
-// ];
-  hiddenWords:string[] = ["Lottery","Lift","Movies","Museum","Musical"];
-  // hiddenWords:string[] = ["Rupa","Roshan","Prabha","Sateesh","Malli"];
+  hiddenWords:string[] = [];
   
-  gameThemeName = 'Got A Ticket'
-  //Store the board metadata like position of Sateesh like row and col. inside keep the string index.
+  gameThemeName = 'Word Hunt'
+  //Store the board metadata like position of words like row and col. inside keep the string index.
   directions: string[] = ['UP','DOWN','LEFT','RIGHT'];
-  // directions: string[] = ['UP'];
   defaultFillingChar = '0'
   randamLetters: any;
 
@@ -32,18 +26,18 @@ export class WordHuntComponent implements OnInit {
   boardMetadata: number[][] = [];
   boardMetadataByName: string[]=[];
   solvedWords: string[] = [];
-  row: number = 19;
-  col: number = 11;
+  row: number = 10;
+  col: number = 10;
   fillingRow = 0;
   fillingCol = 0;
   completed: boolean = false;
   
-  // Difficulty levels
+  // Difficulty levels - all set to 10x10
   difficulty: string = 'medium';
   difficultyLevels = [
-    { value: 'easy', label: 'Easy', rows: 12, cols: 8 },
-    { value: 'medium', label: 'Medium', rows: 16, cols: 10 },
-    { value: 'hard', label: 'Hard', rows: 20, cols: 14 }
+    { value: 'easy', label: 'Easy (5 words)', rows: 10, cols: 10, wordCount: 5 },
+    { value: 'medium', label: 'Medium (10 words)', rows: 10, cols: 10, wordCount: 10 },
+    { value: 'hard', label: 'Hard (15 words)', rows: 10, cols: 10, wordCount: 15 }
   ];
 
   // Selection tracking
@@ -54,14 +48,56 @@ export class WordHuntComponent implements OnInit {
   selectionStartCol: number = -1;
   selectionDirection: string | null = null;
 
-  constructor() { 
+  constructor(private dictionaryService: DictionaryService) { 
     
 
   }
 
   ngOnInit(): void {
+    // Load words from dictionary service
+    this.loadWordsFromDictionary();
+  }
 
-
+  loadWordsFromDictionary(): void {
+    this.dictionaryService.getWords().subscribe((result: any) => {
+      if (result) {
+        const allWords = Object.keys(result);
+        let filteredWords: string[] = [];
+        
+        // Filter words based on difficulty level
+        if (this.difficulty === 'easy') {
+          // Easy: Simple 3-4 letter words, common words
+          filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 4);
+        } else if (this.difficulty === 'medium') {
+          // Medium: 4-5 letter words
+          filteredWords = allWords.filter(word => word.length >= 4 && word.length <= 5);
+        } else if (this.difficulty === 'hard') {
+          // Hard: 5-6 letter words, longer and more complex
+          filteredWords = allWords.filter(word => word.length >= 5 && word.length <= 6);
+        } else {
+          // Default: 3-6 letter words
+          filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 6);
+        }
+        
+        // Get word count based on difficulty
+        const config = this.difficultyLevels.find(d => d.value === this.difficulty);
+        const wordCount = config ? config.wordCount : 10;
+        
+        console.log(`Loading ${this.difficulty} words: filtered ${filteredWords.length} words from ${allWords.length} total`);
+        
+        // Randomly select words
+        const selectedWords = [];
+        const wordsCopy = [...filteredWords];
+        for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
+          const randomIndex = Math.floor(Math.random() * wordsCopy.length);
+          const word = wordsCopy.splice(randomIndex, 1)[0];
+          selectedWords.push(word.toUpperCase());
+        }
+        
+        this.hiddenWords = selectedWords;
+        console.log('Loaded words from dictionary:', this.hiddenWords);
+      }
+    });
   }
 
   time: number = 0;
@@ -78,6 +114,8 @@ export class WordHuntComponent implements OnInit {
     if (this.time > 0) {
       this.endGame();
     }
+    // Reload words for new difficulty
+    this.loadWordsFromDictionary();
   }
 
   startGame(){
@@ -93,6 +131,49 @@ export class WordHuntComponent implements OnInit {
       this.row = config.rows;
       this.col = config.cols;
     }
+    
+    // Ensure words are loaded before starting
+    if (this.hiddenWords.length === 0) {
+      console.log('Words not loaded yet, loading from dictionary...');
+      this.dictionaryService.getWords().subscribe((result: any) => {
+        if (result) {
+          const allWords = Object.keys(result);
+          let filteredWords: string[] = [];
+          
+          // Filter words based on difficulty level
+          if (this.difficulty === 'easy') {
+            filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 4);
+          } else if (this.difficulty === 'medium') {
+            filteredWords = allWords.filter(word => word.length >= 4 && word.length <= 5);
+          } else if (this.difficulty === 'hard') {
+            filteredWords = allWords.filter(word => word.length >= 5 && word.length <= 6);
+          } else {
+            filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 6);
+          }
+          
+          const config = this.difficultyLevels.find(d => d.value === this.difficulty);
+          const wordCount = config ? config.wordCount : 10;
+          
+          const selectedWords = [];
+          const wordsCopy = [...filteredWords];
+          for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * wordsCopy.length);
+            const word = wordsCopy.splice(randomIndex, 1)[0];
+            selectedWords.push(word.toUpperCase());
+          }
+          
+          this.hiddenWords = selectedWords;
+          console.log('Words loaded for game:', this.hiddenWords);
+          this.initializeGame();
+        }
+      });
+    } else {
+      console.log('Words already loaded, starting game with:', this.hiddenWords);
+      this.initializeGame();
+    }
+  }
+
+  private initializeGame(): void {
     this.board = Array(this.row).fill(null).map(()=>Array(this.col).fill(this.defaultFillingChar))
     this.generateBoard();
     let letters = this.hiddenWords.toString().toUpperCase().replace(/,/g,'')
@@ -103,6 +184,7 @@ export class WordHuntComponent implements OnInit {
     this.timer = setInterval(function(){
       that.time++;
     },1000)
+    console.log('Game initialized with', this.hiddenWords.length, 'words');
   }
 
   endGame(){
@@ -463,6 +545,189 @@ export class WordHuntComponent implements OnInit {
   isCellInSolvedWord(row: number, col: number): boolean {
     const cellKey = `${row}-${col}`;
     return this.solvedCells.has(cellKey);
+  }
+
+  downloadPDF(): void {
+    console.log('Download PDF button clicked');
+    console.log('Board exists:', !!this.board);
+    console.log('Hidden words count:', this.hiddenWords.length);
+    
+    // Check if board is initialized
+    if (!this.board) {
+      alert('Please start the game first to generate a board!');
+      console.warn('Board not initialized for PDF download');
+      return;
+    }
+
+    console.log('Starting PDF generation...');
+    // Dynamic import of pdfMake
+    Promise.all([
+      import('pdfmake/build/pdfmake'),
+      import('pdfmake/build/vfs_fonts')
+    ]).then(([pdfMakeModule, vfsFontsModule]: any[]) => {
+      try {
+        const pdfMake = pdfMakeModule.default || pdfMakeModule;
+        
+        // Handle vfs fonts - different pdfmake versions export differently
+        let vfs = null;
+        if (vfsFontsModule.pdfMake && vfsFontsModule.pdfMake.vfs) {
+          vfs = vfsFontsModule.pdfMake.vfs;
+        } else if (vfsFontsModule.default && vfsFontsModule.default.pdfMake && vfsFontsModule.default.pdfMake.vfs) {
+          vfs = vfsFontsModule.default.pdfMake.vfs;
+        } else if (vfsFontsModule.vfs) {
+          vfs = vfsFontsModule.vfs;
+        } else {
+          console.warn('VFS fonts not found, continuing without custom fonts');
+        }
+        
+        if (vfs) {
+          pdfMake.vfs = vfs;
+          console.log('pdfMake VFS configured');
+        }
+
+        // Create table for the grid
+        const gridTable: any[] = [];
+        if (this.board && this.board.length > 0) {
+          for (let i = 0; i < this.board.length; i++) {
+            const rowData: any[] = [];
+            for (let j = 0; j < this.board[i].length; j++) {
+              const cellLetter = this.board[i][j] || '';
+              rowData.push({
+                text: cellLetter,
+                alignment: 'center',
+                style: this.solvedCells.has(`${i}-${j}`) ? 'solvedCell' : 'gridCell'
+              });
+            }
+            gridTable.push(rowData);
+          }
+        }
+        console.log('Grid table created with', gridTable.length, 'rows');
+
+        // Create words list
+        const wordsList = this.hiddenWords.map(word => ({
+          text: word.toUpperCase(),
+          style: 'wordItem'
+        }));
+
+        // Determine status
+        const status = this.completed ? 'COMPLETED ✓' : `IN PROGRESS (${this.foundCount}/${this.hiddenWords.length} found)`;
+        const statusStyle = this.completed ? 'completedStatus' : 'inProgressStatus';
+
+        const docDefinition: any = {
+          content: [
+            {
+              text: 'Word Hunt Game',
+              style: 'header',
+              alignment: 'center'
+            },
+            {
+              text: `Grid: ${this.row}x${this.col}`,
+              alignment: 'center',
+              style: 'subheader'
+            },
+            {
+              text: `Status: ${status}`,
+              alignment: 'center',
+              style: statusStyle,
+              margin: [0, 10, 0, 20]
+            },
+            {
+              text: 'Word Search Grid',
+              style: 'sectionHeader',
+              margin: [0, 10, 0, 10]
+            },
+            {
+              table: {
+                headerRows: 0,
+                widths: Array(this.col).fill('*'),
+                body: gridTable
+              },
+              style: 'gridTable',
+              margin: [0, 0, 0, 20]
+            },
+            {
+              text: 'Hidden Words to Find',
+              style: 'sectionHeader',
+              margin: [0, 10, 0, 10]
+            },
+            {
+              ul: wordsList,
+              style: 'wordsList',
+              margin: [20, 0, 0, 0]
+            },
+            {
+              text: `Time Taken: ${this.endGameDuration} minutes`,
+              style: 'footerText',
+              margin: [0, 20, 0, 0]
+            }
+          ],
+          styles: {
+            header: {
+              fontSize: 24,
+              bold: true,
+              color: '#2c3e50'
+            },
+            subheader: {
+              fontSize: 14,
+              color: '#34495e'
+            },
+            sectionHeader: {
+              fontSize: 14,
+              bold: true,
+              color: '#2c3e50'
+            },
+            gridCell: {
+              fontSize: 9,
+              border: [1, 1, 1, 1],
+              borderColor: '#bdc3c7',
+              padding: 4
+            },
+            solvedCell: {
+              fontSize: 9,
+              bold: true,
+              border: [1, 1, 1, 1],
+              borderColor: '#27ae60',
+              fillColor: '#d5f4e6',
+              padding: 4
+            },
+            gridTable: {
+              alignment: 'center'
+            },
+            wordItem: {
+              fontSize: 11
+            },
+            wordsList: {
+              fontSize: 11
+            },
+            completedStatus: {
+              fontSize: 12,
+              bold: true,
+              color: '#27ae60'
+            },
+            inProgressStatus: {
+              fontSize: 12,
+              bold: true,
+              color: '#f39c12'
+            },
+            footerText: {
+              fontSize: 10,
+              color: '#7f8c8d'
+            }
+          },
+          pageMargins: [40, 40, 40, 40]
+        };
+
+        console.log('PDF document definition created');
+        pdfMake.createPdf(docDefinition).download(`WordHunt_${new Date().getTime()}.pdf`);
+        console.log('PDF download initiated');
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert('Error generating PDF. Please try again.');
+      }
+    }).catch((error: any) => {
+      console.error('Error loading PDF libraries:', error);
+      alert('Error loading PDF library. Please refresh the page and try again.');
+    });
   }
  
  

@@ -16,7 +16,7 @@
                   (click)="setDifficulty(level.value)">
             <i class="fa fa-th"></i>
             <span class="difficulty-name">{{level.label}}</span>
-            <span class="difficulty-info">{{level.rows}}×{{level.cols}}</span>
+            <span class="difficulty-info">10×10 Grid</span>
           </button>
         </div>
       </div>
@@ -53,6 +53,9 @@
         </button>
         <button class="game-btn game-btn-secondary" *ngIf="time > 0" (click)="endGame()">
           <i class="fa fa-stop"></i> End Game
+        </button>
+        <button class="game-btn game-btn-success" (click)="downloadPDF()">
+          <i class="fa fa-download"></i> Download PDF
         </button>
       </div>
       
