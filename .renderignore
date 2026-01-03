@@ -1,0 +1,31 @@
+# Files to ignore during Render deployment
+# This speeds up deployment by not uploading unnecessary files
+
+# Source files (only dist/ is needed)
+src/
+
+# Development files
+*.spec.ts
+karma.conf.js
+tsconfig.spec.json
+
+# Documentation (optional - remove if you want docs deployed)
+# *.md
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
