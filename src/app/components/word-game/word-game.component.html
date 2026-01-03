@@ -8,11 +8,14 @@
         <button class="game-btn game-btn-primary" (click)="getWord()">
           <i class="fa fa-refresh"></i> New Word
         </button>
-        <button class="game-btn game-btn-success" (click)="verifySolvedWord()">
+        <button class="game-btn game-btn-success" (click)="verifySolvedWord()" [disabled]="answerRevealed">
           <i class="fa fa-check"></i> Check Answer
         </button>
-        <button class="game-btn game-btn-secondary" (click)="resetLetters()">
+        <button class="game-btn game-btn-secondary" (click)="resetLetters()" [disabled]="answerRevealed">
           <i class="fa fa-undo"></i> Reset
+        </button>
+        <button class="game-btn game-btn-warning" (click)="showAnswer()" [disabled]="answerRevealed || !word">
+          <i class="fa fa-lightbulb-o"></i> Show Answer
         </button>
       </div>
 

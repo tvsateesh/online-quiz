@@ -67,6 +67,7 @@ export class WordGameComponent implements OnInit {
   word: string = "";
   letters: string[] = [];
   solved: boolean = false;
+  answerRevealed: boolean = false;
   errorMsg: string = "";
 
   solvedWord: string[] = [];
@@ -107,6 +108,7 @@ export class WordGameComponent implements OnInit {
     //this.word = Math.random() + '' //* this.wordList.length-1 + '';//(Math.floor(Math.random() * this.wordList.length-1)+1).toString();
     this.errorMsg = "";
     this.solved = false;
+    this.answerRevealed = false;
     
     // Get random word
     const randomIndex = Math.floor(Math.random() * this.wordList.length);
@@ -153,6 +155,16 @@ export class WordGameComponent implements OnInit {
     this.solvedWord = new Array(this.word.length).fill('');
     this.errorMsg = "";
     this.solved = false;
+    this.answerRevealed = false;
+  }
+
+  showAnswer() {
+    // Reveal the correct answer
+    this.solvedWord = this.word.split('');
+    this.letters = [];
+    this.answerRevealed = true;
+    this.errorMsg = "Answer revealed! Try another word.";
+    console.log("Answer revealed:", this.word);
   }
 
   getDescription(){
