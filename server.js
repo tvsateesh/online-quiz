@@ -19,9 +19,37 @@ console.log('  npm start');
 console.log('');
 
 // Fallback: serve Angular static files
-app.use(express.static(__dirname + '/dist/angular-quiz'));
+// Try dist first, otherwise use public folder or redirect to dev server
+const distPath = path.join(__dirname, 'dist');
+const publicPath = path.join(__dirname, 'public');
+
+// Serve static files from dist if it exists
+try {
+  if (require('fs').existsSync(distPath)) {
+    app.use(express.static(distPath));
+  } else if (require('fs').existsSync(publicPath)) {
+    app.use(express.static(publicPath));
+  }
+} catch (e) {
+  console.log('No dist or public folder found');
+}
+
+// SPA fallback
 app.get('/*', function(request, response) {
-  response.sendFile(path.join(__dirname + '/dist/angular-quiz/index.html'));
+  const indexPath = path.join(distPath, 'index.html');
+  const publicIndexPath = path.join(publicPath, 'index.html');
+  
+  try {
+    if (require('fs').existsSync(indexPath)) {
+      response.sendFile(indexPath);
+    } else if (require('fs').existsSync(publicIndexPath)) {
+      response.sendFile(publicIndexPath);
+    } else {
+      response.status(503).send('Application is building. Please wait and refresh the page.');
+    }
+  } catch (e) {
+    response.status(500).send('Error loading application');
+  }
 });
 
 app.listen(app.get('port'), function() {

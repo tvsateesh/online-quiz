@@ -338,6 +338,103 @@
   }
 }
 
+// Google Sign-In Styles
+.divider-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  position: relative;
+  
+  &::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  }
+  
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  }
+}
+
+.divider-text {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.google-signin-container {
+  padding: 1rem 0;
+  text-align: center;
+  
+  #g_id_onload {
+    display: none;
+  }
+  
+  .google-signin-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    &.loading {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+  }
+}
+
+// Google Button Styling (wrapper for iframe)
+::ng-deep {
+  .g_id_signin {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    
+    div {
+      width: 100% !important;
+    }
+  }
+  
+  // Fallback if Google button doesn't load
+  .google-signin-fallback {
+    width: 100%;
+    padding: 1.25rem;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #334155;
+    transition: all 0.3s ease;
+    
+    img {
+      width: 20px;
+      height: 20px;
+    }
+    
+    &:hover {
+      border-color: #667eea;
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+    }
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
 // Responsive
 @media (max-width: 576px) {
   .login-card {
@@ -351,5 +448,13 @@
   .login-logo {
     width: 80px;
     height: 80px;
+  }
+  
+  .divider-container {
+    gap: 1rem;
+  }
+  
+  .divider-text {
+    font-size: 0.75rem;
   }
 }
