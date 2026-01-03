@@ -4,6 +4,26 @@
 
 .word-game-area {
   margin-top: 30px;
+  max-height: calc(100vh - 400px);
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+    
+    &:hover {
+      background: #94a3b8;
+    }
+  }
 }
 
 .word-section {
@@ -389,5 +409,36 @@
     min-height: 80px;
     padding: 15px;
     gap: 10px;
+  }
+  
+  .answer-slots {
+    min-height: 100px;
+    padding: 15px;
+  }
+  
+  .answer-slot,
+  .empty-slot-box,
+  .empty-slot-placeholder,
+  .empty-slot {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .game-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .game-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .word-game-area {
+    max-height: calc(100vh - 350px);
+  }
+  
+  .game-info {
+    grid-template-columns: 1fr;
   }
 }
