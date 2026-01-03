@@ -1,14 +1,75 @@
-<h2 class="current-player">Current Player: {{ player }}</h2>
-<div class="start-btn">
-  <button  nbButton outline status="danger" (click)="newGame()">Start new Game</button>
+<!-- Game Controls -->
+<div class="game-controls">
+  <div class="control-section">
+    <h3>Game Mode</h3>
+    <div class="mode-buttons">
+      <button class="mode-btn" [class.active]="gameMode === 'ai'" (click)="setGameMode('ai')">
+        <i class="fa fa-robot"></i> vs AI
+      </button>
+      <button class="mode-btn" [class.active]="gameMode === 'pvp'" (click)="setGameMode('pvp')">
+        <i class="fa fa-users"></i> 2 Players
+      </button>
+    </div>
+  </div>
+
+  <div class="control-section" *ngIf="gameMode === 'ai'">
+    <h3>Difficulty</h3>
+    <div class="difficulty-buttons">
+      <button class="difficulty-btn" [class.active]="difficulty === 'easy'" (click)="setDifficulty('easy')">
+        <i class="fa fa-smile-o"></i> Easy
+      </button>
+      <button class="difficulty-btn" [class.active]="difficulty === 'medium'" (click)="setDifficulty('medium')">
+        <i class="fa fa-meh-o"></i> Medium
+      </button>
+      <button class="difficulty-btn" [class.active]="difficulty === 'hard'" (click)="setDifficulty('hard')">
+        <i class="fa fa-frown-o"></i> Hard
+      </button>
+    </div>
+  </div>
 </div>
-<h3 *ngIf="winner" class="won">
-  Player {{winner}} won the game!
-</h3>
-<main>
-  <app-square *ngFor="let val of square; let i = index"
-    [value]="val"
-    (click)="makeMove(i)"
-  >
-   </app-square>
+
+<!-- Score Board -->
+<div class="scoreboard">
+  <div class="score-item x-score">
+    <div class="score-label">Player X</div>
+    <div class="score-value">{{ scores.X }}</div>
+  </div>
+  <div class="score-item draw-score">
+    <div class="score-label">Draws</div>
+    <div class="score-value">{{ scores.draws }}</div>
+  </div>
+  <div class="score-item o-score">
+    <div class="score-label">{{ gameMode === 'ai' ? 'AI (O)' : 'Player O' }}</div>
+    <div class="score-value">{{ scores.O }}</div>
+  </div>
+</div>
+
+<!-- Game Status -->
+<div class="game-status" [class.winner]="isGameOver">
+  <h2>{{ getStatusMessage() }}</h2>
+</div>
+
+<!-- Game Board -->
+<main class="game-board">
+  <div class="board-grid">
+    <div *ngFor="let val of square; let i = index"
+         class="cell"
+         [class.x]="val === 'X'"
+         [class.o]="val === 'O'"
+         [class.winning]="isWinningCell(i)"
+         [class.disabled]="isGameOver || isThinking"
+         (click)="makeMove(i)">
+      <span class="cell-value" *ngIf="val">{{ val }}</span>
+    </div>
+  </div>
 </main>
+
+<!-- Action Buttons -->
+<div class="action-buttons">
+  <button class="game-btn game-btn-primary" (click)="newGame()">
+    <i class="fa fa-refresh"></i> New Game
+  </button>
+  <button class="game-btn game-btn-secondary" (click)="resetScores()">
+    <i class="fa fa-undo"></i> Reset Scores
+  </button>
+</div>

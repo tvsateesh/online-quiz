@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-square',
@@ -6,10 +6,5 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./square.component.scss']
 })
 export class SquareComponent {
-  @Input() value:string = 'X';
-  rando = Math.random();
-  constructor() {
-    setInterval(()=> this.rando = Math.random(),1000);
-  }
-
+  @Input() value: string = '';
 }
