@@ -1,9 +1,105 @@
 <div class="game-page-container">
   <div class="game-page-wrapper">
-    
-    <div class="game-content-card">
-      <div class="checker-block"></div>
+    <!-- Game Instructions -->
+    <div class="game-instructions">
+      <div class="instruction-box">
+        <i class="fa fa-info-circle"></i>
+        <div class="instruction-text">
+          <h3>How to Play Checkers</h3>
+          <p><strong>Goal:</strong> Capture all opponent's pieces or block them from moving.</p>
+          <p><strong>Rules:</strong></p>
+          <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+            <li>Black moves first, pieces move diagonally forward one square</li>
+            <li>Click a piece to select it, then click a highlighted square to move</li>
+            <li>Jump over opponent pieces to capture them (move 2 squares)</li>
+            <li>Reach the opposite end to become a King - can move backward too</li>
+            <li>Win by capturing all opponent pieces</li>
+          </ul>
+        </div>
+      </div>
     </div>
-    
+
+    <!-- Game Status Section -->
+    <div class="game-status-section">
+      <div class="status-info">
+        <div class="player-stats">
+          <div class="stat-item black-stat">
+            <i class="fa fa-chess-pawn"></i>
+            <span class="stat-label">Black Pieces</span>
+            <span class="stat-value">{{ blackPieces }}</span>
+          </div>
+          <div class="stat-item red-stat">
+            <i class="fa fa-chess-pawn"></i>
+            <span class="stat-label">Red Pieces</span>
+            <span class="stat-value">{{ redPieces }}</span>
+          </div>
+        </div>
+        
+        <div class="current-player" [ngClass]="{ 'is-black': currentPlayer === 'black', 'is-red': currentPlayer === 'red' }">
+          <span class="player-turn">{{ currentPlayer | uppercase }}'s Turn</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Board -->
+    <div class="game-content-card">
+      <div class="checkers-board">
+        <div class="board-row" *ngFor="let row of board">
+          <div class="board-square" 
+               *ngFor="let square of row"
+               [ngClass]="{
+                 'black-square': isBlackSquare(square.row, square.col),
+                 'white-square': !isBlackSquare(square.row, square.col),
+                 'highlighted': square.isHighlighted,
+                 'possible-move': square.isPossibleMove
+               }"
+               (click)="onSquareClick(square)">
+            <div class="piece-container" *ngIf="square.piece">
+              <div class="piece" [ngClass]="{ 'red-piece': square.piece === 'red', 'black-piece': square.piece === 'black' }">
+                <span class="king-badge" *ngIf="square.isKing">♔</span>
+              </div>
+            </div>
+            <div class="move-indicator" *ngIf="square.isPossibleMove"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="game-over-modal" *ngIf="gameStatus === 'game-over'">
+      <div class="modal-content">
+        <div class="winner-badge" [ngClass]="{ 'black-winner': winner === 'black', 'red-winner': winner === 'red' }">
+          <i class="fa fa-trophy"></i>
+        </div>
+        <h2 class="modal-title">{{ winner | uppercase }} WINS!</h2>
+        <p class="modal-text">Congratulations! You've won the game.</p>
+        <button class="reset-btn" (click)="resetGame()">
+          <i class="fa fa-redo"></i>
+          Play Again
+        </button>
+      </div>
+    </div>
+
+    <!-- Move History -->
+    <div class="move-history-section" *ngIf="moveHistory.length > 0">
+      <h3 class="history-title">
+        <i class="fa fa-history"></i>
+        Move History
+      </h3>
+      <div class="move-list">
+        <div class="move-item" *ngFor="let move of moveHistory; let i = index">
+          <span class="move-number">{{ i + 1 }}.</span>
+          <span class="move-notation">{{ move }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Button -->
+    <div class="game-controls">
+      <button class="reset-btn" (click)="resetGame()">
+        <i class="fa fa-redo"></i>
+        New Game
+      </button>
+    </div>
   </div>
 </div>
