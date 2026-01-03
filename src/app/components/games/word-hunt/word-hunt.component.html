@@ -70,12 +70,18 @@
           </h3>
           <div class="words-list">
             <div class="word-item" 
-                 *ngFor="let word of hiddenWords; let i = index"
-                 [id]="word"
-                 [class.found]="!solvedWords.includes(word)">
-              <span class="word-number">{{i + 1}}</span>
-              <span class="word-text">{{word}}</span>
-              <i class="fa fa-check-circle" *ngIf="!solvedWords.includes(word)"></i>
+                 *ngFor="let wordData of wordsWithMeanings; let i = index"
+                 [id]="wordData.word"
+                 [class.found]="!solvedWords.includes(wordData.word)"
+                 [title]="'Meaning: ' + wordData.meaning"
+                 [attr.data-tooltip]="wordData.meaning">
+              <div class="word-content">
+                <div class="word-header">
+                  <span class="word-number">{{i + 1}}</span>
+                  <span class="word-text">{{wordData.word}}</span>
+                  <i class="fa fa-check-circle" *ngIf="!solvedWords.includes(wordData.word)"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>

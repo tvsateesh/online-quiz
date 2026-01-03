@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DictionaryService } from 'src/app/service/dictionary.service';
 
+// Interface for word with meaning
+interface WordWithMeaning {
+  word: string;
+  meaning: string;
+}
+
 @Component({
   selector: 'app-word-hunt',
   templateUrl: './word-hunt.component.html',
@@ -11,6 +17,7 @@ export class WordHuntComponent implements OnInit {
   board:any | undefined;
   foundCount : number = 0;
   hiddenWords:string[] = [];
+  wordsWithMeanings: WordWithMeaning[] = []; // Store words with their meanings
   
   gameThemeName = 'Word Hunt'
   //Store the board metadata like position of words like row and col. inside keep the string index.
@@ -85,17 +92,25 @@ export class WordHuntComponent implements OnInit {
         
         console.log(`Loading ${this.difficulty} words: filtered ${filteredWords.length} words from ${allWords.length} total`);
         
-        // Randomly select words
+        // Randomly select words with their meanings
         const selectedWords = [];
+        const selectedWordsWithMeanings: WordWithMeaning[] = [];
         const wordsCopy = [...filteredWords];
         for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
           const randomIndex = Math.floor(Math.random() * wordsCopy.length);
           const word = wordsCopy.splice(randomIndex, 1)[0];
+          const meaning = result[word] || 'No definition available';
           selectedWords.push(word.toUpperCase());
+          selectedWordsWithMeanings.push({
+            word: word.toUpperCase(),
+            meaning: meaning
+          });
         }
         
         this.hiddenWords = selectedWords;
+        this.wordsWithMeanings = selectedWordsWithMeanings;
         console.log('Loaded words from dictionary:', this.hiddenWords);
+        console.log('Words with meanings:', this.wordsWithMeanings);
       }
     });
   }
@@ -155,14 +170,21 @@ export class WordHuntComponent implements OnInit {
           const wordCount = config ? config.wordCount : 10;
           
           const selectedWords = [];
+          const selectedWordsWithMeanings: WordWithMeaning[] = [];
           const wordsCopy = [...filteredWords];
           for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
             const randomIndex = Math.floor(Math.random() * wordsCopy.length);
             const word = wordsCopy.splice(randomIndex, 1)[0];
+            const meaning = result[word] || 'No definition available';
             selectedWords.push(word.toUpperCase());
+            selectedWordsWithMeanings.push({
+              word: word.toUpperCase(),
+              meaning: meaning
+            });
           }
           
           this.hiddenWords = selectedWords;
+          this.wordsWithMeanings = selectedWordsWithMeanings;
           console.log('Words loaded for game:', this.hiddenWords);
           this.initializeGame();
         }
