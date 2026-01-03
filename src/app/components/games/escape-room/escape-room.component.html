@@ -1,0 +1,95 @@
+<app-header></app-header>
+
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    
+    <div class="game-page-header">
+      <div class="game-icon-badge escape-room-theme">
+        <i class="fa fa-key"></i>
+      </div>
+      <h1 class="game-page-title">Escape Room</h1>
+      <p class="game-page-subtitle">Made by <i>MissRupa</i> - Solve riddles to escape!</p>
+    </div>
+    
+    <div class="game-content-card">
+      
+      <!-- Game Status -->
+      <div class="game-status">
+        <div class="status-item">
+          <span class="status-label">Progress:</span>
+          <span class="status-value">{{ getRoomProgress() }}</span>
+        </div>
+        <button class="game-btn game-btn-secondary" (click)="newGame()">
+          <i class="fa fa-refresh"></i> New Game
+        </button>
+      </div>
+
+      <!-- Game Complete Message -->
+      <div class="alert-message alert-success" *ngIf="isGameComplete">
+        <i class="fa fa-trophy"></i> {{ responseMessage }}
+      </div>
+
+      <!-- Character Emoji -->
+      <div class="character-emoji">{{ emoji }}</div>
+
+      <!-- Question Container -->
+      <div class="question-container" *ngIf="!isGameComplete && getCurrentQuestion()">
+        <div class="room-info">
+          <span class="room-badge">{{ getCurrentQuestion()?.category }}</span>
+          <span class="difficulty-badge" [class]="getCurrentQuestion()?.difficulty_level?.toLowerCase()">
+            {{ getCurrentQuestion()?.difficulty_level }}
+          </span>
+        </div>
+        
+        <div class="question-box">
+          <p class="question-text">{{ getCurrentQuestion()?.question }}</p>
+        </div>
+
+        <div class="hint-section" *ngIf="showHint">
+          <div class="hint-box">
+            <i class="fa fa-lightbulb-o"></i>
+            <span>{{ getCurrentQuestion()?.hint }}</span>
+          </div>
+        </div>
+
+        <div class="answer-section">
+          <input 
+            type="text" 
+            class="answer-input" 
+            [(ngModel)]="userAnswer"
+            (keyup.enter)="checkAnswer()"
+            placeholder="Type your answer..."
+            [disabled]="isGameComplete"
+          >
+          <div class="button-group">
+            <button class="game-btn game-btn-primary" (click)="checkAnswer()">
+              <i class="fa fa-check"></i> Submit Answer
+            </button>
+            <button class="game-btn game-btn-hint" (click)="toggleHint()">
+              <i class="fa fa-lightbulb-o"></i> {{ showHint ? 'Hide' : 'Show' }} Hint
+            </button>
+          </div>
+        </div>
+
+        <div class="response-message" *ngIf="responseMessage && !isGameComplete">
+          {{ responseMessage }}
+        </div>
+      </div>
+
+      <!-- Game Info -->
+      <div class="game-info">
+        <div class="info-card">
+          <i class="fa fa-question-circle"></i>
+          <h3>How to Play</h3>
+          <p>Answer riddles and puzzles to progress through each room. Use hints if you get stuck!</p>
+        </div>
+        <div class="info-card">
+          <i class="fa fa-trophy"></i>
+          <h3>Goal</h3>
+          <p>Solve all {{ questions.length }} puzzles to escape all the rooms and win!</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

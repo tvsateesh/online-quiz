@@ -120,6 +120,16 @@
     }
   }
   
+  &.escape-room {
+    &:hover {
+      border-color: #ff8cbb;
+      background: linear-gradient(135deg, #ffeff8 0%, white 100%);
+    }
+    .game-icon {
+      background: linear-gradient(135deg, #ff8cbb 0%, #ff64b0 100%);
+    }
+  }
+  
   &.dice {
     &:hover {
       border-color: #f59e0b;

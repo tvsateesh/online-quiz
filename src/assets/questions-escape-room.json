@@ -1,0 +1,206 @@
+[
+    {
+      "question_id": 1,
+      "question": "What comes once in a minute, twice in a moment, but never in a thousand years?",
+      "answer": "The letter M",
+      "difficulty_level": "Easy",
+      "category": "Riddles",
+      "hint": "Look for a letter that appears in both minute and moment."
+    },
+    {
+      "question_id": 2,
+      "question": "I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?",
+      "answer": "An echo",
+      "difficulty_level": "Medium",
+      "category": "Riddles",
+      "hint": "Think about something that can repeat sounds."
+    },
+    {
+      "question_id": 3,
+      "question": "What has keys but cant open locks?",
+      "answer": "A piano",
+      "difficulty_level": "Easy",
+      "category": "Object Puzzles",
+      "hint": "Its an instrument with a series of keys."
+    },
+    {
+      "question_id": 4,
+      "question": "The more you take, the more you leave behind. What am I?",
+      "answer": "Footsteps",
+      "difficulty_level": "Medium",
+      "category": "Riddles",
+      "hint": "Consider something that increases as you move."
+    },
+    {
+      "question_id": 5,
+      "question": "I have cities, but no houses. I have forests, but no trees. I have rivers, but no water. What am I?",
+      "answer": "A map",
+      "difficulty_level": "Hard",
+      "category": "Object Puzzles",
+      "hint": "Its something you use to navigate."
+    },
+        {
+          "question_id": 6,
+          "question": "What can travel around the world while staying in the corner?",
+          "answer": "A stamp",
+          "difficulty_level": "Easy",
+          "category": "Riddles",
+          "hint": "Think about something small that can be placed on letters."
+        },
+        {
+          "question_id": 7,
+          "question": "I have branches, but no fruit, trunk, or leaves. What am I?",
+          "answer": "A bank",
+          "difficulty_level": "Medium",
+          "category": "Object Puzzles",
+          "hint": "Consider a place where money is kept."
+        },
+        {
+          "question_id": 8,
+          "question": "The more of this there is, the less you see. What is it?",
+          "answer": "Darkness",
+          "difficulty_level": "Medium",
+          "category": "Riddles",
+          "hint": "It’s the absence of light."
+        },
+        {
+          "question_id": 9,
+          "question": "What begins with T, ends with T, and has T in it?",
+          "answer": "A teapot",
+          "difficulty_level": "Easy",
+          "category": "Word Play",
+          "hint": "It’s something used for tea."
+        },
+        {
+          "question_id": 10,
+          "question": "What has a head, a tail, but no body?",
+          "answer": "A coin",
+          "difficulty_level": "Easy",
+          "category": "Object Puzzles",
+          "hint": "Think about currency with two sides."
+        },
+        {
+          "question_id": 11,
+          "question": "What gets wetter the more it dries?",
+          "answer": "A towel",
+          "difficulty_level": "Medium",
+          "category": "Riddles",
+          "hint": "Consider something used after washing."
+        },
+        {
+          "question_id": 12,
+          "question": "What is so fragile that saying its name breaks it?",
+          "answer": "Silence",
+          "difficulty_level": "Medium",
+          "category": "Riddles",
+          "hint": "Think about something you can hear but cant touch."
+        },
+        {
+          "question_id": 13,
+          "question": "If you have me, you want to share me. If you share me, you havent got me. What am I?",
+          "answer": "A secret",
+          "difficulty_level": "Hard",
+          "category": "Riddles",
+          "hint": "Think about something you keep to yourself."
+        },
+        {
+          "question_id": 14,
+          "question": "What can you break, even if you never pick it up or touch it?",
+          "answer": "A promise",
+          "difficulty_level": "Hard",
+          "category": "Riddles",
+          "hint": "Its an abstract concept related to trust."
+        },
+        {
+          "question_id": 15,
+          "question": "I am always hungry, I must always be fed. The finger I touch, will soon turn red. What am I?",
+          "answer": "Fire",
+          "difficulty_level": "Medium",
+          "category": "Riddles",
+          "hint": "It needs fuel and can cause burns."
+        }
+      ,
+        {
+          "question_id": 16,
+          "question": "What can be cracked, made, told, and played?",
+          "answer": "A joke",
+          "difficulty_level": "Easy",
+          "category": "Word Play",
+          "hint": "It’s something that can make you laugh."
+        },
+        {
+          "question_id": 17,
+          "question": "What has one eye but can’t see?",
+          "answer": "A needle",
+          "difficulty_level": "Medium",
+          "category": "Object Puzzles",
+          "hint": "It’s used in sewing."
+        },
+        {
+          "question_id": 18,
+          "question": "What is full of holes but still holds a lot of weight?",
+          "answer": "A net",
+          "difficulty_level": "Hard",
+          "category": "Object Puzzles",
+          "hint": "Think about something that can hold items despite having gaps."
+        },
+        {
+          "question_id": 19,
+          "question": "I am tall when I am young, and I am short when I am old. What am I?",
+          "answer": "A candle",
+          "difficulty_level": "Medium",
+          "category": "Riddles",
+          "hint": "It’s something that burns."
+        },
+        {
+          "question_id": 20,
+          "question": "The more you have of me, the less you see. What am I?",
+          "answer": "Fog",
+          "difficulty_level": "Medium",
+          "category": "Riddles",
+          "hint": "Think about something that reduces visibility."
+        },
+        {
+          "question_id": 21,
+          "question": "What word is spelled incorrectly in every dictionary?",
+          "answer": "Incorrectly",
+          "difficulty_level": "Easy",
+          "category": "Word Play",
+          "hint": "It’s a trick question about how dictionaries work."
+        },
+        {
+          "question_id": 22,
+          "question": "What comes down but never goes up?",
+          "answer": "Rain",
+          "difficulty_level": "Easy",
+          "category": "Nature",
+          "hint": "It’s something that falls from the sky."
+        },
+        {
+          "question_id": 23,
+          "question": "What is always in front of you but can’t be seen?",
+          "answer": "The future",
+          "difficulty_level": "Hard",
+          "category": "Philosophical",
+          "hint": "It’s something you can’t predict but is yet to come."
+        },
+        {
+          "question_id": 24,
+          "question": "What begins with an E, ends with an E, but only has one letter?",
+          "answer": "An envelope",
+          "difficulty_level": "Medium",
+          "category": "Object Puzzles",
+          "hint": "It’s something you use to send letters."
+        },
+        {
+          "question_id": 25,
+          "question": "I am not alive, but I can grow; I don’t have lungs, but I need air; I don’t have a mouth, but water kills me. What am I?",
+          "answer": "Fire",
+          "difficulty_level": "Hard",
+          "category": "Riddles",
+          "hint": "It needs oxygen to burn but is extinguished by water."
+        }
+      ]
+      
+      
+  

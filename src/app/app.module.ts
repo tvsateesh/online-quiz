@@ -32,6 +32,7 @@ import { WordHuntComponent } from './components/games/word-hunt/word-hunt.compon
 import { OddManOutComponent } from './components/games/odd-man-out/odd-man-out.component';
 import { ChessComponent } from './components/games/chess/chess.component';
 import { CheckersComponent } from './components/games/checkers/checkers.component';
+import { EscapeRoomComponent } from './components/games/escape-room/escape-room.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +60,7 @@ import { CheckersComponent } from './components/games/checkers/checkers.componen
     OddManOutComponent,
     ChessComponent,
     CheckersComponent,
+    EscapeRoomComponent,
   ],
   imports: [
     BrowserModule,
