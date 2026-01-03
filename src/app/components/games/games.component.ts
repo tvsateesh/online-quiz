@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ import { filter } from 'rxjs/operators';
 export class GamesComponent implements OnInit {
   private activeChildRoute = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     console.log('GamesComponent initialized');
@@ -35,6 +35,16 @@ export class GamesComponent implements OnInit {
 
   hasActiveRoute(): boolean {
     return this.activeChildRoute;
+  }
+
+  onMenuItemClick(route: string): void {
+    console.log('Menu item clicked:', route);
+    this.ngZone.run(() => {
+      this.router.navigate(['/games', route]).then(
+        success => console.log('Navigation success:', success, 'to route:', route),
+        error => console.error('Navigation error:', error)
+      );
+    });
   }
 
 }
