@@ -5,11 +5,11 @@
 
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 
 var app = express();
 app.set('port', (process.env.PORT || 5001));
 
-// Redirect to use proper backend
 console.log('⚠️  This server.js is deprecated.');
 console.log('Please use the backend TypeScript server instead:');
 console.log('  cd backend');
@@ -18,38 +18,49 @@ console.log('  npm run build');
 console.log('  npm start');
 console.log('');
 
-// Fallback: serve Angular static files
-// Try dist first, otherwise use public folder or redirect to dev server
-const distPath = path.join(__dirname, 'dist');
-const publicPath = path.join(__dirname, 'public');
+// Serve static files from dist/angular-quiz folder
+const distPath = path.join(__dirname, 'dist', 'angular-quiz');
 
-// Serve static files from dist if it exists
-try {
-  if (require('fs').existsSync(distPath)) {
-    app.use(express.static(distPath));
-  } else if (require('fs').existsSync(publicPath)) {
-    app.use(express.static(publicPath));
-  }
-} catch (e) {
-  console.log('No dist or public folder found');
+// Check if dist folder exists
+if (fs.existsSync(distPath)) {
+  console.log('✓ Serving from dist folder:', distPath);
+  app.use(express.static(distPath));
+} else {
+  console.log('⚠️  WARNING: dist folder not found at', distPath);
+  console.log('Run: npm run build');
 }
 
-// SPA fallback
+// SPA fallback - serve index.html for all routes
 app.get('/*', function(request, response) {
   const indexPath = path.join(distPath, 'index.html');
-  const publicIndexPath = path.join(publicPath, 'index.html');
   
-  try {
-    if (require('fs').existsSync(indexPath)) {
-      response.sendFile(indexPath);
-    } else if (require('fs').existsSync(publicIndexPath)) {
-      response.sendFile(publicIndexPath);
-    } else {
-      response.status(503).send('Application is building. Please wait and refresh the page.');
-    }
-  } catch (e) {
-    response.status(500).send('Error loading application');
+  if (fs.existsSync(indexPath)) {
+    response.sendFile(indexPath);
+  } else {
+    response.status(503).send(`
+      <html>
+        <head><title>Building...</title></head>
+        <body>
+          <h1>Application Building</h1>
+          <p>The application is being built. Please wait and refresh the page.</p>
+          <p style="margin-top: 20px; font-size: 12px; color: #666;">
+            If this message persists:<br/>
+            1. Run: npm run build<br/>
+            2. Then: npm start
+          </p>
+          <script>
+            setTimeout(function() {
+              location.reload();
+            }, 3000);
+          </script>
+        </body>
+      </html>
+    `);
   }
+});
+
+app.listen(app.get('port'), function() {
+  console.log('✓ Server running on port', app.get('port'));
 });
 
 app.listen(app.get('port'), function() {
