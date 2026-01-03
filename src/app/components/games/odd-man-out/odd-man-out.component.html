@@ -1,31 +1,64 @@
-<app-header></app-header>
-
 <div class="game-page-container">
   <div class="game-page-wrapper">
     
-    <div class="game-page-header">
-      <div class="game-icon-badge oddmanout-theme">
-        <i class="fa fa-puzzle-piece"></i>
-      </div>
-      <h1 class="game-page-title">Find Odd Man Out</h1>
-      <p class="game-page-subtitle">Spot the difference and find all hidden numbers</p>
-    </div>
-    
     <div class="game-content-card">
       
+      <div class="game-instructions" *ngIf="time === 0">
+        <div class="instruction-box">
+          <i class="fa fa-info-circle"></i>
+          <div class="instruction-text">
+            <h3>How to Play</h3>
+            <p>Find and click on all numbers that are <strong>different</strong> from the majority!</p>
+            <p>There are <strong>{{totalHiddenNumbers}} hidden numbers</strong> waiting to be discovered.</p>
+            <p>Click carefully - only the odd ones will turn green!</p>
+          </div>
+        </div>
+        
+        <div class="difficulty-selector">
+          <h4>Select Difficulty</h4>
+          <div class="difficulty-buttons">
+            <button 
+              [class.active]="difficulty === 'easy'"
+              (click)="setDifficulty('easy')"
+              class="difficulty-btn easy">
+              <i class="fa fa-smile-o"></i>
+              <span>Easy</span>
+              <small>12x12 Grid</small>
+            </button>
+            <button 
+              [class.active]="difficulty === 'medium'"
+              (click)="setDifficulty('medium')"
+              class="difficulty-btn medium">
+              <i class="fa fa-meh-o"></i>
+              <span>Medium</span>
+              <small>16x16 Grid</small>
+            </button>
+            <button 
+              [class.active]="difficulty === 'hard'"
+              (click)="setDifficulty('hard')"
+              class="difficulty-btn hard">
+              <i class="fa fa-frown-o"></i>
+              <span>Hard</span>
+              <small>20x20 Grid</small>
+            </button>
+          </div>
+        </div>
+      </div>
+      
       <div class="game-stats" *ngIf="time || completed">
-        <div class="stat-badge">
-          <i class="fa fa-check-circle"></i>
-          <span>Found {{foundCount}} of {{totalHiddenNumbers}}</span>
+        <div class="stat-badge progress">
+          <i class="fa fa-bullseye"></i>
+          <span>Progress: {{foundCount}}/{{totalHiddenNumbers}}</span>
         </div>
         <div class="stat-badge timer">
           <i class="fa fa-clock-o"></i>
-          <span>Timer: {{time}}</span>
+          <span>{{time}}s</span>
         </div>
-        <div class="alert-message success" *ngIf="completed">
-          <i class="fa fa-trophy"></i>
-          <span>Found all words in {{endGameDuration}} mins!</span>
-        </div>
+      </div>
+      
+      <div class="alert-message success" *ngIf="completed">
+        <i class="fa fa-trophy"></i>
+        <span>Perfect! Found all {{totalHiddenNumbers}} numbers in {{endGameDuration > 0 ? endGameDuration + ' mins' : time + ' seconds'}}!</span>
       </div>
       
       <div class="game-controls" *ngIf="time === 0">

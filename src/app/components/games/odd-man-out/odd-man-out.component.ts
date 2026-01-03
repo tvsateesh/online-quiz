@@ -12,15 +12,16 @@ export class OddManOutComponent implements OnInit {
   timer: any = '';
 
   board: any;
-  row: number = 20;
-  col: number = 20;
+  row: number = 12;
+  col: number = 12;
   defaultFillingList:any = undefined;
   completed: boolean = false;
   foundCount = 0;
   fillingNumbers: string[] = [];
   randamNumber:string = '';
-  totalHiddenNumbers: number = 10;
+  totalHiddenNumbers: number = 8;
   endGameDuration: number = 0;
+  difficulty: string = 'easy'; // easy, medium, hard
 
   constructor() {
     this.defaultFillingList = {
@@ -32,8 +33,26 @@ export class OddManOutComponent implements OnInit {
     
   }
 
+  setDifficulty(level: string) {
+    this.difficulty = level;
+    if (level === 'easy') {
+      this.row = 12;
+      this.col = 12;
+      this.totalHiddenNumbers = 8;
+    } else if (level === 'medium') {
+      this.row = 16;
+      this.col = 16;
+      this.totalHiddenNumbers = 12;
+    } else {
+      this.row = 20;
+      this.col = 20;
+      this.totalHiddenNumbers = 15;
+    }
+  }
+
   startGame(){
     this.completed = false;
+    this.foundCount = 0;
     this.randamNumber = this.fillingNumbers[this.getRandomNumber(this.fillingNumbers.length - 1 , 0 )];
     this.board = Array(this.row).fill(null).map(()=>Array(this.col).fill(this.randamNumber));
     this.generateBoard();

@@ -30,22 +30,37 @@ const routes: Routes = [
   },
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "login", component: LoginComponent },
-  { path: "dice-game", component: DiceGameComponent },
   { path: "multi-selection", component: MultiSelectionComponent },
   { path: "form", component: FormComponent },
   { path: "dashboard", component: DashboardComponent },
-  { path: "word-game", component: WordGameComponent },
-  { path: "word-hunt", component: WordHuntComponent},
-  { path: "odd-man-out", component: OddManOutComponent},
-  { path: "chess-game", component: ChessComponent},
-  { path: "checkers-game", component: CheckersComponent},
-  { path: "escape-room", component: EscapeRoomComponent},
-  { path: "sudoku", component: SudokuComponent },
-  { path: "tic-tac-toe", component: TicTacToeComponent },
-  { path: "games", component: GamesComponent},
   { path: "angular", component: AngularComponent },
   { path: "html", component: HtmlComponent},
-  { path: "javascript", component: JavascriptComponent}
+  { path: "javascript", component: JavascriptComponent},
+  { 
+    path: "games", 
+    component: GamesComponent,
+    children: [
+      { path: "dice-game", component: DiceGameComponent },
+      { path: "word-game", component: WordGameComponent },
+      { path: "word-hunt", component: WordHuntComponent},
+      { path: "odd-man-out", component: OddManOutComponent},
+      { path: "chess-game", component: ChessComponent},
+      { path: "checkers-game", component: CheckersComponent},
+      { path: "escape-room", component: EscapeRoomComponent},
+      { path: "sudoku", component: SudokuComponent },
+      { path: "tic-tac-toe", component: TicTacToeComponent },
+    ]
+  },
+  // Redirect old game routes to new nested structure
+  { path: "dice-game", redirectTo: "games/dice-game" },
+  { path: "word-game", redirectTo: "games/word-game" },
+  { path: "word-hunt", redirectTo: "games/word-hunt" },
+  { path: "odd-man-out", redirectTo: "games/odd-man-out" },
+  { path: "chess-game", redirectTo: "games/chess-game" },
+  { path: "checkers-game", redirectTo: "games/checkers-game" },
+  { path: "escape-room", redirectTo: "games/escape-room" },
+  { path: "sudoku", redirectTo: "games/sudoku" },
+  { path: "tic-tac-toe", redirectTo: "games/tic-tac-toe" },
 ];
 
 @NgModule({

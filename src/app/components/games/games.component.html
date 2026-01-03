@@ -1,132 +1,107 @@
 <app-header></app-header>
 
-<div class="games-container">
-  <div class="games-hero">
-    <h1 class="games-title">
-      <i class="fa fa-gamepad"></i>
-      Choose Your <span class="text-gradient">Brain Game</span>
-    </h1>
-    <p class="games-subtitle">Challenge yourself with our collection of mind-bending games</p>
-  </div>
+<div class="games-layout">
+  <!-- Left Sidebar with Game Selection -->
+  <aside class="games-sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">
+        <i class="fa fa-gamepad"></i>
+        Brain Games
+      </h2>
+      <p class="sidebar-subtitle">Choose a game</p>
+    </div>
+    
+    <nav class="games-menu">
+      <a routerLink="/games/chess-game" routerLinkActive="active" class="menu-item chess">
+        <div class="menu-icon">
+          <i class="fa fa-chess"></i>
+        </div>
+        <span class="menu-label">Chess</span>
+      </a>
+      
+      <a routerLink="/games/checkers-game" routerLinkActive="active" class="menu-item checkers">
+        <div class="menu-icon">
+          <i class="fa fa-chess-board"></i>
+        </div>
+        <span class="menu-label">Checkers</span>
+      </a>
+      
+      <a routerLink="/games/escape-room" routerLinkActive="active" class="menu-item escape-room">
+        <div class="menu-icon">
+          <i class="fa fa-key"></i>
+        </div>
+        <span class="menu-label">Escape Room</span>
+      </a>
+      
+      <a routerLink="/games/dice-game" routerLinkActive="active" class="menu-item dice">
+        <div class="menu-icon">
+          <i class="fa fa-dice"></i>
+        </div>
+        <span class="menu-label">Dice Game</span>
+      </a>
+      
+      <a routerLink="/games/tic-tac-toe" routerLinkActive="active" class="menu-item tictactoe">
+        <div class="menu-icon">
+          <i class="fa fa-th"></i>
+        </div>
+        <span class="menu-label">Tic Tac Toe</span>
+      </a>
+      
+      <a routerLink="/games/word-game" routerLinkActive="active" class="menu-item word">
+        <div class="menu-icon">
+          <i class="fa fa-font"></i>
+        </div>
+        <span class="menu-label">Word Game</span>
+      </a>
+      
+      <a routerLink="/games/sudoku" routerLinkActive="active" class="menu-item sudoku">
+        <div class="menu-icon">
+          <i class="fa fa-table"></i>
+        </div>
+        <span class="menu-label">Sudoku</span>
+      </a>
+      
+      <a routerLink="/games/word-hunt" routerLinkActive="active" class="menu-item wordhunt">
+        <div class="menu-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <span class="menu-label">Word Hunt</span>
+      </a>
+      
+      <a routerLink="/games/odd-man-out" routerLinkActive="active" class="menu-item oddmanout">
+        <div class="menu-icon">
+          <i class="fa fa-puzzle-piece"></i>
+        </div>
+        <span class="menu-label">Odd Man Out</span>
+      </a>
+    </nav>
+  </aside>
   
-  <div class="games-grid">
+  <!-- Right Content Area for Game Components -->
+  <main class="games-content">
+    <router-outlet></router-outlet>
     
-    <a routerLink="/chess-game" class="game-card chess">
-      <div class="game-icon">
-        <i class="fa fa-chess"></i>
+    <!-- Welcome screen shown when no game is selected -->
+    <div class="welcome-screen" *ngIf="!hasActiveRoute()">
+      <div class="welcome-icon">
+        <i class="fa fa-gamepad"></i>
       </div>
-      <div class="game-content">
-        <h3 class="game-title">Chess Game</h3>
-        <p class="game-description">Master the classic strategy game</p>
+      <h1 class="welcome-title">Welcome to <span class="text-gradient">Brain Games</span></h1>
+      <p class="welcome-text">Select a game from the menu to start playing!</p>
+      <div class="welcome-features">
+        <div class="feature-item">
+          <i class="fa fa-brain"></i>
+          <span>Train Your Brain</span>
+        </div>
+        <div class="feature-item">
+          <i class="fa fa-trophy"></i>
+          <span>Challenge Yourself</span>
+        </div>
+        <div class="feature-item">
+          <i class="fa fa-clock"></i>
+          <span>Track Your Progress</span>
+        </div>
       </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/checkers-game" class="game-card checkers">
-      <div class="game-icon">
-        <i class="fa fa-chess-board"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Checkers Game</h3>
-        <p class="game-description">Classic board game strategy</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/escape-room" class="game-card escape-room">
-      <div class="game-icon">
-        <i class="fa fa-key"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Escape Room</h3>
-        <p class="game-description">Solve riddles to escape - by MissRupa</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/dice-game" class="game-card dice">
-      <div class="game-icon">
-        <i class="fa fa-dice"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Dice Game</h3>
-        <p class="game-description">Roll the dice and test your luck</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/tic-tac-toe" class="game-card tictactoe">
-      <div class="game-icon">
-        <i class="fa fa-th"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Tic Tac Toe</h3>
-        <p class="game-description">Classic X's and O's challenge</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/word-game" class="game-card word">
-      <div class="game-icon">
-        <i class="fa fa-font"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Word Game</h3>
-        <p class="game-description">Build your vocabulary skills</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/sudoku" class="game-card sudoku">
-      <div class="game-icon">
-        <i class="fa fa-table"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Sudoku</h3>
-        <p class="game-description">Number puzzle brain teaser</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/word-hunt" class="game-card wordhunt">
-      <div class="game-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Word Hunt</h3>
-        <p class="game-description">Find hidden words in the grid</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-    <a routerLink="/odd-man-out" class="game-card oddmanout">
-      <div class="game-icon">
-        <i class="fa fa-puzzle-piece"></i>
-      </div>
-      <div class="game-content">
-        <h3 class="game-title">Find Odd Man Out</h3>
-        <p class="game-description">Spot the difference challenge</p>
-      </div>
-      <div class="game-arrow">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-    </a>
-    
-  </div>
+    </div>
+  </main>
 </div>

@@ -41,6 +41,29 @@ export class ChessComponent implements OnInit {
   enPassantTarget: Square | null = null;
   difficulty: 'easy' | 'medium' | 'hard' = 'medium';
   
+  // Game Statistics
+  stats = {
+    wins: 0,
+    losses: 0,
+    draws: 0
+  };
+  
+  // Game History
+  gameHistory: Array<{
+    date: string;
+    result: string;
+    difficulty: string;
+    moves: string[];
+    winner: string;
+  }> = [];
+  
+  // UI State
+  showGameHistory = false;
+  selectedGameIndex: number | null = null;
+
+  // Expose Math for template
+  Math = Math;
+  
   pieceSymbols: { [key: string]: string } = {
     'white-king': '♔',
     'white-queen': '♕',
@@ -59,6 +82,8 @@ export class ChessComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.loadStats();
+    this.loadGameHistory();
     this.initializeBoard();
   }
 
@@ -137,6 +162,7 @@ export class ChessComponent implements OnInit {
     let isEnPassant = false;
     let isCastling = false;
     let isPromotion = false;
+    let capturedPiece: Piece | null = to.piece; // Store captured piece before overwriting
 
     // Handle en passant capture
     if (piece.type === 'pawn' && to === this.enPassantTarget) {
@@ -145,6 +171,7 @@ export class ChessComponent implements OnInit {
       const capturedPawn = this.board[captureRow][to.col].piece!;
       this.capturedPieces[capturedPawn.color].push(capturedPawn);
       this.board[captureRow][to.col].piece = null;
+      capturedPiece = capturedPawn; // En passant capture
     }
 
     // Handle castling
@@ -193,20 +220,41 @@ export class ChessComponent implements OnInit {
     this.lastMove = {
       from,
       to,
-      capturedPiece: to.piece,
+      capturedPiece,
       isEnPassant,
       isCastling,
       isPromotion
     };
     
-    const moveNotation = this.getMoveNotation(from, to);
-    this.moveHistory.push(moveNotation);
-
+    let moveNotation = this.getMoveNotation(from, to);
+    
     // Switch player
     this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
 
     // Update check status
     this.isCheck = this.isKingInCheck(this.currentPlayer);
+    
+    // Add check/checkmate symbols
+    if (this.isCheck) {
+      // Check if it's checkmate by looking ahead
+      let hasLegalMoves = false;
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          const piece = this.board[row][col].piece;
+          if (piece && piece.color === this.currentPlayer) {
+            const moves = this.getValidMoves(this.board[row][col]);
+            if (moves.length > 0) {
+              hasLegalMoves = true;
+              break;
+            }
+          }
+        }
+        if (hasLegalMoves) break;
+      }
+      moveNotation += hasLegalMoves ? '+' : '#';
+    }
+    
+    this.moveHistory.push(moveNotation);
 
     // Check for checkmate
     this.checkGameOver();
@@ -1060,25 +1108,198 @@ export class ChessComponent implements OnInit {
     if (!hasLegalMoves) {
       if (this.isCheck) {
         this.gameOver = true;
-        this.winner = this.currentPlayer === 'white' 
-          ? 'Black (Computer) wins by checkmate!' 
-          : 'White (You) wins by checkmate!';
+        if (this.currentPlayer === 'white') {
+          this.winner = 'Black (Computer) wins by checkmate!';
+          this.stats.losses++;
+          this.saveGameToHistory('0-1', 'Black wins');
+        } else {
+          this.winner = 'White (You) wins by checkmate!';
+          this.stats.wins++;
+          this.saveGameToHistory('1-0', 'White wins');
+        }
+        this.saveStats();
       } else {
         // Stalemate
         this.gameOver = true;
         this.winner = 'Stalemate - Draw!';
+        this.stats.draws++;
+        this.saveGameToHistory('1/2-1/2', 'Draw');
+        this.saveStats();
       }
     }
   }
 
   getMoveNotation(from: Square, to: Square): string {
     const cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    return `${cols[from.col]}${8 - from.row} → ${cols[to.col]}${8 - to.row}`;
+    const piece = to.piece;
+    if (!piece) return '';
+
+    let notation = '';
+    const toSquare = `${cols[to.col]}${8 - to.row}`;
+    
+    // Special case for castling
+    if (this.lastMove?.isCastling) {
+      return to.col > from.col ? 'O-O' : 'O-O-O';
+    }
+
+    // Piece prefix (empty for pawn)
+    const pieceSymbol: { [key: string]: string } = {
+      'king': 'K',
+      'queen': 'Q',
+      'rook': 'R',
+      'bishop': 'B',
+      'knight': 'N',
+      'pawn': ''
+    };
+    
+    notation += pieceSymbol[piece.type];
+
+    // For pawns, include file if capturing
+    if (piece.type === 'pawn' && this.lastMove?.capturedPiece) {
+      notation += cols[from.col];
+    }
+
+    // Add 'x' for captures
+    if (this.lastMove?.capturedPiece || this.lastMove?.isEnPassant) {
+      notation += 'x';
+    }
+
+    // Add destination square
+    notation += toSquare;
+
+    // Add promotion
+    if (this.lastMove?.isPromotion) {
+      notation += '=Q';
+    }
+
+    // Add check/checkmate indicator (will be added in makeMove)
+    return notation;
   }
 
   newGame(): void {
     this.initializeBoard();
     this.selectedSquare = null;
     this.validMoves = [];
+  }
+
+  loadStats(): void {
+    const savedStats = localStorage.getItem('chessStats');
+    if (savedStats) {
+      this.stats = JSON.parse(savedStats);
+    }
+  }
+
+  saveStats(): void {
+    localStorage.setItem('chessStats', JSON.stringify(this.stats));
+  }
+
+  resetStats(): void {
+    this.stats = { wins: 0, losses: 0, draws: 0 };
+    this.saveStats();
+  }
+
+  loadGameHistory(): void {
+    const savedHistory = localStorage.getItem('chessGameHistory');
+    if (savedHistory) {
+      this.gameHistory = JSON.parse(savedHistory);
+    }
+  }
+
+  saveGameToHistory(result: string, winner: string): void {
+    const game = {
+      date: new Date().toISOString(),
+      result: result,
+      difficulty: this.difficulty,
+      moves: [...this.moveHistory],
+      winner: winner
+    };
+    this.gameHistory.unshift(game); // Add to beginning
+    
+    // Keep only last 50 games
+    if (this.gameHistory.length > 50) {
+      this.gameHistory = this.gameHistory.slice(0, 50);
+    }
+    
+    localStorage.setItem('chessGameHistory', JSON.stringify(this.gameHistory));
+  }
+
+  exportToCSV(): void {
+    if (this.gameHistory.length === 0) {
+      alert('No game history to export!');
+      return;
+    }
+
+    // CSV headers
+    let csv = 'Date,Result,Winner,Difficulty,Moves\n';
+    
+    // Add each game
+    this.gameHistory.forEach(game => {
+      const date = new Date(game.date).toLocaleString();
+      const moves = game.moves.join(' ');
+      csv += `"${date}","${game.result}","${game.winner}","${game.difficulty}","${moves}"\n`;
+    });
+
+    // Create blob and download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `chess_games_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  exportCurrentGameToCSV(): void {
+    if (this.moveHistory.length === 0) {
+      alert('No moves to export!');
+      return;
+    }
+
+    // CSV headers
+    let csv = 'Move Number,White,Black\n';
+    
+    // Add moves in pairs (white and black)
+    for (let i = 0; i < this.moveHistory.length; i += 2) {
+      const moveNum = Math.floor(i / 2) + 1;
+      const whiteMove = this.moveHistory[i] || '';
+      const blackMove = this.moveHistory[i + 1] || '';
+      csv += `${moveNum},"${whiteMove}","${blackMove}"\n`;
+    }
+
+    // Create blob and download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `chess_current_game_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  toggleGameHistory(): void {
+    this.showGameHistory = !this.showGameHistory;
+    if (!this.showGameHistory) {
+      this.selectedGameIndex = null;
+    }
+  }
+
+  toggleGameDetails(index: number): void {
+    this.selectedGameIndex = this.selectedGameIndex === index ? null : index;
+  }
+
+  formatDate(dateStr: string): string {
+    const d = new Date(dateStr);
+    return d.toLocaleString();
+  }
+
+  getResultClass(result: string): string {
+    if (result === '1-0') return 'result-win';
+    if (result === '0-1') return 'result-loss';
+    if (result === '1/2-1/2') return 'result-draw';
+    return '';
   }
 }

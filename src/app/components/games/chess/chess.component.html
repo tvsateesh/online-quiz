@@ -1,15 +1,5 @@
-<app-header></app-header>
-
 <div class="game-page-container">
   <div class="game-page-wrapper">
-    
-    <div class="game-page-header">
-      <div class="game-icon-badge chess-theme">
-        <i class="fa fa-chess"></i>
-      </div>
-      <h1 class="game-page-title">Chess Game</h1>
-      <p class="game-page-subtitle">Play against the computer</p>
-    </div>
     
     <div class="game-content-card">
       
@@ -26,72 +16,109 @@
         </button>
       </div>
 
-      <!-- Difficulty Selector -->
-      <div class="difficulty-selector">
-        <span class="difficulty-label">Difficulty:</span>
-        <div class="difficulty-buttons">
-          <button class="difficulty-btn" 
-                  [class.active]="difficulty === 'easy'" 
-                  (click)="setDifficulty('easy')">
-            <i class="fa fa-smile-o"></i> Easy
-          </button>
-          <button class="difficulty-btn" 
-                  [class.active]="difficulty === 'medium'" 
-                  (click)="setDifficulty('medium')">
-            <i class="fa fa-meh-o"></i> Medium
-          </button>
-          <button class="difficulty-btn" 
-                  [class.active]="difficulty === 'hard'" 
-                  (click)="setDifficulty('hard')">
-            <i class="fa fa-frown-o"></i> Hard
-          </button>
-        </div>
-      </div>
-
       <!-- Game Over Message -->
       <div class="alert-message alert-success" *ngIf="gameOver">
         <i class="fa fa-trophy"></i> {{ winner }}
       </div>
 
-      <!-- Chess Board -->
-      <div class="chess-container">
-        <div class="chess-board">
-          <div class="board-row" *ngFor="let row of board; let rowIndex = index">
-            <div class="board-square" 
-                 *ngFor="let square of row; let colIndex = index"
-                 [class.light-square]="(rowIndex + colIndex) % 2 === 0"
-                 [class.dark-square]="(rowIndex + colIndex) % 2 !== 0"
-                 [class.selected]="isSelected(square)"
-                 [class.valid-move]="isValidMove(square)"
-                 [class.has-piece]="square.piece"
-                 (click)="selectSquare(square)">
-              
-              <!-- Piece -->
-              <div class="chess-piece" 
-                   *ngIf="square.piece" 
-                   [class.white-piece]="square.piece.color === 'white'" 
-                   [class.black-piece]="square.piece.color === 'black'"
-                   [attr.data-piece]="square.piece.type">
-                {{ getPieceSymbol(square.piece) }}
-              </div>
+      <!-- Chess Board and Info Layout -->
+      <div class="chess-layout">
+        
+        <!-- Left: Chess Board -->
+        <div class="chess-container">
+          <div class="chess-board">
+            <div class="board-row" *ngFor="let row of board; let rowIndex = index">
+              <div class="board-square" 
+                   *ngFor="let square of row; let colIndex = index"
+                   [class.light-square]="(rowIndex + colIndex) % 2 === 0"
+                   [class.dark-square]="(rowIndex + colIndex) % 2 !== 0"
+                   [class.selected]="isSelected(square)"
+                   [class.valid-move]="isValidMove(square)"
+                   [class.has-piece]="square.piece"
+                   (click)="selectSquare(square)">
+                
+                <!-- Piece -->
+                <div class="chess-piece" 
+                     *ngIf="square.piece" 
+                     [class.white-piece]="square.piece.color === 'white'" 
+                     [class.black-piece]="square.piece.color === 'black'"
+                     [attr.data-piece]="square.piece.type">
+                  {{ getPieceSymbol(square.piece) }}
+                </div>
 
-              <!-- Valid move indicator -->
-              <div class="move-indicator" *ngIf="isValidMove(square) && !square.piece"></div>
-              <div class="capture-indicator" *ngIf="isValidMove(square) && square.piece"></div>
+                <!-- Valid move indicator -->
+                <div class="move-indicator" *ngIf="isValidMove(square) && !square.piece"></div>
+                <div class="capture-indicator" *ngIf="isValidMove(square) && square.piece"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Board Labels -->
+          <div class="board-labels">
+            <div class="file-labels">
+              <span *ngFor="let file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']">{{ file }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Board Labels -->
-        <div class="board-labels">
-          <div class="file-labels">
-            <span *ngFor="let file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']">{{ file }}</span>
+        <!-- Right: Game Info Sidebar -->
+        <div class="game-info">
+        
+        <!-- Game Statistics Dashboard -->
+        <div class="stats-dashboard">
+          <h3>Game Statistics</h3>
+          <div class="stats-grid">
+            <div class="stat-item wins">
+              <i class="fa fa-trophy"></i>
+              <div class="stat-details">
+                <span class="stat-label">Wins</span>
+                <span class="stat-value">{{ stats.wins }}</span>
+              </div>
+            </div>
+            <div class="stat-item losses">
+              <i class="fa fa-times-circle"></i>
+              <div class="stat-details">
+                <span class="stat-label">Losses</span>
+                <span class="stat-value">{{ stats.losses }}</span>
+              </div>
+            </div>
+            <div class="stat-item draws">
+              <i class="fa fa-handshake-o"></i>
+              <div class="stat-details">
+                <span class="stat-label">Draws</span>
+                <span class="stat-value">{{ stats.draws }}</span>
+              </div>
+            </div>
+          </div>
+          <button class="reset-stats-btn" (click)="resetStats()" title="Reset Statistics">
+            <i class="fa fa-refresh"></i> Reset Stats
+          </button>
+        </div>
+        
+        <!-- Difficulty Selector (shown only before game starts) -->
+        <div class="difficulty-selector" *ngIf="moveHistory.length === 0">
+          <h3>Select Difficulty</h3>
+          <div class="difficulty-buttons">
+            <button class="difficulty-btn" 
+                    [class.active]="difficulty === 'easy'" 
+                    (click)="setDifficulty('easy')">
+              <i class="fa fa-smile-o"></i>
+              <span>Easy</span>
+            </button>
+            <button class="difficulty-btn" 
+                    [class.active]="difficulty === 'medium'" 
+                    (click)="setDifficulty('medium')">
+              <i class="fa fa-meh-o"></i>
+              <span>Medium</span>
+            </button>
+            <button class="difficulty-btn" 
+                    [class.active]="difficulty === 'hard'" 
+                    (click)="setDifficulty('hard')">
+              <i class="fa fa-frown-o"></i>
+              <span>Hard</span>
+            </button>
           </div>
         </div>
-      </div>
-
-      <!-- Game Info Sidebar -->
-      <div class="game-info">
         
         <!-- Captured Pieces -->
         <div class="captured-section">
@@ -120,15 +147,80 @@
 
         <!-- Move History -->
         <div class="move-history">
-          <h3>Move History</h3>
+          <div class="move-history-header">
+            <h3>Current Game</h3>
+            <div class="export-buttons">
+              <button class="export-btn" 
+                      (click)="exportCurrentGameToCSV()" 
+                      title="Export Current Game"
+                      *ngIf="moveHistory.length > 0">
+                <i class="fa fa-download"></i>
+              </button>
+              <button class="export-btn" 
+                      (click)="toggleGameHistory()" 
+                      title="View Game History"
+                      *ngIf="gameHistory.length > 0">
+                <i class="fa fa-history"></i>
+              </button>
+            </div>
+          </div>
           <div class="history-list">
             <div *ngFor="let move of moveHistory; let i = index" class="history-item">
-              <span class="move-number">{{ i + 1 }}.</span>
+              <span class="move-number">{{ Math.floor(i / 2) + 1 }}{{ i % 2 === 0 ? '.' : '...' }}</span>
               <span class="move-text">{{ move }}</span>
             </div>
             <div *ngIf="moveHistory.length === 0" class="no-moves">No moves yet</div>
           </div>
         </div>
+        
+        <!-- Game History Panel -->
+        <div class="game-history-panel" *ngIf="showGameHistory">
+          <div class="game-history-header">
+            <h3>Past Games ({{ gameHistory.length }})</h3>
+            <div class="history-actions">
+              <button class="export-btn" 
+                      (click)="exportToCSV()" 
+                      title="Export All Games">
+                <i class="fa fa-download"></i>
+              </button>
+              <button class="close-btn" (click)="toggleGameHistory()">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="past-games-list">
+            <div *ngFor="let game of gameHistory; let i = index" 
+                 class="past-game-item"
+                 [class.expanded]="selectedGameIndex === i"
+                 (click)="toggleGameDetails(i)">
+              <div class="game-summary">
+                <div class="game-info">
+                  <span class="game-date">{{ formatDate(game.date) }}</span>
+                  <span class="game-result" [class]="getResultClass(game.result)">
+                    {{ game.result }}
+                  </span>
+                </div>
+                <div class="game-meta">
+                  <span class="difficulty-badge" [class]="'diff-' + game.difficulty">
+                    {{ game.difficulty }}
+                  </span>
+                  <span class="moves-count">{{ game.moves.length }} moves</span>
+                </div>
+              </div>
+              <div class="game-notation" *ngIf="selectedGameIndex === i">
+                <h4>Game Notation:</h4>
+                <div class="notation-grid">
+                  <div *ngFor="let move of game.moves; let j = index" class="notation-move">
+                    <span class="notation-number">{{ Math.floor(j / 2) + 1 }}{{ j % 2 === 0 ? '.' : '...' }}</span>
+                    <span class="notation-text">{{ move }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="gameHistory.length === 0" class="no-history">No game history yet</div>
+          </div>
+        </div>
+        
       </div>
 
     </div>
