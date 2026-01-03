@@ -8,6 +8,13 @@
   position: relative;
   overflow: hidden;
   
+  // Hide when logging in
+  &[hidden], &.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+  
   // Animated background shapes
   &::before {
     content: '';

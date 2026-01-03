@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
         
         if (!decodedToken) {
           this.errorMsg = 'Failed to decode token';
+          console.error('Failed to decode token');
           return;
         }
         
@@ -91,18 +92,23 @@ export class LoginComponent implements OnInit {
         
         localStorage.setItem('currentUser', decodedToken.email);
         console.log('User data saved to localStorage');
-        console.log('Attempting to navigate to /games');
+        console.log('Setting isLoggingIn to true');
         
-        // Set flag to hide login page
+        // Set flag to hide login page IMMEDIATELY
         this.isLoggingIn = true;
+        console.log('isLoggingIn is now:', this.isLoggingIn);
         
-        // Navigate to games with a slight delay to ensure state is updated
-        setTimeout(() => {
-          this.router.navigate(['/games']).then(
-            (success) => console.log('Navigation successful:', success),
-            (error) => console.log('Navigation error:', error)
-          );
-        }, 100);
+        // Navigate to games
+        console.log('Attempting to navigate to /games');
+        this.router.navigate(['/games']).then(
+          (success) => {
+            console.log('Navigation successful:', success);
+            if (!success) {
+              console.error('Navigation failed - check if user is not authenticated');
+            }
+          },
+          (error) => console.error('Navigation error:', error)
+        );
       } catch (error) {
         this.errorMsg = 'Failed to process Google Sign-In';
         console.error('Google Sign-In Error:', error);

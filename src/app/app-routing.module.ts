@@ -19,6 +19,7 @@ import { OddManOutComponent } from "./components/games/odd-man-out/odd-man-out.c
 import { ChessComponent } from "./components/games/chess/chess.component";
 import { CheckersComponent } from "./components/games/checkers/checkers.component";
 import { EscapeRoomComponent } from "./components/games/escape-room/escape-room.component";
+import { AuthGuard } from "./guards/auth.guard";
 const routes: Routes = [
   {
     path: "welcome",
@@ -39,6 +40,7 @@ const routes: Routes = [
   { 
     path: "games", 
     component: GamesComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: "dice-game", component: DiceGameComponent },
       { path: "word-game", component: WordGameComponent },
