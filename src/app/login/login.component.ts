@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgModel, FormsModule } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   googleSignInLoading: boolean = false;
   isLoggingIn: boolean = false; // Flag to hide component during navigation
   
-  constructor(private router: Router) { }
+  constructor(private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     // Check if user is already logged in
@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
     if (currentUser) {
       console.log('User already logged in:', currentUser);
       this.isLoggingIn = true;
+      this.cdr.detectChanges();
       this.router.navigate(['/games']);
       return;
     }
@@ -98,6 +99,10 @@ export class LoginComponent implements OnInit {
         this.isLoggingIn = true;
         console.log('isLoggingIn is now:', this.isLoggingIn);
         
+        // Force change detection to update DOM immediately
+        this.cdr.detectChanges();
+        console.log('Change detection triggered');
+        
         // Navigate to games
         console.log('Attempting to navigate to /games');
         this.router.navigate(['/games']).then(
@@ -144,6 +149,7 @@ export class LoginComponent implements OnInit {
       console.log('Welcome');
       localStorage.setItem('currentUser', this.userName);
       this.isLoggingIn = true;
+      this.cdr.detectChanges();
       this.router.navigate(['games']);
     } else {
       this.errorMsg = 'Invalid Login Details';
