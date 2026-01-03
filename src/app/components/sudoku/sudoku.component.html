@@ -8,18 +8,120 @@
         <i class="fa fa-table"></i>
       </div>
       <h1 class="game-page-title">Sudoku</h1>
-      <p class="game-page-subtitle">Number puzzle brain teaser challenge</p>
+      <p class="game-page-subtitle">Classic number puzzle challenge</p>
     </div>
     
     <div class="game-content-card">
-      <div class="sudoku-board">
-        <div class="board-row" *ngFor="let r of board; let i = index">
-          <div class="board-col" *ngFor="let j of board[i]; let k = index">
-            {{board[i][k]}}
+      
+      <!-- Game Status -->
+      <div class="game-status">
+        <div class="status-item">
+          <i class="fa fa-clock-o"></i>
+          <span class="status-value">{{ getFormattedTime() }}</span>
+        </div>
+        <div class="status-item">
+          <i class="fa fa-lightbulb-o"></i>
+          <span class="status-value">{{ hintsRemaining }} hints</span>
+        </div>
+        <div class="status-item">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span class="status-value" [class.error]="mistakes > 0">{{ mistakes }}/{{ maxMistakes }} mistakes</span>
+        </div>
+        <button class="game-btn game-btn-secondary" (click)="newGame()">
+          <i class="fa fa-refresh"></i> New Game
+        </button>
+      </div>
+
+      <!-- Difficulty Selector -->
+      <div class="difficulty-selector">
+        <span class="difficulty-label">Difficulty:</span>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'easy'" 
+                  (click)="setDifficulty('easy')">
+            <i class="fa fa-smile-o"></i> Easy
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'medium'" 
+                  (click)="setDifficulty('medium')">
+            <i class="fa fa-meh-o"></i> Medium
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'hard'" 
+                  (click)="setDifficulty('hard')">
+            <i class="fa fa-frown-o"></i> Hard
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Complete Message -->
+      <div class="alert-message alert-success" *ngIf="isGameComplete && mistakes < maxMistakes">
+        <i class="fa fa-trophy"></i> Congratulations! You solved the puzzle in {{ getFormattedTime() }}!
+      </div>
+
+      <!-- Game Over Message -->
+      <div class="alert-message alert-danger" *ngIf="isGameComplete && mistakes >= maxMistakes">
+        <i class="fa fa-times-circle"></i> Game Over! You made too many mistakes. Try again!
+      </div>
+
+      <!-- Sudoku Board -->
+      <div class="sudoku-container">
+        <div class="sudoku-board">
+          <div class="board-row" *ngFor="let row of board; let i = index">
+            <div class="board-cell" 
+                 *ngFor="let cell of row; let j = index"
+                 [class.fixed]="cell.isFixed"
+                 [class.highlighted]="cell.isHighlighted"
+                 [class.selected]="selectedCell && selectedCell.row === i && selectedCell.col === j"
+                 [class.error]="cell.isError"
+                 [class]="getBoxClass(i, j)"
+                 [class.border-right]="(j + 1) % 3 === 0 && j !== 8"
+                 [class.border-bottom]="(i + 1) % 3 === 0 && i !== 8"
+                 (click)="selectCell(i, j)">
+              {{ cell.value || '' }}
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Number Pad -->
+      <div class="number-pad">
+        <button class="number-btn" 
+                *ngFor="let num of [1,2,3,4,5,6,7,8,9]" 
+                (click)="enterNumber(num)"
+                [disabled]="!selectedCell || isGameComplete">
+          {{ num }}
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="game-btn game-btn-primary" 
+                (click)="clearCell()"
+                [disabled]="!selectedCell || isGameComplete">
+          <i class="fa fa-eraser"></i> Clear
+        </button>
+        <button class="game-btn game-btn-hint" 
+                (click)="useHint()"
+                [disabled]="hintsRemaining <= 0 || !selectedCell || isGameComplete">
+          <i class="fa fa-lightbulb-o"></i> Hint ({{ hintsRemaining }})
+        </button>
+      </div>
+
+      <!-- Game Info -->
+      <div class="game-info">
+        <div class="info-card">
+          <i class="fa fa-question-circle"></i>
+          <h3>How to Play</h3>
+          <p>Fill the 9×9 grid so that each row, column, and 3×3 box contains digits 1-9 without repetition.</p>
+        </div>
+        <div class="info-card">
+          <i class="fa fa-gamepad"></i>
+          <h3>Controls</h3>
+          <p>Click a cell to select it, then click a number to fill it in. Use hints if you get stuck!</p>
+        </div>
+      </div>
+
     </div>
-    
   </div>
 </div>
