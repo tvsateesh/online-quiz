@@ -19,25 +19,35 @@ export class UserService {
   }
 
   loadUserProfile(): void {
-    const googleUserData = localStorage.getItem('googleUser');
-    const currentUser = localStorage.getItem('currentUser');
+    try {
+      const googleUserData = localStorage.getItem('googleUser');
+      const currentUser = localStorage.getItem('currentUser');
 
-    if (googleUserData) {
-      try {
-        const userProfile: UserProfile = JSON.parse(googleUserData);
-        this.userProfileSubject.next(userProfile);
-        console.log('User profile loaded:', userProfile);
-      } catch (error) {
-        console.error('Error parsing user profile:', error);
+      if (googleUserData) {
+        try {
+          const userProfile: UserProfile = JSON.parse(googleUserData);
+          this.userProfileSubject.next(userProfile);
+          console.log('User profile loaded from localStorage:', userProfile);
+        } catch (error) {
+          console.error('Error parsing user profile from localStorage:', error);
+          this.userProfileSubject.next(null);
+        }
+      } else if (currentUser && currentUser === 'admin') {
+        // For traditional admin login, create a basic profile
+        const adminProfile: UserProfile = {
+          email: 'admin@braingames.com',
+          name: 'Admin User',
+          picture: 'assets/default-avatar.svg'
+        };
+        this.userProfileSubject.next(adminProfile);
+        console.log('Admin user profile created');
+      } else {
+        console.log('No user profile found');
+        this.userProfileSubject.next(null);
       }
-    } else if (currentUser && currentUser === 'admin') {
-      // For traditional admin login, create a basic profile
-      const adminProfile: UserProfile = {
-        email: 'admin@braingames.com',
-        name: 'Admin User',
-        picture: 'assets/default-avatar.svg'
-      };
-      this.userProfileSubject.next(adminProfile);
+    } catch (error) {
+      console.error('Error in loadUserProfile:', error);
+      this.userProfileSubject.next(null);
     }
   }
 
@@ -45,7 +55,14 @@ export class UserService {
     return this.userProfileSubject.value;
   }
 
+  setUserProfile(profile: UserProfile): void {
+    this.userProfileSubject.next(profile);
+    console.log('User profile set:', profile);
+  }
+
   clearUserProfile(): void {
     this.userProfileSubject.next(null);
+    console.log('User profile cleared');
   }
 }
+

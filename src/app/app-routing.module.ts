@@ -42,6 +42,7 @@ const routes: Routes = [
     component: GamesComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: "", redirectTo: "chess-game", pathMatch: "full" },
       { path: "dice-game", component: DiceGameComponent },
       { path: "word-game", component: WordGameComponent },
       { path: "word-hunt", component: WordHuntComponent},

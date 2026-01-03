@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgModel, FormsModule } from '@angular/forms';
+import { UserService } from '../services/user.service';
 
 declare var google: any;
 
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   googleSignInLoading: boolean = false;
   isLoggingIn: boolean = false; // Flag to hide component during navigation
   
-  constructor(private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(private router: Router, private cdr: ChangeDetectorRef, private userService: UserService) { }
 
   ngOnInit(): void {
     // Reset logging in flag when component initializes
@@ -89,15 +90,24 @@ export class LoginComponent implements OnInit {
         }
         
         // Store user data in localStorage
-        localStorage.setItem('googleUser', JSON.stringify({
+        const googleUserData = {
           email: decodedToken.email,
           name: decodedToken.name,
           picture: decodedToken.picture,
           token: response.credential
-        }));
+        };
+        localStorage.setItem('googleUser', JSON.stringify(googleUserData));
+        
+        // Also set it in the UserService
+        this.userService.setUserProfile({
+          email: decodedToken.email,
+          name: decodedToken.name,
+          picture: decodedToken.picture
+        });
         
         localStorage.setItem('currentUser', decodedToken.email);
         console.log('User data saved to localStorage');
+        console.log('User profile set in UserService');
         console.log('Setting isLoggingIn to true');
         
         // Set flag to hide login page IMMEDIATELY
@@ -153,6 +163,14 @@ export class LoginComponent implements OnInit {
     if (this.userName == 'admin' && this.password == 'admin') {
       console.log('Welcome');
       localStorage.setItem('currentUser', this.userName);
+      
+      // Set admin profile in UserService
+      this.userService.setUserProfile({
+        email: 'admin@braingames.com',
+        name: 'Admin User',
+        picture: 'assets/default-avatar.svg'
+      });
+      
       this.isLoggingIn = true;
       this.cdr.detectChanges();
       this.router.navigate(['games']);
