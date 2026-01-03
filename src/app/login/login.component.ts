@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgModel, FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   googleSignInLoading: boolean = false;
   isLoggingIn: boolean = false; // Flag to hide component during navigation
   
-  constructor(private router: Router, private cdr: ChangeDetectorRef, private userService: UserService) { }
+  constructor(private router: Router, private cdr: ChangeDetectorRef, private userService: UserService, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     // Reset logging in flag when component initializes
@@ -31,7 +31,9 @@ export class LoginComponent implements OnInit {
       console.log('User already logged in:', currentUser);
       this.isLoggingIn = true;
       this.cdr.detectChanges();
-      this.router.navigate(['/games']);
+      this.ngZone.run(() => {
+        this.router.navigate(['/games']);
+      });
       return;
     }
     
@@ -118,17 +120,19 @@ export class LoginComponent implements OnInit {
         this.cdr.detectChanges();
         console.log('Change detection triggered');
         
-        // Navigate to games
+        // Navigate to games within Angular zone
         console.log('Attempting to navigate to /games');
-        this.router.navigate(['/games']).then(
-          (success) => {
-            console.log('Navigation successful:', success);
-            if (!success) {
-              console.error('Navigation failed - check if user is not authenticated');
-            }
-          },
-          (error) => console.error('Navigation error:', error)
-        );
+        this.ngZone.run(() => {
+          this.router.navigate(['/games']).then(
+            (success) => {
+              console.log('Navigation successful:', success);
+              if (!success) {
+                console.error('Navigation failed - check if user is not authenticated');
+              }
+            },
+            (error) => console.error('Navigation error:', error)
+          );
+        });
       } catch (error) {
         this.errorMsg = 'Failed to process Google Sign-In';
         console.error('Google Sign-In Error:', error);
@@ -173,7 +177,9 @@ export class LoginComponent implements OnInit {
       
       this.isLoggingIn = true;
       this.cdr.detectChanges();
-      this.router.navigate(['games']);
+      this.ngZone.run(() => {
+        this.router.navigate(['games']);
+      });
     } else {
       this.errorMsg = 'Invalid Login Details';
     }
