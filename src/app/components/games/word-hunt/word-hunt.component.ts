@@ -37,6 +37,22 @@ export class WordHuntComponent implements OnInit {
   fillingRow = 0;
   fillingCol = 0;
   completed: boolean = false;
+  
+  // Difficulty levels
+  difficulty: string = 'medium';
+  difficultyLevels = [
+    { value: 'easy', label: 'Easy', rows: 12, cols: 8 },
+    { value: 'medium', label: 'Medium', rows: 16, cols: 10 },
+    { value: 'hard', label: 'Hard', rows: 20, cols: 14 }
+  ];
+
+  // Selection tracking
+  isSelecting: boolean = false;
+  selectedCells: Set<string> = new Set();
+  solvedCells: Set<string> = new Set();
+  selectionStartRow: number = -1;
+  selectionStartCol: number = -1;
+  selectionDirection: string | null = null;
 
   constructor() { 
     
@@ -51,8 +67,32 @@ export class WordHuntComponent implements OnInit {
   time: number = 0;
   timer: any = '';
 
+  setDifficulty(level: string) {
+    this.difficulty = level;
+    const config = this.difficultyLevels.find(d => d.value === level);
+    if (config) {
+      this.row = config.rows;
+      this.col = config.cols;
+    }
+    // Reset game if already started
+    if (this.time > 0) {
+      this.endGame();
+    }
+  }
+
   startGame(){
     this.completed = false;
+    this.selectedCells.clear();
+    this.solvedCells = new Set();
+    this.isSelecting = false;
+    this.foundCount = 0;
+    
+    // Set grid size based on difficulty
+    const config = this.difficultyLevels.find(d => d.value === this.difficulty);
+    if (config) {
+      this.row = config.rows;
+      this.col = config.cols;
+    }
     this.board = Array(this.row).fill(null).map(()=>Array(this.col).fill(this.defaultFillingChar))
     this.generateBoard();
     let letters = this.hiddenWords.toString().toUpperCase().replace(/,/g,'')
@@ -245,36 +285,60 @@ export class WordHuntComponent implements OnInit {
   }
 
   verifyGame(): void {
-    var word = '';
-    // Check all the name are found or not 
-    let letters = this.getSelectedLetters();
-    for(var i=0; i< letters.length; i++){
-      word += letters[i].innerText;
-    }
-    let found:any=[];
-     this.solvedWords.forEach( (ele, index) => {
-      if(  ele.toUpperCase().split('').reverse().join().replace(/,/g,"")  === word || ele.toUpperCase() === word) {
-        found.push(this.solvedWords.splice(index,1));
+    if (this.selectedCells.size === 0) return;
+    
+    // Get selected letters in order
+    const cells = Array.from(this.selectedCells).map(key => {
+      const [row, col] = key.split('-').map(Number);
+      return { row, col, letter: this.board[row][col] };
+    });
+    
+    // Sort cells based on direction
+    cells.sort((a, b) => {
+      if (this.selectionDirection === 'horizontal') {
+        return a.col - b.col;
+      } else {
+        return a.row - b.row;
       }
-     
+    });
+    
+    const word = cells.map(c => c.letter).join('');
+    const wordReverse = word.split('').reverse().join('');
+    
+    console.log("Selected word:", word);
+    
+    let found: any[] = [];
+    this.solvedWords.forEach((ele, index) => {
+      const upperWord = ele.toUpperCase();
+      if (upperWord === word || upperWord === wordReverse) {
+        found.push(this.solvedWords.splice(index, 1)[0]);
+      }
     });
 
-    console.log("Found "+ found)
-    if(found.length){
-      for(var i=0; i< letters.length; i++){
-         letters[i].classList.add('done');
+    if (found.length) {
+      console.log("Found word:", found[0]);
+      
+      // Mark cells as solved
+      cells.forEach(cell => {
+        const cellKey = `${cell.row}-${cell.col}`;
+        if (!this.solvedCells) this.solvedCells = new Set();
+        this.solvedCells.add(cellKey);
+      });
+      
+      // Update word list UI
+      const element = window.document.getElementById(found[0]);
+      if (element) {
+        element.classList.add("found");
       }
-      let element = window.document.getElementById(found[0])!;
-      element.classList.add("strick");
+      
       this.foundCount = this.hiddenWords.length - this.solvedWords.length;
+      
+      // Check if all words found
+      if (this.solvedWords.length === 0) {
+        this.completed = true;
+        this.endGame();
+      }
     }
-
-
-    if ( this.solvedWords.length === 0 ) {
-      this.completed = true;
-      this.endGame();
-    }
-
   }
 
   getRandomNumber (max: number,min: number): number {
@@ -284,23 +348,38 @@ export class WordHuntComponent implements OnInit {
 
 
   mouseDown(ele:any){
-    this.isHighLight = true;
-    if( this.isHighLight ){
-      let target = ele.target || ele.currentTarget ;
-      console.log("mouseDown")
-      console.log(target)
-      target.classList.add('highlight');
-      // console.log("adding highlight " + ele);
-    }  
+    const target = ele.target || ele.currentTarget;
+    const rowIndex = target.getAttribute('data-row');
+    const colIndex = target.getAttribute('data-col');
+    
+    if (rowIndex === null || colIndex === null) return;
+    
+    this.isSelecting = true;
+    this.selectedCells.clear();
+    this.selectionStartRow = parseInt(rowIndex);
+    this.selectionStartCol = parseInt(colIndex);
+    this.selectionDirection = null;
+    
+    const cellKey = `${rowIndex}-${colIndex}`;
+    this.selectedCells.add(cellKey);
+    
+    console.log("Selection started at:", rowIndex, colIndex);
+    ele.preventDefault();
     ele.stopPropagation();
-
   }
 
   mouseUp(ele: any){
-    console.log("mouseUp")
+    if (!this.isSelecting) return;
+    
+    console.log("Selection ended");
     this.verifyGame();
-    this.removeElementsByClass('highlight');
-    this.isHighLight = false;
+    
+    // Clear selection
+    this.selectedCells.clear();
+    this.isSelecting = false;
+    this.selectionDirection = null;
+    
+    ele.preventDefault();
     ele.stopPropagation();
   }
 
@@ -326,17 +405,47 @@ export class WordHuntComponent implements OnInit {
   }
 
   onMouseOver(ele:any){
-    if( this.isHighLight ){
-      let target = ele.target || ele.currentTarget ;
-      console.log("Move over");
-      console.log(target)
-      target.classList.add('highlight');
-    } else {
-      this.removeElementsByClass('highlight');
-    }   
-     ele.stopPropagation();
-
-    // console.log(ele.target.classList.add('highlight'));
+    if (!this.isSelecting) return;
+    
+    const target = ele.target || ele.currentTarget;
+    const rowIndex = parseInt(target.getAttribute('data-row'));
+    const colIndex = parseInt(target.getAttribute('data-col'));
+    
+    if (isNaN(rowIndex) || isNaN(colIndex)) return;
+    
+    // Determine direction based on first move
+    if (this.selectionDirection === null) {
+      const rowDiff = rowIndex - this.selectionStartRow;
+      const colDiff = colIndex - this.selectionStartCol;
+      
+      if (Math.abs(rowDiff) > Math.abs(colDiff)) {
+        this.selectionDirection = 'vertical';
+      } else if (Math.abs(colDiff) > Math.abs(rowDiff)) {
+        this.selectionDirection = 'horizontal';
+      }
+    }
+    
+    // Only allow selection in the determined direction
+    if (this.selectionDirection === 'horizontal' && rowIndex === this.selectionStartRow) {
+      // Select all cells between start and current
+      this.selectedCells.clear();
+      const minCol = Math.min(this.selectionStartCol, colIndex);
+      const maxCol = Math.max(this.selectionStartCol, colIndex);
+      for (let c = minCol; c <= maxCol; c++) {
+        this.selectedCells.add(`${this.selectionStartRow}-${c}`);
+      }
+    } else if (this.selectionDirection === 'vertical' && colIndex === this.selectionStartCol) {
+      // Select all cells between start and current
+      this.selectedCells.clear();
+      const minRow = Math.min(this.selectionStartRow, rowIndex);
+      const maxRow = Math.max(this.selectionStartRow, rowIndex);
+      for (let r = minRow; r <= maxRow; r++) {
+        this.selectedCells.add(`${r}-${this.selectionStartCol}`);
+      }
+    }
+    
+    ele.preventDefault();
+    ele.stopPropagation();
   }
 
   isCellSolved(cell: string): boolean {
@@ -344,6 +453,16 @@ export class WordHuntComponent implements OnInit {
       return false;
     }
     return this.solvedWords.some(word => word.toUpperCase().includes(cell));
+  }
+
+  isCellSelected(row: number, col: number): boolean {
+    const cellKey = `${row}-${col}`;
+    return this.selectedCells.has(cellKey);
+  }
+
+  isCellInSolvedWord(row: number, col: number): boolean {
+    const cellKey = `${row}-${col}`;
+    return this.solvedCells.has(cellKey);
   }
  
  

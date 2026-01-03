@@ -13,6 +13,24 @@
     
     <div class="game-content-card">
       
+      <!-- Difficulty Selector -->
+      <div class="difficulty-selector" *ngIf="!time">
+        <h3 class="selector-title">
+          <i class="fa fa-sliders"></i>
+          Select Difficulty
+        </h3>
+        <div class="difficulty-buttons">
+          <button *ngFor="let level of difficultyLevels" 
+                  class="difficulty-btn"
+                  [class.active]="difficulty === level.value"
+                  (click)="setDifficulty(level.value)">
+            <i class="fa fa-th"></i>
+            <span class="difficulty-name">{{level.label}}</span>
+            <span class="difficulty-info">{{level.rows}}×{{level.cols}}</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Game Status -->
       <div class="game-status" *ngIf="time || completed">
         <div class="status-item">
@@ -24,6 +42,11 @@
           <i class="fa fa-clock-o"></i>
           <span class="status-label">Time:</span>
           <span class="status-value">{{time}}s</span>
+        </div>
+        <div class="status-item">
+          <i class="fa fa-signal"></i>
+          <span class="status-label">Level:</span>
+          <span class="status-value">{{difficulty | titlecase}}</span>
         </div>
       </div>
 
@@ -56,10 +79,10 @@
             <div class="word-item" 
                  *ngFor="let word of hiddenWords; let i = index"
                  [id]="word"
-                 [class.found]="solvedWords.includes(word)">
+                 [class.found]="!solvedWords.includes(word)">
               <span class="word-number">{{i + 1}}</span>
               <span class="word-text">{{word}}</span>
-              <i class="fa fa-check-circle" *ngIf="solvedWords.includes(word)"></i>
+              <i class="fa fa-check-circle" *ngIf="!solvedWords.includes(word)"></i>
             </div>
           </div>
         </div>
@@ -70,8 +93,10 @@
             <table class="word-hunt-table">
               <tr *ngFor="let row of board; let i = index"> 
                 <td *ngFor="let col of board[i]; let j = index" 
-                    [class.done]="isCellSolved(col)"
-                    [class.highlight]="isHighLight"
+                    [attr.data-row]="i"
+                    [attr.data-col]="j"
+                    [class.selected]="isCellSelected(i, j)"
+                    [class.done]="isCellInSolvedWord(i, j)"
                     (touchstart)="mouseDown($event)"
                     (mousedown)="mouseDown($event)"
                     (touchmove)="onMouseOver($event)"
