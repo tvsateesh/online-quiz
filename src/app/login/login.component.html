@@ -1,6 +1,6 @@
-<app-login-header></app-login-header>
+<app-login-header *ngIf="!isLoggingIn"></app-login-header>
 
-<div class="login-container">
+<div class="login-container" *ngIf="!isLoggingIn">
   <div class="login-wrapper">
     
     <div class="login-card">

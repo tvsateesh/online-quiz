@@ -15,10 +15,20 @@ export class LoginComponent implements OnInit {
   password: string = '';
   errorMsg: string = '';
   googleSignInLoading: boolean = false;
+  isLoggingIn: boolean = false; // Flag to hide component during navigation
   
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      console.log('User already logged in:', currentUser);
+      this.isLoggingIn = true;
+      this.router.navigate(['/games']);
+      return;
+    }
+    
     this.initializeGoogleSignIn();
   }
 
@@ -83,6 +93,9 @@ export class LoginComponent implements OnInit {
         console.log('User data saved to localStorage');
         console.log('Attempting to navigate to /games');
         
+        // Set flag to hide login page
+        this.isLoggingIn = true;
+        
         // Navigate to games with a slight delay to ensure state is updated
         setTimeout(() => {
           this.router.navigate(['/games']).then(
@@ -93,6 +106,7 @@ export class LoginComponent implements OnInit {
       } catch (error) {
         this.errorMsg = 'Failed to process Google Sign-In';
         console.error('Google Sign-In Error:', error);
+        this.isLoggingIn = false;
       } finally {
         this.googleSignInLoading = false;
       }
@@ -123,6 +137,7 @@ export class LoginComponent implements OnInit {
     if (this.userName == 'admin' && this.password == 'admin') {
       console.log('Welcome');
       localStorage.setItem('currentUser', this.userName);
+      this.isLoggingIn = true;
       this.router.navigate(['games']);
     } else {
       this.errorMsg = 'Invalid Login Details';
