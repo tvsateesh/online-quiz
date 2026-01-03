@@ -8,11 +8,18 @@
   position: relative;
   overflow: hidden;
   
-  // Hide when logging in
+  // Ensure container is visible by default
+  visibility: visible;
+  opacity: 1;
+  height: auto;
+  
+  // Hide when logging in with both visibility and display
   &[hidden], &.hidden {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
+    opacity: 0 !important;
+    height: 0 !important;
   }
   
   // Animated background shapes

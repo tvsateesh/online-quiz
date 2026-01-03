@@ -20,6 +20,10 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    // Reset logging in flag when component initializes
+    this.isLoggingIn = false;
+    this.cdr.detectChanges();
+    
     // Check if user is already logged in
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
@@ -30,6 +34,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     
+    console.log('No current user found, showing login page');
     this.initializeGoogleSignIn();
   }
 

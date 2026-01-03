@@ -1,7 +1,11 @@
-<app-login-header *ngIf="!isLoggingIn"></app-login-header>
+<ng-container *ngIf="!isLoggingIn">
+  <app-login-header *ngIf="!isLoggingIn" [attr.data-logging-in]="isLoggingIn"></app-login-header>
 
-<div class="login-container" *ngIf="!isLoggingIn">
-  <div class="login-wrapper">
+  <div class="login-container" 
+       *ngIf="!isLoggingIn" 
+       [class.hidden]="isLoggingIn"
+       [style.display]="isLoggingIn ? 'none' : 'flex'">
+    <div class="login-wrapper">
     
     <div class="login-card">
       
@@ -125,4 +129,4 @@
     
   </div>
 </div>
-  
+</ng-container>
