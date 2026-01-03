@@ -339,6 +339,12 @@ export class WordHuntComponent implements OnInit {
     // console.log(ele.target.classList.add('highlight'));
   }
 
+  isCellSolved(cell: string): boolean {
+    if (cell === this.defaultFillingChar) {
+      return false;
+    }
+    return this.solvedWords.some(word => word.toUpperCase().includes(cell));
+  }
  
  
 }

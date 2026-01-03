@@ -7,62 +7,115 @@
       <div class="game-icon-badge word-theme">
         <i class="fa fa-font"></i>
       </div>
-      <h1 class="game-page-title">Word Game</h1>
-      <p class="game-page-subtitle">Build your vocabulary skills by solving words</p>
+      <h1 class="game-page-title">Word Scramble</h1>
+      <p class="game-page-subtitle">Unscramble the letters to form the correct word</p>
     </div>
     
     <div class="game-content-card">
+      
+      <!-- Game Controls -->
       <div class="game-controls">
-        <button class="game-btn primary" (click)="getWord()">
-          <i class="fa fa-refresh"></i>
-          <span>Get New Word</span>
+        <button class="game-btn game-btn-primary" (click)="getWord()">
+          <i class="fa fa-refresh"></i> New Word
         </button>
-        <button class="game-btn success" (click)="verifySolvedWord()">
-          <i class="fa fa-check"></i>
-          <span>Verify Word</span>
+        <button class="game-btn game-btn-success" (click)="verifySolvedWord()">
+          <i class="fa fa-check"></i> Check Answer
+        </button>
+        <button class="game-btn game-btn-secondary" (click)="resetLetters()">
+          <i class="fa fa-undo"></i> Reset
         </button>
       </div>
 
+      <!-- Word Game Area -->
       <div class="word-game-area">
-        <h3 class="section-title">
-          <i class="fa fa-puzzle-piece"></i>
-          Solve the Word
-        </h3>
         
+        <!-- Scrambled Letters Section -->
         <div class="word-section">
-          <h4 class="subsection-title">Letters</h4>
-          <div cdkDropList #wordList="cdkDropList" [cdkDropListData]="letters"
-            [cdkDropListConnectedTo]="[donewordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
-            <div class="word-block" *ngFor="let letter of letters" cdkDrag>{{letter}}</div>
+          <div class="section-header">
+            <i class="fa fa-puzzle-piece"></i>
+            <h3>Scrambled Letters</h3>
+          </div>
+          <div class="drop-zone" 
+               cdkDropList 
+               #wordList="cdkDropList" 
+               [cdkDropListData]="letters"
+               [cdkDropListConnectedTo]="[donewordList]" 
+               (cdkDropListDropped)="onDrop($event)">
+            <div class="letter-tile" *ngFor="let letter of letters" cdkDrag>
+              <span>{{letter}}</span>
+            </div>
+            <div class="empty-state" *ngIf="letters.length === 0">
+              <i class="fa fa-check-circle"></i>
+              <span>All letters used!</span>
+            </div>
+          </div>
+          <p class="zone-hint">
+            <i class="fa fa-hand-pointer-o"></i>
+            Drag letters from here
+          </p>
+        </div>
+        
+        <!-- Arrow Indicator -->
+        <div class="arrow-indicator">
+          <i class="fa fa-arrow-down"></i>
+        </div>
+
+        <!-- Solution Area -->
+        <div class="word-section solution-section">
+          <div class="section-header">
+            <i class="fa fa-lightbulb-o"></i>
+            <h3>Your Answer</h3>
+          </div>
+          <div class="drop-zone solution-zone" 
+               cdkDropList 
+               #donewordList="cdkDropList" 
+               [cdkDropListData]="solvedWord"
+               [cdkDropListConnectedTo]="[wordList]" 
+               (cdkDropListDropped)="onDrop($event)">
+            <div class="letter-tile solved" *ngFor="let fixedWord of solvedWord" cdkDrag>
+              <span>{{fixedWord}}</span>
+            </div>
+            <div class="empty-state" *ngIf="solvedWord.length === 0">
+              <i class="fa fa-hand-o-down"></i>
+              <span>Drop letters here</span>
+            </div>
+          </div>
+          <p class="zone-hint">
+            <i class="fa fa-lightbulb-o"></i>
+            Arrange to form a word
+          </p>
+        </div>
+        
+        <!-- Success Message -->
+        <div class="alert-message alert-success" *ngIf="solved">
+          <i class="fa fa-trophy"></i>
+          <div class="message-content">
+            <strong>Excellent! The word is: {{word.toUpperCase()}}</strong>
+            <p class="word-definition">{{getDescription()}}</p>
           </div>
         </div>
         
-        <div class="word-section">
-          <h4 class="subsection-title">Solved Word</h4>
-          <div cdkDropList #donewordList="cdkDropList" [cdkDropListData]="solvedWord"
-            [cdkDropListConnectedTo]="[wordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
-            <div class="word-block" *ngFor="let fixedWord of solvedWord" cdkDrag>{{fixedWord}}</div>
-          </div>
-          <button (click)="resetLetters()" class="game-btn secondary">
-            <i class="fa fa-undo"></i>
-            <span>Reset</span>
-          </button>
-          <input type="hidden" value={{word}}>
-        </div>
-        
-        <div class="alert-message success" *ngIf="solved">
-          <i class="fa fa-check-circle"></i>
-          <div>
-            <strong>Correct answer! Word is: {{word}}</strong>
-            <p class="detail">{{getDescription()}}</p>
-          </div>
-        </div>
-        
-        <div class="alert-message error" *ngIf="errorMsg">
+        <!-- Error Message -->
+        <div class="alert-message alert-danger" *ngIf="errorMsg">
           <i class="fa fa-times-circle"></i>
-          <span>Wrong answer, please try again</span>
+          <span>Not quite right. Try rearranging the letters!</span>
         </div>
       </div>
+
+      <!-- Game Instructions -->
+      <div class="game-info">
+        <div class="info-card">
+          <i class="fa fa-question-circle"></i>
+          <h3>How to Play</h3>
+          <p>Drag and drop letters from the scrambled section to the answer area to form a valid word.</p>
+        </div>
+        <div class="info-card">
+          <i class="fa fa-gamepad"></i>
+          <h3>Tips</h3>
+          <p>Look for common letter patterns and word structures. You can rearrange letters by dragging them around!</p>
+        </div>
+      </div>
+      
     </div>
     
   </div>
