@@ -27,21 +27,18 @@
       </div>
 
       <!-- Word Game Area -->
-      <div class="word-game-area">
+      <div class="word-game-area" *ngIf="word">
         
         <!-- Scrambled Letters Section -->
         <div class="word-section">
           <div class="section-header">
             <i class="fa fa-puzzle-piece"></i>
-            <h3>Scrambled Letters</h3>
+            <h3>Available Letters</h3>
           </div>
-          <div class="drop-zone" 
-               cdkDropList 
-               #wordList="cdkDropList" 
-               [cdkDropListData]="letters"
-               [cdkDropListConnectedTo]="[donewordList]" 
-               (cdkDropListDropped)="onDrop($event)">
-            <div class="letter-tile" *ngFor="let letter of letters" cdkDrag>
+          <div class="letters-container">
+            <div class="letter-tile clickable" 
+                 *ngFor="let letter of letters; let idx = index"
+                 (click)="addLetterToAnswer(letter, idx)">
               <span>{{letter}}</span>
             </div>
             <div class="empty-state" *ngIf="letters.length === 0">
@@ -51,7 +48,7 @@
           </div>
           <p class="zone-hint">
             <i class="fa fa-hand-pointer-o"></i>
-            Drag letters from here
+            Click letters to add them to your answer
           </p>
         </div>
         
@@ -66,23 +63,21 @@
             <i class="fa fa-lightbulb-o"></i>
             <h3>Your Answer</h3>
           </div>
-          <div class="drop-zone solution-zone" 
-               cdkDropList 
-               #donewordList="cdkDropList" 
-               [cdkDropListData]="solvedWord"
-               [cdkDropListConnectedTo]="[wordList]" 
-               (cdkDropListDropped)="onDrop($event)">
-            <div class="letter-tile solved" *ngFor="let fixedWord of solvedWord" cdkDrag>
-              <span>{{fixedWord}}</span>
-            </div>
-            <div class="empty-state" *ngIf="solvedWord.length === 0">
-              <i class="fa fa-hand-o-down"></i>
-              <span>Drop letters here</span>
+          <div class="answer-slots">
+            <div class="answer-slot" *ngFor="let letter of solvedWord; let i = index">
+              <div class="letter-tile solved clickable" 
+                   *ngIf="letter !== ''"
+                   (click)="removeLetterFromAnswer(i)">
+                <span>{{letter}}</span>
+              </div>
+              <div class="empty-slot-box" *ngIf="letter === ''">
+                <span class="slot-number">{{i + 1}}</span>
+              </div>
             </div>
           </div>
           <p class="zone-hint">
             <i class="fa fa-lightbulb-o"></i>
-            Arrange to form a word
+            Click a letter to remove it
           </p>
         </div>
         
@@ -90,15 +85,24 @@
         <div class="alert-message alert-success" *ngIf="solved">
           <i class="fa fa-trophy"></i>
           <div class="message-content">
-            <strong>Excellent! The word is: {{word.toUpperCase()}}</strong>
-            <p class="word-definition">{{getDescription()}}</p>
+            <strong>Excellent! The word is: {{word}}</strong>
+            <p class="word-definition" *ngIf="getDescription()">{{getDescription()}}</p>
           </div>
         </div>
         
         <!-- Error Message -->
         <div class="alert-message alert-danger" *ngIf="errorMsg">
           <i class="fa fa-times-circle"></i>
-          <span>Not quite right. Try rearranging the letters!</span>
+          <span>{{errorMsg}}</span>
+        </div>
+      </div>
+
+      <!-- Loading/Initial State -->
+      <div class="word-game-area" *ngIf="!word">
+        <div class="info-card" style="max-width: 500px; margin: 40px auto;">
+          <i class="fa fa-info-circle"></i>
+          <h3>Get Started</h3>
+          <p>Click the "New Word" button above to start playing!</p>
         </div>
       </div>
 

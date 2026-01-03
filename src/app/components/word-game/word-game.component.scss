@@ -36,6 +36,73 @@
   }
 }
 
+.letters-container {
+  min-height: 100px;
+  padding: 20px;
+  background: white;
+  border-radius: 16px;
+  border: 3px solid #e2e8f0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.answer-slots {
+  min-height: 120px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  border: 3px solid #3b82f6;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.answer-slot {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.empty-slot-box {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 3px dashed #cbd5e1;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  .slot-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #94a3b8;
+  }
+}
+
+.letter-tile.clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(-4px) scale(1.05);
+  }
+}
+
 .drop-zone {
   min-height: 100px;
   padding: 20px;
@@ -49,6 +116,7 @@
   justify-content: center;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
 
   &.cdk-drop-list-dragging {
     background: #f8fafc;
@@ -56,11 +124,88 @@
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
   }
 
+  &.cdk-drop-list-receiving {
+    background: #e0f2fe;
+    border-color: #0ea5e9;
+  }
+
   &.solution-zone {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     border-color: #3b82f6;
     min-height: 120px;
+    justify-content: flex-start;
   }
+}
+
+.letter-slot {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.empty-slot-placeholder {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 3px dashed #cbd5e1;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: default;
+
+  .slot-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #94a3b8;
+  }
+
+  &:hover {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    
+    .slot-number {
+      color: #3b82f6;
+    }
+  }
+}
+
+.empty-slot {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 3px dashed #cbd5e1;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+
+  .slot-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #94a3b8;
+  }
+
+  &:hover {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    
+    .slot-number {
+      color: #3b82f6;
+    }
+  }
+}
+
+// Ensure smooth drag-drop transitions
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drop-zone.cdk-drop-list-dragging .letter-tile:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .letter-tile {
@@ -76,9 +221,15 @@
   font-weight: 800;
   color: #1e293b;
   cursor: move;
+  cursor: grab;
   transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   user-select: none;
+  position: relative;
+
+  &:active {
+    cursor: grabbing;
+  }
 
   &:hover {
     transform: translateY(-4px) scale(1.05);
@@ -94,14 +245,25 @@
   }
 
   &.cdk-drag-preview {
+    box-sizing: border-box;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    transform: rotate(5deg);
+    border-radius: 12px;
     opacity: 0.9;
+    cursor: grabbing;
   }
 
   &.cdk-drag-placeholder {
-    opacity: 0.3;
-    border-style: dashed;
+    background: transparent !important;
+    border: 3px dashed #94a3b8;
+    opacity: 0.5;
+    
+    span {
+      opacity: 0;
+    }
+  }
+
+  &.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
 }
 

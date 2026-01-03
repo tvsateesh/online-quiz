@@ -65,26 +65,40 @@ export class WordGameComponent implements OnInit {
   // Transfer Items Between Lists
   wordList: any = [];
   word: string = "";
-  letters: any[] = [];
+  letters: string[] = [];
   solved: boolean = false;
   errorMsg: string = "";
 
-  solvedWord = [];
+  solvedWord: string[] = [];
 
-  onDrop(event: any) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,                
-        event.previousIndex,
-        event.currentIndex
-      );
+  // Click-based letter placement
+  addLetterToAnswer(letter: string, index: number) {
+    // Find first empty slot
+    const emptyIndex = this.solvedWord.findIndex(l => l === '');
+    if (emptyIndex !== -1) {
+      this.solvedWord[emptyIndex] = letter;
+      this.letters.splice(index, 1);
+    }
+  }
+
+  removeLetterFromAnswer(index: number) {
+    const letter = this.solvedWord[index];
+    if (letter !== '') {
+      this.letters.push(letter);
+      this.solvedWord[index] = '';
+    }
+  }
+
+  placeLetterAt(letter: string, letterIndex: number, slotIndex: number) {
+    // If slot is empty, place the letter
+    if (this.solvedWord[slotIndex] === '') {
+      this.solvedWord[slotIndex] = letter;
+      this.letters.splice(letterIndex, 1);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      // Swap with existing letter
+      const existingLetter = this.solvedWord[slotIndex];
+      this.solvedWord[slotIndex] = letter;
+      this.letters[letterIndex] = existingLetter;
     }
   }
 
@@ -93,14 +107,18 @@ export class WordGameComponent implements OnInit {
     //this.word = Math.random() + '' //* this.wordList.length-1 + '';//(Math.floor(Math.random() * this.wordList.length-1)+1).toString();
     this.errorMsg = "";
     this.solved = false;
-    this.word = this.wordList[
-      Math.floor(Math.random() * this.wordList.length - 1) + 1
-    ]
+    
+    // Get random word
+    const randomIndex = Math.floor(Math.random() * this.wordList.length);
+    this.word = this.wordList[randomIndex]
       .split("")
       .join("")
       .toUpperCase();
+    
+    // Initialize arrays
     this.letters = this.splitWord2Letters(this.word);
-    this.solvedWord = [];
+    // Create empty placeholder slots for the answer
+    this.solvedWord = new Array(this.word.length).fill('');
   }
 
   splitWord2Letters(word: string) {
@@ -110,18 +128,31 @@ export class WordGameComponent implements OnInit {
   }
 
   verifySolvedWord() {
-    if (this.solvedWord.join("") === this.word) {
+    const answer = this.solvedWord.join("");
+    console.log("Checking answer:", answer, "vs", this.word);
+    console.log("Solved word array:", this.solvedWord);
+    
+    if (answer === this.word && !this.solvedWord.includes('')) {
       this.solved = true;
       this.errorMsg = "";
+      console.log("Correct answer!");
+    } else if (this.solvedWord.includes('')) {
+      this.solved = false;
+      this.errorMsg = "Please fill all positions";
     } else {
+      this.solved = false;
       this.errorMsg = "Wrong answer";
     }
   }
 
   resetLetters() {
-    this.solvedWord = [];
-    this.letters = this.splitWord2Letters(this.word);
+    // Return all non-empty letters back to the scrambled area
+    const usedLetters = this.solvedWord.filter(letter => letter !== '');
+    this.letters = [...this.letters, ...usedLetters];
+    // Reset to empty placeholders
+    this.solvedWord = new Array(this.word.length).fill('');
     this.errorMsg = "";
+    this.solved = false;
   }
 
   getDescription(){
