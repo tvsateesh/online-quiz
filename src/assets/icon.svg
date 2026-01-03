@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357abd;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#grad1)"/>
+  
+  <!-- Document/Paper background -->
+  <rect x="140" y="100" width="232" height="312" rx="8" fill="#ffffff"/>
+  
+  <!-- Horizontal lines representing quiz questions -->
+  <rect x="170" y="140" width="172" height="12" rx="6" fill="#e0e0e0"/>
+  <rect x="170" y="175" width="172" height="12" rx="6" fill="#e0e0e0"/>
+  <rect x="170" y="210" width="172" height="12" rx="6" fill="#e0e0e0"/>
+  
+  <!-- Checkboxes/Options -->
+  <circle cx="180" cy="260" r="8" fill="none" stroke="#4a90e2" stroke-width="2"/>
+  <circle cx="180" cy="290" r="8" fill="none" stroke="#4a90e2" stroke-width="2"/>
+  <circle cx="180" cy="320" r="8" fill="none" stroke="#4a90e2" stroke-width="2"/>
+  <circle cx="180" cy="350" r="8" fill="#4a90e2"/>
+  
+  <!-- Text lines next to checkboxes -->
+  <rect x="200" y="255" width="130" height="10" rx="5" fill="#e0e0e0"/>
+  <rect x="200" y="285" width="130" height="10" rx="5" fill="#e0e0e0"/>
+  <rect x="200" y="315" width="130" height="10" rx="5" fill="#e0e0e0"/>
+  <rect x="200" y="345" width="130" height="10" rx="5" fill="#4a90e2" opacity="0.3"/>
+  
+  <!-- Question mark badge -->
+  <circle cx="370" cy="130" r="50" fill="#ff6b6b"/>
+  <text x="370" y="165" font-family="Arial, sans-serif" font-size="70" font-weight="bold" fill="#ffffff" text-anchor="middle">?</text>
+</svg>

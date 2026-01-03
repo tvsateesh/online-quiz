@@ -18,6 +18,12 @@ export class QuestionComponent implements OnInit {
   public interval$: any;
   public progress: string = '0';
   public isQuizCompleted: Boolean = false;
+  
+  // Helper method to get option letter (A, B, C, D)
+  public getOptionLetter(index: number): string {
+    return String.fromCharCode(65 + index);
+  }
+  
   constructor(private questionService: QuestionService) { }
 
   ngOnInit(): void {

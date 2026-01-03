@@ -1,23 +1,42 @@
-<nav class="navbar navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand text-bold" href="#">
-      <img src="https://img.icons8.com/color/96/000000/angularjs.png" alt="Logo" width="50" >
-      <span class="text-upper">
-        Brain Games
-      </span> 
-    </a>
-    <span style="float:right" class="text-bold">
-      <a routerLink="/login">Logout</a>
-    </span>
+<header class="modern-header">
+  <div class="header-container">
+    <div class="logo-section">
+      <img src="assets/brain-games-icon.svg" alt="Brain Games Logo" class="logo-image">
+      <span class="logo-text">
+        <span class="brand-name">Brain</span>
+        <span class="brand-accent">Games</span>
+      </span>
+    </div>
+    
+    <nav class="main-nav">
+      <a routerLink="/games" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-gamepad"></i>
+        <span>Games</span>
+      </a>
+      <a routerLink="/angular" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-code"></i>
+        <span>Angular</span>
+      </a>
+      <a routerLink="/html" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-html5"></i>
+        <span>HTML</span>
+      </a>
+      <a routerLink="/javascript" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-coffee"></i>
+        <span>JavaScript</span>
+      </a>
+      <a routerLink="/css" routerLinkActive="active" class="nav-link">
+        <i class="fa fa-paint-brush"></i>
+        <span>CSS</span>
+      </a>
+    </nav>
+    
+    <div class="user-section">
+      <button class="logout-btn" routerLink="/login">
+        <i class="fa fa-sign-out"></i>
+        <span>Logout</span>
+      </button>
+    </div>
   </div>
-</nav>
-
-<nav class="nav-container">
-  <!-- <a routerLink="/dashboard">Dashboard</a> -->
-  <a routerLink="/games">Games</a>
-  <a routerLink="/angular">Angular</a>  
-  <a routerLink="/html">Html</a>  
-  <a routerLink="/javascript">JavaScript</a>
-  <a routerLink="/css">CSS</a>
-</nav>
+</header>
 

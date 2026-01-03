@@ -1,29 +1,119 @@
 <app-header></app-header>
-<div class="content">
-  <ul>
-    <li>
-      <a routerLink="/chess-game">Chess Game</a>
-    </li>
-    <li>
-      <a routerLink="/checkers-game">Checkers Game</a>
-    </li>
-    <li>
-      <a routerLink="/dice-game">Dice Game</a>
-    </li>
-    <li>
-      <a routerLink="/tic-tac-toe">Tic Tac Toe Game</a>
-    </li>
-    <li>
-      <a routerLink="/word-game">Word Game</a>
-    </li>
-    <li>
-      <a routerLink="/sudoku">Su-du-ku</a>
-    </li>
-    <li>
-      <a routerLink="/word-hunt">Word Hunt</a>
-    </li>
-    <li>
-      <a routerLink="/odd-man-out">Find Odd Man Out</a>
-    </li>
-  </ul>
+
+<div class="games-container">
+  <div class="games-hero">
+    <h1 class="games-title">
+      <i class="fa fa-gamepad"></i>
+      Choose Your <span class="text-gradient">Brain Game</span>
+    </h1>
+    <p class="games-subtitle">Challenge yourself with our collection of mind-bending games</p>
+  </div>
+  
+  <div class="games-grid">
+    
+    <a routerLink="/chess-game" class="game-card chess">
+      <div class="game-icon">
+        <i class="fa fa-chess"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Chess Game</h3>
+        <p class="game-description">Master the classic strategy game</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/checkers-game" class="game-card checkers">
+      <div class="game-icon">
+        <i class="fa fa-chess-board"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Checkers Game</h3>
+        <p class="game-description">Classic board game strategy</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/dice-game" class="game-card dice">
+      <div class="game-icon">
+        <i class="fa fa-dice"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Dice Game</h3>
+        <p class="game-description">Roll the dice and test your luck</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/tic-tac-toe" class="game-card tictactoe">
+      <div class="game-icon">
+        <i class="fa fa-th"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Tic Tac Toe</h3>
+        <p class="game-description">Classic X's and O's challenge</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/word-game" class="game-card word">
+      <div class="game-icon">
+        <i class="fa fa-font"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Word Game</h3>
+        <p class="game-description">Build your vocabulary skills</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/sudoku" class="game-card sudoku">
+      <div class="game-icon">
+        <i class="fa fa-table"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Sudoku</h3>
+        <p class="game-description">Number puzzle brain teaser</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/word-hunt" class="game-card wordhunt">
+      <div class="game-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Word Hunt</h3>
+        <p class="game-description">Find hidden words in the grid</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+    <a routerLink="/odd-man-out" class="game-card oddmanout">
+      <div class="game-icon">
+        <i class="fa fa-puzzle-piece"></i>
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">Find Odd Man Out</h3>
+        <p class="game-description">Spot the difference challenge</p>
+      </div>
+      <div class="game-arrow">
+        <i class="fa fa-arrow-right"></i>
+      </div>
+    </a>
+    
+  </div>
 </div>

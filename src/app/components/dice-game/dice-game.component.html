@@ -1,44 +1,59 @@
 <app-header></app-header>
 
-
-<div class="container">
-    <header>
-      <h1>Dice Game</h1>
-    </header>
-    <main class="main-container">
-      <form>
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    
+    <div class="game-page-header">
+      <div class="game-icon-badge dice-theme">
+        <i class="fa fa-dice"></i>
+      </div>
+      <h1 class="game-page-title">Dice Game</h1>
+      <p class="game-page-subtitle">Roll the dice and test your luck</p>
+    </div>
+    
+    <div class="game-content-card">
+      <form class="dice-form">
         <div class="user-details">
-          <div>
-            <label>
+          <div class="input-group">
+            <label class="input-label">
+              <i class="fa fa-user"></i>
               Enter Player Name
             </label>
-            <input type="text" name="username" [(ngModel)]="username">
+            <input type="text" name="username" [(ngModel)]="username" class="modern-input" placeholder="Your name...">
           </div>
-          <div class="button-container" type="submit">
-            <input class="button" type="submit" (click)="createDices()" value="Roll">
-            <input class="button" type="submit" (click)="restartGame()" value="Restart">
+          <div class="button-container">
+            <button class="game-btn primary" type="submit" (click)="createDices()">
+              <i class="fa fa-dice"></i>
+              <span>Roll Dice</span>
+            </button>
+            <button class="game-btn secondary" type="submit" (click)="restartGame()">
+              <i class="fa fa-refresh"></i>
+              <span>Restart</span>
+            </button>
           </div>
         </div>
+        
         <div class="main">
-          <div class="winner" *ngIf="winner">
-            <h2>You got 100 score you are the winner of this match</h2>
+          <div class="alert-message success" *ngIf="winner">
+            <i class="fa fa-trophy"></i>
+            <span>You got 100 score - you are the winner of this match!</span>
           </div>
-          <div class="lost" *ngIf="lost">
-            <h2>
-              You got 1,1,1 on 3 dices, please continue again
-            </h2>
+          <div class="alert-message warning" *ngIf="lost">
+            <i class="fa fa-exclamation-triangle"></i>
+            <span>You got 1,1,1 on 3 dices, please continue again</span>
           </div>
-          <div class="lost" *ngIf="errorMsg">
-            <h2>
-              {{errorMsg}}
-            </h2>
+          <div class="alert-message error" *ngIf="errorMsg">
+            <i class="fa fa-exclamation-circle"></i>
+            <span>{{errorMsg}}</span>
           </div>
+          
           <div class="" *ngIf="dices.length">
             <div class="score-board">
-              Current Score is : <span class="score">{{currentDicesNumberCount}}</span>
+              <span class="score-label">Current Score:</span>
+              <span class="score-value">{{currentDicesNumberCount}}</span>
             </div>
             <div class="dice-container">
-              <div *ngFor="let dice of dices" class="dice-item ">
+              <div *ngFor="let dice of dices" class="dice-item">
                 <div class="dice">
                   {{dice.number}}
                 </div>
@@ -46,16 +61,21 @@
             </div>
           </div>
         </div>
+        
         <div class="users-list" *ngIf="users.length">
-          <h2>Player's Score Board</h2>
+          <h2 class="section-title">
+            <i class="fa fa-trophy"></i>
+            Player's Score Board
+          </h2>
           <div *ngFor="let user of users;let i = index" class="user">
-            <span class="rank">{{i+1}}
-            </span>
+            <span class="rank">{{i+1}}</span>
             <span class="player-name">{{user.username}}</span>
             <span class="score">{{user.score}}</span>
           </div>
         </div>
       </form>
-    </main>
+    </div>
+    
   </div>
+</div>
   

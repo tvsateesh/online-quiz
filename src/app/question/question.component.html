@@ -1,72 +1,189 @@
 <app-header></app-header>
 
-<div class="conatiner mt-5">
-  <div class="card">
-    <div class="d-flex justify-content-between p-3">
-      <div class="image">
-        <img src="https://img.icons8.com/color/96/000000/angularjs.png" alt="Logo" width="90" >
-      </div>
-      <div class="quiz-header">
-        <h4>Angular and Typescript Quiz</h4>
-        <span>Welcome  <span class="text-primary">{{name}}</span></span>
+<div class="quiz-container">
+  <div class="quiz-wrapper">
+    
+    <!-- Quiz Header -->
+    <div class="quiz-header-card">
+      <div class="quiz-branding">
+        <img src="assets/brain-games-icon.svg" alt="Logo" class="quiz-logo">
+        <div class="quiz-info">
+          <h3 class="quiz-title">Angular & TypeScript Quiz</h3>
+          <p class="quiz-welcome">Welcome, <span class="player-name">{{name}}</span></p>
+        </div>
       </div>
     </div>
+    
+    <!-- Active Quiz -->
     <ng-container *ngIf="!isQuizCompleted">
-      <div class="d-flex justify-content-around py-3">
-        <div class="score">{{points}} points</div>
-        <div class="question-remain">
-          <span >Question {{currentQuestion+1}} of {{questionList.length}}</span>
+      
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-item score">
+          <div class="stat-icon">
+            <i class="fa fa-star"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-value">{{points}}</span>
+            <span class="stat-label">Points</span>
+          </div>
         </div>
-        <div class="timer">
-          <h5>{{counter}} Sec</h5>
+        
+        <div class="stat-item question">
+          <div class="stat-icon">
+            <i class="fa fa-question-circle"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-value">{{currentQuestion+1}}/{{questionList.length}}</span>
+            <span class="stat-label">Questions</span>
+          </div>
+        </div>
+        
+        <div class="stat-item timer" [class.warning]="counter <= 10">
+          <div class="stat-icon">
+            <i class="fa fa-clock-o"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-value">{{counter}}</span>
+            <span class="stat-label">Seconds</span>
+          </div>
         </div>
       </div>
-      <div class="progress mb-3">
-        <div class="progress-bar progress-bar-striped bg-success"
-        [ngStyle]="{'width':getProgress()+'%'}"
-        role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      
+      <!-- Progress Bar -->
+      <div class="progress-container">
+        <div class="progress-bar-modern">
+          <div class="progress-fill" [style.width.%]="getProgress()"></div>
+        </div>
+        <span class="progress-text">{{getProgress()}}% Complete</span>
       </div>
-      <div class="question">
-        <div class="card">
-          <h3>{{questionList[currentQuestion]?.questionText}}</h3>
+      
+      <!-- Question Card -->
+      <div class="question-card">
+        <div class="question-number">Question {{currentQuestion+1}}</div>
+        <h2 class="question-text">{{questionList[currentQuestion]?.questionText}}</h2>
+      </div>
+      
+      <!-- Options -->
+      <div class="options-container">
+        <div 
+          *ngFor="let option of questionList[currentQuestion]?.options; index as i" 
+          class="option-item"
+          (click)="answerQuestion(i+1,option)"
+          appChangeBg 
+          [isCorrect]="option.correct"
+        >
+          <div class="option-letter">{{getOptionLetter(i)}}</div>
+          <div class="option-text">{{option.text}}</div>
+          <div class="option-check">
+            <i class="fa fa-check"></i>
+          </div>
         </div>
       </div>
-      <div class="options">
-        <ol *ngFor="let option of questionList[currentQuestion]?.options; index as i">
-            <li (click)="answerQuestion(i+1,option)">
-              <div appChangeBg [isCorrect]="option.correct" class="card">{{option.text}}</div>
-            </li>
-
-        </ol>
+      
+      <!-- Navigation Buttons -->
+      <div class="quiz-navigation">
+        <button 
+          type="button" 
+          class="nav-btn secondary" 
+          [disabled]="currentQuestion <= 0" 
+          (click)="previousQuestion()"
+        >
+          <i class="fa fa-chevron-left"></i>
+          <span>Previous</span>
+        </button>
+        
+        <button 
+          type="button" 
+          class="nav-btn danger" 
+          (click)="resetQuiz()"
+        >
+          <i class="fa fa-refresh"></i>
+          <span>Reset</span>
+        </button>
+        
+        <button 
+          type="button" 
+          class="nav-btn primary" 
+          [disabled]="currentQuestion >= questionList.length - 1" 
+          (click)="nextQuestion()"
+        >
+          <span>Next</span>
+          <i class="fa fa-chevron-right"></i>
+        </button>
       </div>
-      <div class="d-flex justify-content-around py-3">
-          <button type="button" class="btn btn-primary " [disabled]="currentQuestion <= 0" (click)="previousQuestion()">
-          <i class="fa fa-chevron-left fa-3x " (click)="resetQuiz()"></i></button>
-          <button type="button" class="btn btn-primary ">
-            <i class="fa fa-refresh fa-3x "></i></button>
-          <button type="button" class="btn btn-primary " [disabled]="currentQuestion >= questionList.length - 1" (click)="nextQuestion()">
-            <i class="fa fa-chevron-right fa-3x "></i></button>
-      </div>
+      
     </ng-container>
+    
+    <!-- Results Screen -->
     <ng-container *ngIf="isQuizCompleted">
-      <div class="row d-flex justify-content-between">
-        <div class="col-md-6 col-sm-6">
-          <img width="50%" class="img-fluid col-sm-12 mx-auto" src="https://www.clipartmax.com/png/full/140-1406782_confetti-icon-party-event-icon.png" alt="">
+      <div class="results-container">
+        <div class="results-content">
+          
+          <div class="celebration-icon">
+            <i class="fa fa-trophy"></i>
+          </div>
+          
+          <h2 class="results-title">🎉 Congratulations! 🎉</h2>
+          <p class="results-subtitle">You've completed the quiz. Here are your results:</p>
+          
+          <div class="results-grid">
+            <div class="result-card total">
+              <div class="result-icon">
+                <i class="fa fa-list"></i>
+              </div>
+              <div class="result-info">
+                <span class="result-value">{{questionList.length}}</span>
+                <span class="result-label">Total Questions</span>
+              </div>
+            </div>
+            
+            <div class="result-card correct">
+              <div class="result-icon">
+                <i class="fa fa-check-circle"></i>
+              </div>
+              <div class="result-info">
+                <span class="result-value">{{correctAnswer}}</span>
+                <span class="result-label">Correct Answers</span>
+              </div>
+            </div>
+            
+            <div class="result-card incorrect">
+              <div class="result-icon">
+                <i class="fa fa-times-circle"></i>
+              </div>
+              <div class="result-info">
+                <span class="result-value">{{inCorrectAnswer}}</span>
+                <span class="result-label">Incorrect Answers</span>
+              </div>
+            </div>
+            
+            <div class="result-card score">
+              <div class="result-icon">
+                <i class="fa fa-star"></i>
+              </div>
+              <div class="result-info">
+                <span class="result-value">{{points}}</span>
+                <span class="result-label">Final Score</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="results-actions">
+            <button class="action-btn primary" (click)="resetQuiz()">
+              <i class="fa fa-refresh"></i>
+              <span>Try Again</span>
+            </button>
+            <button class="action-btn secondary" routerLink="/games">
+              <i class="fa fa-home"></i>
+              <span>Back to Games</span>
+            </button>
+          </div>
+          
         </div>
-        <div class="result text-center col-md-6 col-sm-12">
-          <h3>
-            Congratulation!! <br> you have completed quiz. <br>
-            Below is your result:
-          </h3>
-          <p>Total Questions answered: {{questionList.length}}</p>
-          <p>Total Correct answers : {{correctAnswer}}</p>
-          <p>Total Incorrect answers : {{inCorrectAnswer}}</p>
-          <p>Total your score: {{points}} points</p>
-        </div>
-
       </div>
     </ng-container>
+    
   </div>
-
 </div>
 

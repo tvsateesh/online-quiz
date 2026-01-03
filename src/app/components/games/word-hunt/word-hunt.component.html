@@ -1,52 +1,76 @@
 <app-header></app-header>
 
-<h4>Word Search</h4>
-
-<h5>Theme : {{gameThemeName}}</h5>
-
-<div *ngIf="time ||completed ">
-    <h6>Found {{foundCount}} Of {{hiddenWords.length}}</h6>
-    <div>Timer : {{time}}</div>
-    <h6 *ngIf="completed" class="success">Found all words in {{ endGameDuration  }} mins</h6>
-
-</div>
-<div *ngIf="time === 0">
-    <!-- <select *ngModel="">
-        <option value="5"></option>
-        <option value="10"></option>
-        <option value="20"></option>
-    </select> -->
-    <button (click)="startGame()">Start Game</button>
-</div>
-
-
-<div *ngIf="time > 0"><button (click)="endGame()">End Game</button></div>
-
-
-
-<div class="container" *ngIf="time">
-    <div class="wordContainer">
-        <ol type="1" >
-            <li id="{{word}}" *ngFor="let word of hiddenWords" >{{word}}</li>
-        </ol>
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    
+    <div class="game-page-header">
+      <div class="game-icon-badge wordhunt-theme">
+        <i class="fa fa-search"></i>
+      </div>
+      <h1 class="game-page-title">Word Hunt</h1>
+      <p class="game-page-subtitle">Find hidden words in the grid - Theme: {{gameThemeName}}</p>
     </div>
     
-    <div class="wordHuntBoard"  >
-        <table >
-            <tr *ngFor="let row of board; let i = index "> 
-                <td *ngFor="let col of board[i]; let j = index" 
+    <div class="game-content-card">
+      
+      <div class="game-stats" *ngIf="time || completed">
+        <div class="stat-badge">
+          <i class="fa fa-check-circle"></i>
+          <span>Found {{foundCount}} of {{hiddenWords.length}}</span>
+        </div>
+        <div class="stat-badge timer">
+          <i class="fa fa-clock-o"></i>
+          <span>Timer: {{time}}</span>
+        </div>
+        <div class="alert-message success" *ngIf="completed">
+          <i class="fa fa-trophy"></i>
+          <span>Found all words in {{endGameDuration}} mins!</span>
+        </div>
+      </div>
+      
+      <div class="game-controls" *ngIf="time === 0">
+        <button class="game-btn primary" (click)="startGame()">
+          <i class="fa fa-play"></i>
+          <span>Start Game</span>
+        </button>
+      </div>
+      
+      <div class="game-controls" *ngIf="time > 0">
+        <button class="game-btn danger" (click)="endGame()">
+          <i class="fa fa-stop"></i>
+          <span>End Game</span>
+        </button>
+      </div>
+      
+      <div class="word-hunt-game" *ngIf="time">
+        <div class="wordContainer">
+          <h4 class="section-title">
+            <i class="fa fa-list"></i>
+            Words to Find
+          </h4>
+          <ol type="1">
+            <li id="{{word}}" *ngFor="let word of hiddenWords">{{word}}</li>
+          </ol>
+        </div>
+        
+        <div class="wordHuntBoard">
+          <table>
+            <tr *ngFor="let row of board; let i = index"> 
+              <td *ngFor="let col of board[i]; let j = index" 
                 (touchstart)="mouseDown($event)"
                 (mousedown)="mouseDown($event)"
-
                 (touchmove)="onMouseOver($event)"
                 (mouseover)="onMouseOver($event)" 
-
                 (touchend)="mouseUp($event)"
-                (mouseup)="mouseUp($event)" 
-               
-                > {{col}} </td>
+                (mouseup)="mouseUp($event)"
+              >{{col}}</td>
             </tr>
-        </table>
+          </table>
+        </div>
+      </div>
+      
     </div>
+    
+  </div>
 </div>
 

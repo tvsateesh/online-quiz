@@ -2,6 +2,99 @@
 @import "custom";
 @import "~bootstrap/scss/bootstrap";
 
+// Global Smooth Scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Global Body Styles
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+// Content padding
 .content {
   padding: 10px;
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 5px;
+  
+  &:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+}
+
+// Selection Color
+::selection {
+  background: #667eea;
+  color: white;
+}
+
+::-moz-selection {
+  background: #667eea;
+  color: white;
+}
+
+// Focus Visible for Accessibility
+*:focus-visible {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+// Disable default Bootstrap transitions that might conflict
+.btn,
+.card,
+.form-control {
+  transition: all 0.3s ease !important;
+}
+
+// Global animation classes
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Print Styles
+@media print {
+  .modern-header,
+  .nav-container {
+    display: none;
+  }
 }

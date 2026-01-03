@@ -1,5 +1,137 @@
 <app-header></app-header>
-<h4>Chess Board</h4>
-<div class="container">
-    <div class="chess-block"></div>
+
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    
+    <div class="game-page-header">
+      <div class="game-icon-badge chess-theme">
+        <i class="fa fa-chess"></i>
+      </div>
+      <h1 class="game-page-title">Chess Game</h1>
+      <p class="game-page-subtitle">Play against the computer</p>
+    </div>
+    
+    <div class="game-content-card">
+      
+      <!-- Game Status -->
+      <div class="game-status">
+        <div class="status-item">
+          <span class="status-label">Current Turn:</span>
+          <span class="status-value" [class.white-turn]="currentPlayer === 'white'" [class.black-turn]="currentPlayer === 'black'">
+            {{ currentPlayer === 'white' ? 'You (White)' : 'Computer (Black)' }}
+          </span>
+        </div>
+        <button class="game-btn game-btn-secondary" (click)="newGame()">
+          <i class="fa fa-refresh"></i> New Game
+        </button>
+      </div>
+
+      <!-- Difficulty Selector -->
+      <div class="difficulty-selector">
+        <span class="difficulty-label">Difficulty:</span>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'easy'" 
+                  (click)="setDifficulty('easy')">
+            <i class="fa fa-smile-o"></i> Easy
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'medium'" 
+                  (click)="setDifficulty('medium')">
+            <i class="fa fa-meh-o"></i> Medium
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'hard'" 
+                  (click)="setDifficulty('hard')">
+            <i class="fa fa-frown-o"></i> Hard
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Over Message -->
+      <div class="alert-message alert-success" *ngIf="gameOver">
+        <i class="fa fa-trophy"></i> {{ winner }}
+      </div>
+
+      <!-- Chess Board -->
+      <div class="chess-container">
+        <div class="chess-board">
+          <div class="board-row" *ngFor="let row of board; let rowIndex = index">
+            <div class="board-square" 
+                 *ngFor="let square of row; let colIndex = index"
+                 [class.light-square]="(rowIndex + colIndex) % 2 === 0"
+                 [class.dark-square]="(rowIndex + colIndex) % 2 !== 0"
+                 [class.selected]="isSelected(square)"
+                 [class.valid-move]="isValidMove(square)"
+                 [class.has-piece]="square.piece"
+                 (click)="selectSquare(square)">
+              
+              <!-- Piece -->
+              <div class="chess-piece" 
+                   *ngIf="square.piece" 
+                   [class.white-piece]="square.piece.color === 'white'" 
+                   [class.black-piece]="square.piece.color === 'black'"
+                   [attr.data-piece]="square.piece.type">
+                {{ getPieceSymbol(square.piece) }}
+              </div>
+
+              <!-- Valid move indicator -->
+              <div class="move-indicator" *ngIf="isValidMove(square) && !square.piece"></div>
+              <div class="capture-indicator" *ngIf="isValidMove(square) && square.piece"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Board Labels -->
+        <div class="board-labels">
+          <div class="file-labels">
+            <span *ngFor="let file of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']">{{ file }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Info Sidebar -->
+      <div class="game-info">
+        
+        <!-- Captured Pieces -->
+        <div class="captured-section">
+          <h3>Captured Pieces</h3>
+          
+          <div class="captured-group">
+            <span class="captured-label">White Lost:</span>
+            <div class="captured-pieces">
+              <span *ngFor="let piece of capturedPieces.white" class="captured-piece white-piece">
+                {{ getPieceSymbol(piece) }}
+              </span>
+              <span *ngIf="capturedPieces.white.length === 0" class="no-captures">None</span>
+            </div>
+          </div>
+
+          <div class="captured-group">
+            <span class="captured-label">Black Lost:</span>
+            <div class="captured-pieces">
+              <span *ngFor="let piece of capturedPieces.black" class="captured-piece black-piece">
+                {{ getPieceSymbol(piece) }}
+              </span>
+              <span *ngIf="capturedPieces.black.length === 0" class="no-captures">None</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Move History -->
+        <div class="move-history">
+          <h3>Move History</h3>
+          <div class="history-list">
+            <div *ngFor="let move of moveHistory; let i = index" class="history-item">
+              <span class="move-number">{{ i + 1 }}.</span>
+              <span class="move-text">{{ move }}</span>
+            </div>
+            <div *ngIf="moveHistory.length === 0" class="no-moves">No moves yet</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
 </div>

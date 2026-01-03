@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7b2cbf;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5a189a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd60a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffc300;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#brainGrad)"/>
+  
+  <!-- Brain left hemisphere -->
+  <path d="M 180 150 Q 140 160, 130 200 Q 120 240, 130 280 Q 135 310, 150 330 Q 165 350, 190 360 Q 210 365, 230 355 L 230 330 Q 215 325, 205 310 Q 195 295, 195 280 L 195 260 Q 200 250, 210 245 L 210 230 Q 200 225, 195 215 Q 190 200, 195 185 Q 200 170, 210 160 Q 220 152, 230 150 L 230 140 Q 210 135, 180 150 Z" 
+        fill="#ff6ec7" opacity="0.9"/>
+  
+  <!-- Brain right hemisphere -->
+  <path d="M 332 150 Q 372 160, 382 200 Q 392 240, 382 280 Q 377 310, 362 330 Q 347 350, 322 360 Q 302 365, 282 355 L 282 330 Q 297 325, 307 310 Q 317 295, 317 280 L 317 260 Q 312 250, 302 245 L 302 230 Q 312 225, 317 215 Q 322 200, 317 185 Q 312 170, 302 160 Q 292 152, 282 150 L 282 140 Q 302 135, 332 150 Z" 
+        fill="#ff6ec7" opacity="0.9"/>
+  
+  <!-- Brain center connection -->
+  <rect x="230" y="140" width="52" height="220" fill="#e056fd" opacity="0.8"/>
+  
+  <!-- Brain convolutions (left) -->
+  <ellipse cx="170" cy="200" rx="15" ry="25" fill="#9d4edd" opacity="0.6"/>
+  <ellipse cx="160" cy="250" rx="12" ry="20" fill="#9d4edd" opacity="0.6"/>
+  <ellipse cx="175" cy="300" rx="14" ry="22" fill="#9d4edd" opacity="0.6"/>
+  
+  <!-- Brain convolutions (right) -->
+  <ellipse cx="342" cy="200" rx="15" ry="25" fill="#9d4edd" opacity="0.6"/>
+  <ellipse cx="352" cy="250" rx="12" ry="20" fill="#9d4edd" opacity="0.6"/>
+  <ellipse cx="337" cy="300" rx="14" ry="22" fill="#9d4edd" opacity="0.6"/>
+  
+  <!-- Light bulb idea symbol -->
+  <circle cx="256" cy="180" r="35" fill="url(#lightGrad)"/>
+  <path d="M 235 215 L 235 235 Q 235 245, 245 245 L 267 245 Q 277 245, 277 235 L 277 215 Z" 
+        fill="#ffc300"/>
+  <rect x="245" y="245" width="22" height="8" rx="2" fill="#e85d04"/>
+  <rect x="248" y="253" width="16" height="4" rx="2" fill="#d00000"/>
+  
+  <!-- Light rays -->
+  <line x1="256" y1="135" x2="256" y2="115" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <line x1="220" y1="155" x2="205" y2="140" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <line x1="292" y1="155" x2="307" y2="140" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <line x1="215" y1="180" x2="195" y2="180" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <line x1="297" y1="180" x2="317" y2="180" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Game elements - dice dots -->
+  <circle cx="140" cy="380" r="8" fill="#fff"/>
+  <circle cx="160" cy="380" r="8" fill="#fff"/>
+  <circle cx="180" cy="380" r="8" fill="#fff"/>
+  
+  <!-- Game elements - puzzle piece -->
+  <path d="M 320 370 L 350 370 L 350 380 L 360 380 L 360 390 L 350 390 L 350 400 L 320 400 Z" 
+        fill="#4cc9f0" opacity="0.9"/>
+  
+  <!-- Game elements - star -->
+  <path d="M 256 390 L 262 405 L 278 405 L 265 415 L 270 430 L 256 420 L 242 430 L 247 415 L 234 405 L 250 405 Z" 
+        fill="#ffd60a"/>
+</svg>

@@ -1,12 +1,25 @@
 <app-header></app-header>
-<div class="container border bg-dark text-white p-2">
-    <h1>Su-du-ku</h1>
-    <p>This is sudoku game.</p>
-    <div class="board ">
-        <div class="d-flex justify-content-center board-row p-1" *ngFor="let r of board; let i = index">
-            <div class="p-1 board-col  bg-dark text-white " *ngFor="let j of board[i]; let k = index">
-                {{board[i][k]}}
-            </div>            
+
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    
+    <div class="game-page-header">
+      <div class="game-icon-badge sudoku-theme">
+        <i class="fa fa-table"></i>
+      </div>
+      <h1 class="game-page-title">Sudoku</h1>
+      <p class="game-page-subtitle">Number puzzle brain teaser challenge</p>
+    </div>
+    
+    <div class="game-content-card">
+      <div class="sudoku-board">
+        <div class="board-row" *ngFor="let r of board; let i = index">
+          <div class="board-col" *ngFor="let j of board[i]; let k = index">
+            {{board[i][k]}}
+          </div>
         </div>
-    </div>    
+      </div>
+    </div>
+    
+  </div>
 </div>

@@ -1,20 +1,116 @@
 <app-header></app-header>
-<div class="container bg-ligh py-5">
-  <h1 class="dispay-5 fw-bold">Welcome to Angular Quiz App</h1>
-  <p class="col-md-8 fs-4">This quiz will having total 20 question and each question will hold 1 point</p>
-  <h4>Rules</h4>
-  <ol>
-    <li>Correct Question Give 1 point</li>
-    <li>Incorrect Question Give -1 point</li>
-    <li>you will have 30 sec for each question</li>
-    <li>You can not go back</li>
-  </ol>
-  <h2 class="text-center">All the best!!</h2>
-  <div class="name col-md-4 my-3">
-    <label for="">Enter your name </label>
-    <input #name type="text" class="form-control">
+
+<div class="welcome-container">
+  <div class="hero-section">
+    <div class="content-wrapper">
+      <div class="icon-wrapper animate-fadeIn">
+        <img src="assets/icon.svg" alt="Quiz Icon" class="hero-icon">
+      </div>
+      
+      <h1 class="welcome-title animate-slideInRight">
+        Welcome to <span class="text-gradient">Angular Quiz App</span>
+      </h1>
+      
+      <p class="welcome-subtitle">
+        Test your knowledge with our interactive quiz featuring 20 carefully crafted questions
+      </p>
+      
+      <div class="quiz-info-cards">
+        <div class="info-card">
+          <div class="info-icon success">
+            <i class="fa fa-check-circle"></i>
+          </div>
+          <div class="info-content">
+            <h4>20 Questions</h4>
+            <p>1 point each</p>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon warning">
+            <i class="fa fa-clock-o"></i>
+          </div>
+          <div class="info-content">
+            <h4>30 Seconds</h4>
+            <p>Per question</p>
+          </div>
+        </div>
+        
+        <div class="info-card">
+          <div class="info-icon primary">
+            <i class="fa fa-trophy"></i>
+          </div>
+          <div class="info-content">
+            <h4>Track Score</h4>
+            <p>Real-time results</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="rules-section">
+        <h3 class="rules-title">
+          <i class="fa fa-list-ul"></i>
+          Quiz Rules
+        </h3>
+        <div class="rules-grid">
+          <div class="rule-item">
+            <div class="rule-number">1</div>
+            <div class="rule-text">
+              <strong>Correct Answer:</strong> Earn +1 point
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-number">2</div>
+            <div class="rule-text">
+              <strong>Wrong Answer:</strong> Lose -1 point
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-number">3</div>
+            <div class="rule-text">
+              <strong>Time Limit:</strong> 30 seconds per question
+            </div>
+          </div>
+          <div class="rule-item">
+            <div class="rule-number">4</div>
+            <div class="rule-text">
+              <strong>No Going Back:</strong> Once answered, you can't return
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="start-section">
+        <h2 class="motivation-text">
+          <i class="fa fa-star"></i>
+          Ready to Test Your Skills?
+          <i class="fa fa-star"></i>
+        </h2>
+        
+        <div class="input-section">
+          <label for="playerName" class="input-label">
+            <i class="fa fa-user"></i>
+            Enter Your Name
+          </label>
+          <input 
+            #name 
+            type="text" 
+            id="playerName"
+            class="modern-input" 
+            placeholder="Your name here..."
+            maxlength="30"
+          >
+        </div>
+        
+        <button 
+          class="start-quiz-btn" 
+          (click)="startQuiz()" 
+          routerLink="/question"
+        >
+          <span class="btn-text">Start the Quiz</span>
+          <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
   </div>
-  <button class="btn btn-primary btn-lg"
-   (click)="startQuiz()"
-   routerLink="/question">Start the Quiz!!</button>
 </div>

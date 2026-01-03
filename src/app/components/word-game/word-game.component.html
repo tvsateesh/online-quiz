@@ -1,50 +1,69 @@
 <app-header></app-header>
 
-<div class="wrapper">
-
-  <button (click)="getWord()" >Get New Word</button>
-  <button (click)="verifySolvedWord()" >Verify Word</button>
-  <!-- <div>
-    Reordering lists
-    <div cdkDropList class="word-list" (cdkDropListDropped)="drop($event)">
-      <div class="word-block" *ngFor="let wordName of words" cdkDrag>{{wordName}}</div>
-    </div>
-  </div> -->
-
-  <!-- <select formControlName>
-    <option [ngValue]="telugu" >Telugu</option>
-    <option [ngValue]="english" >English</option>
-  </select> -->
-
-  <div>
-    <h2>Solve the Word</h2>
-    <div class="container">
-      <h2>Letters</h2>
-      <div cdkDropList #wordList="cdkDropList" [cdkDropListData]="letters"
-        [cdkDropListConnectedTo]="[donewordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
-        <div class="word-block" *ngFor="let letter of letters" cdkDrag>{{letter}}</div>
-      </div>
-    </div>
-    <div class="container">
-      <h2>Solved Word</h2>
-      <div cdkDropList #donewordList="cdkDropList" [cdkDropListData]="solvedWord"
-        [cdkDropListConnectedTo]="[wordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
-        <div class="word-block" *ngFor="let fixedWord of solvedWord" cdkDrag>{{fixedWord}}</div>
-      </div>
-
-      <button (click)="resetLetters()" class="rest-btn">Reset</button>
-      <input type="hidden" value={{word}}>
-
-    </div>
-    <h2 *ngIf="solved" >
-      <span class="success">Correct answer, word is : {{word}}</span>
-      <br>
-      <h4><span class="detail">{{getDescription()}}</span></h4>
-    </h2>
+<div class="game-page-container">
+  <div class="game-page-wrapper">
     
+    <div class="game-page-header">
+      <div class="game-icon-badge word-theme">
+        <i class="fa fa-font"></i>
+      </div>
+      <h1 class="game-page-title">Word Game</h1>
+      <p class="game-page-subtitle">Build your vocabulary skills by solving words</p>
+    </div>
+    
+    <div class="game-content-card">
+      <div class="game-controls">
+        <button class="game-btn primary" (click)="getWord()">
+          <i class="fa fa-refresh"></i>
+          <span>Get New Word</span>
+        </button>
+        <button class="game-btn success" (click)="verifySolvedWord()">
+          <i class="fa fa-check"></i>
+          <span>Verify Word</span>
+        </button>
+      </div>
 
-      <h2 *ngIf="errorMsg" class="error">Wrong answer, please try again</h2>
+      <div class="word-game-area">
+        <h3 class="section-title">
+          <i class="fa fa-puzzle-piece"></i>
+          Solve the Word
+        </h3>
+        
+        <div class="word-section">
+          <h4 class="subsection-title">Letters</h4>
+          <div cdkDropList #wordList="cdkDropList" [cdkDropListData]="letters"
+            [cdkDropListConnectedTo]="[donewordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
+            <div class="word-block" *ngFor="let letter of letters" cdkDrag>{{letter}}</div>
+          </div>
+        </div>
+        
+        <div class="word-section">
+          <h4 class="subsection-title">Solved Word</h4>
+          <div cdkDropList #donewordList="cdkDropList" [cdkDropListData]="solvedWord"
+            [cdkDropListConnectedTo]="[wordList]" class="word-list" (cdkDropListDropped)="onDrop($event)">
+            <div class="word-block" *ngFor="let fixedWord of solvedWord" cdkDrag>{{fixedWord}}</div>
+          </div>
+          <button (click)="resetLetters()" class="game-btn secondary">
+            <i class="fa fa-undo"></i>
+            <span>Reset</span>
+          </button>
+          <input type="hidden" value={{word}}>
+        </div>
+        
+        <div class="alert-message success" *ngIf="solved">
+          <i class="fa fa-check-circle"></i>
+          <div>
+            <strong>Correct answer! Word is: {{word}}</strong>
+            <p class="detail">{{getDescription()}}</p>
+          </div>
+        </div>
+        
+        <div class="alert-message error" *ngIf="errorMsg">
+          <i class="fa fa-times-circle"></i>
+          <span>Wrong answer, please try again</span>
+        </div>
+      </div>
+    </div>
+    
   </div>
-
-
 </div>
