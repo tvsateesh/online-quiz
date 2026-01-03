@@ -128,6 +128,29 @@ To use a custom domain:
 
 ## Troubleshooting
 
+### Budget Exceeded Errors
+
+**Problem**: Build fails with budget exceeded errors:
+```bash
+Error: src/app/components/games/chess/chess.component.scss exceeded maximum budget
+```
+
+**Solution**: Already fixed! The `angular.json` has been updated with appropriate budget limits:
+```json
+"budgets": [
+  {
+    "type": "initial",
+    "maximumWarning": "1mb",
+    "maximumError": "2mb"
+  },
+  {
+    "type": "anyComponentStyle",
+    "maximumWarning": "10kb",
+    "maximumError": "12kb"
+  }
+]
+```
+
 ### Build Fails
 
 **Problem**: Build command fails
