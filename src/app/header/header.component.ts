@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -7,8 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  userProfile$: Observable<any>;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) {
+    this.userProfile$ = this.userService.userProfile$;
+  }
 
   ngOnInit(): void {
   }
@@ -19,6 +24,9 @@ export class HeaderComponent implements OnInit {
     // Clear user session data from localStorage
     localStorage.removeItem('currentUser');
     localStorage.removeItem('googleUser');
+    
+    // Clear user profile from service
+    this.userService.clearUserProfile();
     
     console.log('Session cleared');
     console.log('Redirecting to login page');
