@@ -178,6 +178,93 @@ export const authService = {
         error: errorMessage
       };
     }
+  },
+
+  async googleLogin(data: { email: string; name?: string; picture?: string }): Promise<AuthResponse> {
+    try {
+      let user;
+      
+      // Use mock database if enabled or MongoDB unavailable
+      if (USE_MOCK) {
+        user = await mockDb.findOne({ email: data.email });
+      } else {
+        user = await User.findOne({ email: data.email });
+      }
+
+      // If user exists, update lastLogin
+      if (user) {
+        user.lastLogin = new Date();
+        if (USE_MOCK) {
+          await mockDb.updateOne({ email: data.email }, { lastLogin: user.lastLogin });
+        } else {
+          await user.save();
+        }
+      } else {
+        // Create new Google user
+        const username = data.name 
+          ? data.name.toLowerCase().replace(/\s+/g, '_')
+          : data.email.split('@')[0];
+
+        if (USE_MOCK) {
+          user = await mockDb.save({
+            username: username,
+            email: data.email,
+            firstName: data.name || undefined,
+            picture: data.picture || undefined,
+            isGoogleUser: true,
+            lastLogin: new Date()
+          });
+        } else {
+          if (User.create) {
+            user = await User.create({
+              username: username,
+              email: data.email,
+              firstName: data.name || undefined,
+              picture: data.picture || undefined,
+              isGoogleUser: true,
+              lastLogin: new Date()
+            });
+          } else {
+            user = new User({
+              username: username,
+              email: data.email,
+              firstName: data.name || undefined,
+              picture: data.picture || undefined,
+              isGoogleUser: true,
+              lastLogin: new Date()
+            });
+            await user.save();
+          }
+        }
+      }
+
+      // Generate JWT token
+      const token = jwt.sign(
+        { id: user._id, email: user.email, username: user.username },
+        JWT_SECRET,
+        { expiresIn: '30d' }
+      );
+
+      return {
+        success: true,
+        message: 'Google login successful',
+        user: {
+          id: user._id.toString(),
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName || undefined,
+          lastName: user.lastName || undefined
+        },
+        token
+      };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Google login failed';
+      return {
+        success: false,
+        message: 'Google login failed',
+        error: errorMessage
+      };
+    }
   }
 };
 

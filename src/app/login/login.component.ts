@@ -95,68 +95,89 @@ export class LoginComponent implements OnInit {
         if (!decodedToken) {
           this.errorMsg = 'Failed to decode token';
           console.error('Failed to decode token');
+          this.googleSignInLoading = false;
           return;
         }
         
-        // Store user data in localStorage
-        const googleUserData = {
-          email: decodedToken.email,
-          name: decodedToken.name,
-          picture: decodedToken.picture,
-          token: response.credential
-        };
-        localStorage.setItem('googleUser', JSON.stringify(googleUserData));
-        
-        // Also set it in the UserService
-        this.userService.setUserProfile({
+        // Send Google login data to backend
+        // This will create the user in database if they don't exist
+        // and update lastLogin if they do
+        this.http.post<any>('/api/auth/google-login', {
           email: decodedToken.email,
           name: decodedToken.name,
           picture: decodedToken.picture
-        });
-        
-        // Store as a proper user object (use email as ID for Google users)
-        const currentUser = {
-          id: decodedToken.email,
-          email: decodedToken.email,
-          username: decodedToken.name || decodedToken.email.split('@')[0],
-          name: decodedToken.name
-        };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        console.log('User data saved to localStorage');
-        console.log('User profile set in UserService');
-        console.log('Setting isLoggingIn to true');
-        
-        // Set flag to hide login page IMMEDIATELY
-        this.isLoggingIn = true;
-        console.log('isLoggingIn is now:', this.isLoggingIn);
-        
-        // Force change detection to update DOM immediately
-        this.cdr.detectChanges();
-        console.log('Change detection triggered');
-        
-        // Navigate to games within Angular zone
-        console.log('Attempting to navigate to /games');
-        this.ngZone.run(() => {
-          this.router.navigate(['/games']).then(
-            (success) => {
-              console.log('Navigation successful:', success);
-              if (!success) {
-                console.error('Navigation failed - check if user is not authenticated');
-              }
-            },
-            (error) => console.error('Navigation error:', error)
-          );
-        });
+        }).subscribe(
+          (response: any) => {
+            if (response.success) {
+              // Store user data in localStorage
+              const googleUserData = {
+                email: decodedToken.email,
+                name: decodedToken.name,
+                picture: decodedToken.picture,
+                token: response.token
+              };
+              localStorage.setItem('googleUser', JSON.stringify(googleUserData));
+              
+              // Store user object from backend response
+              localStorage.setItem('currentUser', JSON.stringify(response.user));
+              localStorage.setItem('authToken', response.token);
+              
+              // Also set it in the UserService
+              this.userService.setUserProfile({
+                email: decodedToken.email,
+                name: decodedToken.name,
+                picture: decodedToken.picture
+              });
+              
+              console.log('User authenticated and saved to database');
+              console.log('User data saved to localStorage');
+              console.log('Setting isLoggingIn to true');
+              
+              // Set flag to hide login page IMMEDIATELY
+              this.isLoggingIn = true;
+              console.log('isLoggingIn is now:', this.isLoggingIn);
+              
+              // Force change detection to update DOM immediately
+              this.cdr.detectChanges();
+              console.log('Change detection triggered');
+              
+              // Navigate to games within Angular zone
+              console.log('Attempting to navigate to /games');
+              this.ngZone.run(() => {
+                this.router.navigate(['/games']).then(
+                  (success) => {
+                    console.log('Navigation successful:', success);
+                    if (!success) {
+                      console.error('Navigation failed - check if user is not authenticated');
+                    }
+                  },
+                  (error) => console.error('Navigation error:', error)
+                );
+              });
+            } else {
+              this.errorMsg = response.error || 'Google authentication failed';
+              console.error('Google login error:', response);
+              this.isLoggingIn = false;
+            }
+            this.googleSignInLoading = false;
+          },
+          (error) => {
+            this.errorMsg = 'Failed to authenticate with server';
+            console.error('Google login server error:', error);
+            this.isLoggingIn = false;
+            this.googleSignInLoading = false;
+          }
+        );
       } catch (error) {
         this.errorMsg = 'Failed to process Google Sign-In';
         console.error('Google Sign-In Error:', error);
         this.isLoggingIn = false;
-      } finally {
         this.googleSignInLoading = false;
       }
     } else {
       console.log('No credential in response:', response);
       this.errorMsg = 'Authentication failed - no credential received';
+      this.googleSignInLoading = false;
     }
   }
 

@@ -4,9 +4,12 @@ import bcryptjs from 'bcryptjs';
 export interface IUser extends Document {
   username: string;
   email: string;
-  password: string;
+  password?: string;
   firstName?: string;
   lastName?: string;
+  picture?: string;
+  isGoogleUser?: boolean;
+  lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(password: string): Promise<boolean>;
@@ -40,7 +43,6 @@ try {
       },
       password: {
         type: String,
-        required: [true, 'Password is required'],
         minlength: [6, 'Password must be at least 6 characters'],
         select: false
       },
@@ -51,6 +53,18 @@ try {
       lastName: {
         type: String,
         trim: true
+      },
+      picture: {
+        type: String,
+        trim: true
+      },
+      isGoogleUser: {
+        type: Boolean,
+        default: false
+      },
+      lastLogin: {
+        type: Date,
+        default: Date.now
       }
     },
     {
@@ -93,7 +107,7 @@ try {
     create: async (data: any) => {
       const id = `mock_${mockIdCounter++}`;
       const now = new Date();
-      const hashedPassword = await bcryptjs.hash(data.password, 10);
+      const hashedPassword = data.password ? await bcryptjs.hash(data.password, 10) : null;
       
       const user = {
         _id: id,
@@ -102,12 +116,16 @@ try {
         password: hashedPassword,
         firstName: data.firstName,
         lastName: data.lastName,
+        picture: data.picture,
+        isGoogleUser: data.isGoogleUser || false,
+        lastLogin: data.lastLogin || now,
         createdAt: now,
         updatedAt: now,
         comparePassword: async function(password: string) {
-          return await bcryptjs.compare(password, this.password);
+          return this.password ? await bcryptjs.compare(password, this.password) : false;
         },
         save: async function() {
+          this.updatedAt = new Date();
           return this;
         }
       };

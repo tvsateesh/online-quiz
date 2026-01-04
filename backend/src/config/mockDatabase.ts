@@ -7,9 +7,12 @@ export interface MockUser {
   _id: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   firstName?: string;
   lastName?: string;
+  picture?: string;
+  isGoogleUser?: boolean;
+  lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(password: string): Promise<boolean>;
@@ -64,18 +67,39 @@ class MockDatabase {
       _id: id,
       username: user.username || '',
       email: user.email || '',
-      password: user.password || '',
+      password: user.password,
       firstName: user.firstName,
       lastName: user.lastName,
+      picture: user.picture,
+      isGoogleUser: user.isGoogleUser || false,
+      lastLogin: user.lastLogin || now,
       createdAt: now,
       updatedAt: now,
       comparePassword: async function(password: string): Promise<boolean> {
-        return await bcryptjs.compare(password, this.password);
+        return this.password ? await bcryptjs.compare(password, this.password) : false;
       }
     };
 
     this.users.set(id, fullUser);
     return fullUser;
+  }
+
+  async updateOne(query: any, update: Partial<MockUser>): Promise<void> {
+    const users = Array.from(this.users.values());
+    
+    const user = users.find(u => {
+      if (query.email) return u.email === query.email;
+      if (query._id) return u._id === query._id;
+      return false;
+    });
+
+    if (user) {
+      const userEntry = this.users.get(user._id);
+      if (userEntry) {
+        Object.assign(userEntry, update);
+        userEntry.updatedAt = new Date();
+      }
+    }
   }
 
   // Game Statistics Methods
