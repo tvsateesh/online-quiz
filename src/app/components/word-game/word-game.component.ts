@@ -131,6 +131,9 @@ export class WordGameComponent implements OnInit {
     }
   }
 
+  showHint: boolean = false;
+  wordMeaning: string = '';
+
   removeLetterFromAnswer(index: number) {
     const letter = this.solvedWord[index];
     if (letter !== '') {
@@ -158,6 +161,7 @@ export class WordGameComponent implements OnInit {
     this.errorMsg = "";
     this.solved = false;
     this.answerRevealed = false;
+    this.showHint = false;
     
     // Get random word
     const randomIndex = Math.floor(Math.random() * this.wordList.length);
@@ -165,6 +169,9 @@ export class WordGameComponent implements OnInit {
       .split("")
       .join("")
       .toUpperCase();
+    
+    // Get the meaning/hint for the word
+    this.getMeaning();
     
     // Initialize arrays
     this.letters = this.splitWord2Letters(this.word);
@@ -218,5 +225,21 @@ export class WordGameComponent implements OnInit {
 
   getDescription(){
     return this.allWords[this.word.toLocaleLowerCase()];
+  }
+
+  getMeaning(): void {
+    const wordLower = this.word.toLowerCase();
+    if (this.difficulty === 'easy') {
+      // For easy difficulty, find meaning from sight words
+      const sightWord = this.sightWords.find(sw => sw.word === wordLower);
+      this.wordMeaning = sightWord ? sightWord.meaning : 'No definition available';
+    } else {
+      // For medium and hard, get from dictionary
+      this.wordMeaning = this.allWords[wordLower] || 'No definition available';
+    }
+  }
+
+  toggleHint(): void {
+    this.showHint = !this.showHint;
   }
 }

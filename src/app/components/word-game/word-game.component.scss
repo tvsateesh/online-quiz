@@ -98,6 +98,60 @@
   }
 }
 
+// Hint Container Styles
+.hint-container {
+  margin: 20px 0;
+  animation: slideDown 0.3s ease-out;
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hint-box {
+    display: flex;
+    gap: 15px;
+    padding: 16px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px solid #fcd34d;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(252, 211, 77, 0.3);
+
+    .hint-icon {
+      font-size: 24px;
+      color: #f59e0b;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .hint-content {
+      flex: 1;
+
+      .hint-label {
+        margin: 0;
+        font-weight: 700;
+        color: #92400e;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .hint-text {
+        margin: 6px 0 0 0;
+        color: #78350f;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
 .word-section {
   margin-bottom: 30px;
 

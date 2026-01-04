@@ -39,6 +39,20 @@
         <button class="game-btn game-btn-warning" (click)="showAnswer()" [disabled]="answerRevealed || !word">
           <i class="fa fa-lightbulb-o"></i> Show Answer
         </button>
+        <button class="game-btn game-btn-info" (click)="toggleHint()" [disabled]="!word">
+          <i class="fa fa-info-circle"></i> Hint
+        </button>
+      </div>
+
+      <!-- Hint Display -->
+      <div class="hint-container" *ngIf="showHint && word">
+        <div class="hint-box">
+          <i class="fa fa-lightbulb-o hint-icon"></i>
+          <div class="hint-content">
+            <p class="hint-label">Meaning:</p>
+            <p class="hint-text">{{ wordMeaning }}</p>
+          </div>
+        </div>
       </div>
 
       <!-- Word Game Area -->
