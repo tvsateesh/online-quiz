@@ -1223,9 +1223,9 @@ export class ChessComponent implements OnInit {
 
   loadStats(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser?.userId) {
+    if (currentUser?.id) {
       // Load chess statistics from database
-      this.gameStatsService.getGameStatistics(currentUser.userId, 'chess')
+      this.gameStatsService.getGameStatistics(currentUser.id, 'chess')
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {

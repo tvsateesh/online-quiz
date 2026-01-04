@@ -70,9 +70,9 @@ export class WordHuntComponent implements OnInit {
 
   loadStats(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser?.userId) {
+    if (currentUser?.id) {
       // Load word-hunt statistics from database
-      this.gameStatsService.getGameStatistics(currentUser.userId, 'word-hunt')
+      this.gameStatsService.getGameStatistics(currentUser.id, 'word-hunt')
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {

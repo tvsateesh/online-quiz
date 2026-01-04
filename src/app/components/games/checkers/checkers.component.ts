@@ -35,9 +35,9 @@ export class CheckersComponent implements OnInit {
 
   loadStats(): void {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser?.userId) {
+    if (currentUser?.id) {
       // Load checkers statistics from database
-      this.gameStatsService.getGameStatistics(currentUser.userId, 'checkers')
+      this.gameStatsService.getGameStatistics(currentUser.id, 'checkers')
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
