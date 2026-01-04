@@ -151,6 +151,14 @@ export const authService = {
         };
       }
 
+      // Update lastLogin
+      user.lastLogin = new Date();
+      if (USE_MOCK) {
+        await mockDb.updateOne({ email: data.email }, { lastLogin: user.lastLogin });
+      } else {
+        await user.save();
+      }
+
       // Generate JWT token
       const token = jwt.sign(
         { id: user._id, email: user.email, username: user.username },
