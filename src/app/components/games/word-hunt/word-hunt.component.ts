@@ -110,44 +110,87 @@ export class WordHuntComponent implements OnInit {
   }
 
   loadWordsFromDictionary(): void {
+    // Kindergarten sight words for easy difficulty
+    const sightWords = [
+      { word: 'at', meaning: 'Used to indicate a place or time' },
+      { word: 'it', meaning: 'Used to refer to a thing or animal' },
+      { word: 'in', meaning: 'Inside or within something' },
+      { word: 'is', meaning: 'Verb to be, present tense' },
+      { word: 'on', meaning: 'Above or touching a surface' },
+      { word: 'to', meaning: 'Toward a place or person' },
+      { word: 'and', meaning: 'Used to connect words or phrases' },
+      { word: 'the', meaning: 'Definite article used before nouns' },
+      { word: 'he', meaning: 'Male pronoun' },
+      { word: 'be', meaning: 'Verb meaning to exist' },
+      { word: 'we', meaning: 'Plural pronoun for a group including the speaker' },
+      { word: 'are', meaning: 'Plural form of to be' },
+      { word: 'was', meaning: 'Past tense of to be' },
+      { word: 'for', meaning: 'Indicating purpose or reason' },
+      { word: 'you', meaning: 'Person being addressed' },
+      { word: 'she', meaning: 'Female pronoun' },
+      { word: 'that', meaning: 'Used to identify a specific thing' },
+      { word: 'have', meaning: 'To possess or own' },
+      { word: 'this', meaning: 'Used to identify a thing nearby' },
+      { word: 'they', meaning: 'Plural pronoun for multiple people or things' },
+      { word: 'with', meaning: 'Accompanied by' },
+      { word: 'from', meaning: 'Indicating a starting point' }
+    ];
+
     this.dictionaryService.getWords().subscribe((result: any) => {
       if (result) {
-        const allWords = Object.keys(result);
-        let filteredWords: string[] = [];
-        
-        // Filter words based on difficulty level
-        if (this.difficulty === 'easy') {
-          // Easy: Simple 3-4 letter words, common words
-          filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 4);
-        } else if (this.difficulty === 'medium') {
-          // Medium: 4-5 letter words
-          filteredWords = allWords.filter(word => word.length >= 4 && word.length <= 5);
-        } else if (this.difficulty === 'hard') {
-          // Hard: 5-6 letter words, longer and more complex
-          filteredWords = allWords.filter(word => word.length >= 5 && word.length <= 6);
-        } else {
-          // Default: 3-6 letter words
-          filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 6);
-        }
+        let selectedWordsWithMeanings: WordWithMeaning[] = [];
+        const selectedWords: string[] = [];
         
         // Get word count based on difficulty
         const config = this.difficultyLevels.find(d => d.value === this.difficulty);
         const wordCount = config ? config.wordCount : 10;
-        
-        console.log(`Loading ${this.difficulty} words: filtered ${filteredWords.length} words from ${allWords.length} total`);
-        
-        // Randomly select words with their meanings
-        const selectedWords = [];
-        const selectedWordsWithMeanings: WordWithMeaning[] = [];
-        const wordsCopy = [...filteredWords];
-        for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
-          const randomIndex = Math.floor(Math.random() * wordsCopy.length);
-          const word = wordsCopy.splice(randomIndex, 1)[0];
-          const meaning = result[word] || 'No definition available';
-          selectedWords.push(word.toUpperCase());
-          selectedWordsWithMeanings.push({
-            word: word.toUpperCase(),
-            meaning: meaning
+
+        // Use sight words for easy difficulty
+        if (this.difficulty === 'easy') {
+          // Use kindergarten sight words for easy level
+          const sightWordsCopy = [...sightWords];
+          for (let i = 0; i < wordCount && sightWordsCopy.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * sightWordsCopy.length);
+            const wordObj = sightWordsCopy.splice(randomIndex, 1)[0];
+            selectedWords.push(wordObj.word.toUpperCase());
+            selectedWordsWithMeanings.push({
+              word: wordObj.word.toUpperCase(),
+              meaning: wordObj.meaning
+            });
+          }
+          console.log(`Loading easy level words (sight words): ${selectedWords.length} words selected`);
+        } else {
+          // Use dictionary filtering for medium and hard levels
+          const allWords = Object.keys(result);
+          let filteredWords: string[] = [];
+          
+          // Filter words based on difficulty level
+          if (this.difficulty === 'medium') {
+            // Medium: 4-5 letter words
+            filteredWords = allWords.filter(word => word.length >= 4 && word.length <= 5);
+          } else if (this.difficulty === 'hard') {
+            // Hard: 5-6 letter words, longer and more complex
+            filteredWords = allWords.filter(word => word.length >= 5 && word.length <= 6);
+          } else {
+            // Default: 3-6 letter words
+            filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 6);
+          }
+          
+          console.log(`Loading ${this.difficulty} words: filtered ${filteredWords.length} words from ${allWords.length} total`);
+          
+          // Randomly select words with their meanings
+          const wordsCopy = [...filteredWords];
+          for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * wordsCopy.length);
+            const word = wordsCopy.splice(randomIndex, 1)[0];
+            const meaning = result[word] || 'No definition available';
+            selectedWords.push(word.toUpperCase());
+            selectedWordsWithMeanings.push({
+              word: word.toUpperCase(),
+              meaning: meaning
+            });
+          }
+        }
           });
         }
         
