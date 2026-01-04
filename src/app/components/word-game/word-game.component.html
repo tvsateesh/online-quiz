@@ -3,6 +3,28 @@
     
     <div class="game-content-card">
       
+      <!-- Difficulty Level Selection -->
+      <div class="difficulty-selection">
+        <label class="difficulty-label">Difficulty Level:</label>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'easy'"
+                  (click)="setDifficulty('easy')">
+            <i class="fa fa-leaf"></i> Easy
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'medium'"
+                  (click)="setDifficulty('medium')">
+            <i class="fa fa-star"></i> Medium
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'hard'"
+                  (click)="setDifficulty('hard')">
+            <i class="fa fa-fire"></i> Hard
+          </button>
+        </div>
+      </div>
+
       <!-- Game Controls -->
       <div class="game-controls">
         <button class="game-btn game-btn-primary" (click)="getWord()">

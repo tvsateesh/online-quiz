@@ -17,15 +17,39 @@ export class WordGameComponent implements OnInit {
   lang: string = "english";
   allWords: any = {};
 
+  // Difficulty level and sight words
+  difficulty: string = 'easy';
+  sightWords = [
+    { word: 'at', meaning: 'Used to indicate a place or time' },
+    { word: 'it', meaning: 'Used to refer to a thing or animal' },
+    { word: 'in', meaning: 'Inside or within something' },
+    { word: 'is', meaning: 'Verb to be, present tense' },
+    { word: 'on', meaning: 'Above or touching a surface' },
+    { word: 'to', meaning: 'Toward a place or person' },
+    { word: 'and', meaning: 'Used to connect words or phrases' },
+    { word: 'the', meaning: 'Definite article used before nouns' },
+    { word: 'he', meaning: 'Male pronoun' },
+    { word: 'be', meaning: 'Verb meaning to exist' },
+    { word: 'we', meaning: 'Plural pronoun for a group including the speaker' },
+    { word: 'are', meaning: 'Plural form of to be' },
+    { word: 'was', meaning: 'Past tense of to be' },
+    { word: 'for', meaning: 'Indicating purpose or reason' },
+    { word: 'you', meaning: 'Person being addressed' },
+    { word: 'she', meaning: 'Female pronoun' },
+    { word: 'that', meaning: 'Used to identify a specific thing' },
+    { word: 'have', meaning: 'To possess or own' },
+    { word: 'this', meaning: 'Used to identify a thing nearby' },
+    { word: 'they', meaning: 'Plural pronoun for multiple people or things' },
+    { word: 'with', meaning: 'Accompanied by' },
+    { word: 'from', meaning: 'Indicating a starting point' }
+  ];
+
   ngOnInit(): void {
     this.dictionary.getWords().subscribe((result: any) => {
       if (result) {
         console.log(result);
         this.allWords = result;
-        this.wordList = Object.keys(this.allWords);
-        this.wordList = this.wordList.filter(
-          (word: string) => word.length <= 4
-        );
+        this.loadWordsBasedOnDifficulty();
         this.getWord();
       }
     });
@@ -36,6 +60,31 @@ export class WordGameComponent implements OnInit {
     // .subscribe((f : any) => {
     //   this.onLangChange(f);
     // })
+  }
+
+  loadWordsBasedOnDifficulty(): void {
+    if (this.difficulty === 'easy') {
+      // Use kindergarten sight words for easy level
+      this.wordList = this.sightWords.map(sw => sw.word);
+      console.log(`Loading easy level words (sight words): ${this.wordList.length} words available`);
+    } else {
+      // Use dictionary filtering for medium and hard levels
+      this.wordList = Object.keys(this.allWords);
+      if (this.difficulty === 'medium') {
+        // Medium: 4-5 letter words
+        this.wordList = this.wordList.filter((word: string) => word.length >= 4 && word.length <= 5);
+      } else if (this.difficulty === 'hard') {
+        // Hard: 5-6 letter words
+        this.wordList = this.wordList.filter((word: string) => word.length >= 5 && word.length <= 6);
+      }
+      console.log(`Loading ${this.difficulty} words: ${this.wordList.length} words available`);
+    }
+  }
+
+  setDifficulty(level: string): void {
+    this.difficulty = level;
+    this.loadWordsBasedOnDifficulty();
+    this.getWord();
   }
 
   onLangChange(f: any) {}
