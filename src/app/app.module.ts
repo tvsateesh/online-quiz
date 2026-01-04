@@ -42,6 +42,7 @@ import { OddManOutComponent } from './components/games/odd-man-out/odd-man-out.c
 import { ChessComponent } from './components/games/chess/chess.component';
 import { CheckersComponent } from './components/games/checkers/checkers.component';
 import { EscapeRoomComponent } from './components/games/escape-room/escape-room.component';
+import { SignupComponent } from './signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +71,7 @@ import { EscapeRoomComponent } from './components/games/escape-room/escape-room.
     ChessComponent,
     CheckersComponent,
     EscapeRoomComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

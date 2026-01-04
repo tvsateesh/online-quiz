@@ -20,6 +20,7 @@ import { ChessComponent } from "./components/games/chess/chess.component";
 import { CheckersComponent } from "./components/games/checkers/checkers.component";
 import { EscapeRoomComponent } from "./components/games/escape-room/escape-room.component";
 import { AuthGuard } from "./guards/auth.guard";
+import { SignupComponent } from "./signup/signup.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -31,6 +32,7 @@ const routes: Routes = [
   },
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "login", component: LoginComponent },
+  { path: "signup", component: SignupComponent },
   { path: "multi-selection", component: MultiSelectionComponent },
   { path: "form", component: FormComponent },
   { path: "dashboard", component: DashboardComponent },
