@@ -58,6 +58,48 @@
           <i class="fa fa-download"></i> Download PDF
         </button>
       </div>
+
+      <!-- Game Statistics Dashboard -->
+      <div class="stats-dashboard" *ngIf="gameHistory && gameHistory.length > 0 && !time">
+        <div class="stats-header">
+          <i class="fa fa-bar-chart"></i>
+          <h3>Game History</h3>
+          <span class="stats-count">({{gameHistory.length}} games)</span>
+        </div>
+        
+        <div class="stats-table-wrapper">
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Difficulty</th>
+                <th>Time (seconds)</th>
+                <th>Score</th>
+                <th>Result</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let game of gameHistory; let i = index" [class]="'result-' + game.result">
+                <td class="rank">{{i + 1}}</td>
+                <td class="difficulty">
+                  <span class="difficulty-badge" [class]="'diff-' + game.difficulty">
+                    {{game.difficulty | titlecase}}
+                  </span>
+                </td>
+                <td class="time">{{game.time}}s</td>
+                <td class="score">{{game.score}}</td>
+                <td class="result">
+                  <span class="result-badge" [class]="'badge-' + game.result">
+                    {{game.result | titlecase}}
+                  </span>
+                </td>
+                <td class="date">{{game.playedAt | date:'short'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
       
       <!-- Word Hunt Game Area -->
       <div class="word-hunt-container" *ngIf="time">

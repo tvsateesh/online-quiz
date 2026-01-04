@@ -40,6 +40,9 @@ export class WordHuntComponent implements OnInit {
   fillingCol = 0;
   completed: boolean = false;
   
+  // Game Statistics
+  gameHistory: any[] = [];
+  
   // Difficulty levels - all set to 10x10
   difficulty: string = 'medium';
   difficultyLevels = [
@@ -77,8 +80,23 @@ export class WordHuntComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
-              const aggregateStats = response.data.aggregate || response.data;
-              console.log('Word Hunt stats loaded from DB:', aggregateStats);
+              // Get all games from the response
+              const games = response.data.games || [];
+              
+              // Sort games by time (ascending) and then by difficulty
+              this.gameHistory = games.sort((a: any, b: any) => {
+                // First sort by time taken (ascending - fastest first)
+                if (a.time !== b.time) {
+                  return a.time - b.time;
+                }
+                // If time is same, sort by difficulty (easy, medium, hard)
+                const difficultyOrder = { 'easy': 1, 'medium': 2, 'hard': 3 };
+                const diffA = difficultyOrder[a.difficulty as keyof typeof difficultyOrder] || 0;
+                const diffB = difficultyOrder[b.difficulty as keyof typeof difficultyOrder] || 0;
+                return diffA - diffB;
+              });
+              
+              console.log('Word Hunt game history loaded from DB:', this.gameHistory);
             }
           },
           (error) => {
