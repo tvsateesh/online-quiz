@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameStatisticsService } from 'src/app/services/game-statistics.service';
 
 interface Piece {
   type: 'king' | 'queen' | 'rook' | 'bishop' | 'knight' | 'pawn';
@@ -79,7 +80,7 @@ export class ChessComponent implements OnInit {
     'black-pawn': '♟'
   };
 
-  constructor() { }
+  constructor(private gameStatsService: GameStatisticsService) { }
 
   ngOnInit(): void {
     this.loadStats();
@@ -1108,16 +1109,26 @@ export class ChessComponent implements OnInit {
     if (!hasLegalMoves) {
       if (this.isCheck) {
         this.gameOver = true;
+        let result: string;
+        let score: number;
+        
         if (this.currentPlayer === 'white') {
           this.winner = 'Black (Computer) wins by checkmate!';
           this.stats.losses++;
+          result = 'loss';
+          score = 0;
           this.saveGameToHistory('0-1', 'Black wins');
         } else {
           this.winner = 'White (You) wins by checkmate!';
           this.stats.wins++;
+          result = 'win';
+          score = 500;
           this.saveGameToHistory('1-0', 'White wins');
         }
         this.saveStats();
+        
+        // Save to database
+        this.saveChessGameStatistics(score, result);
       } else {
         // Stalemate
         this.gameOver = true;
@@ -1125,7 +1136,35 @@ export class ChessComponent implements OnInit {
         this.stats.draws++;
         this.saveGameToHistory('1/2-1/2', 'Draw');
         this.saveStats();
+        
+        // Save to database
+        this.saveChessGameStatistics(250, 'draw');
       }
+    }
+  }
+
+  saveChessGameStatistics(score: number, result: string): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id) {
+      this.gameStatsService.saveGameStatistic({
+        userId: currentUser.id,
+        username: currentUser.username,
+        gameName: 'chess',
+        score: score,
+        time: this.moveHistory.length * 2, // Rough estimate: 2 seconds per move
+        difficulty: this.difficulty,
+        moves: this.moveHistory.length,
+        result: result as 'win' | 'loss' | 'draw'
+      }).subscribe(
+        (response) => {
+          if (response.success) {
+            console.log('Chess statistics saved!');
+          }
+        },
+        (error) => {
+          console.error('Error saving chess statistics:', error);
+        }
+      );
     }
   }
 

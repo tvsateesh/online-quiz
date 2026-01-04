@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameStatisticsService } from 'src/app/services/game-statistics.service';
 
 interface CheckersSquare {
   row: number;
@@ -25,7 +26,7 @@ export class CheckersComponent implements OnInit {
   blackPieces: number = 12;
   moveHistory: string[] = [];
 
-  constructor() { }
+  constructor(private gameStatsService: GameStatisticsService) { }
 
   ngOnInit(): void {
     this.initializeBoard();
@@ -209,9 +210,11 @@ export class CheckersComponent implements OnInit {
     if (this.redPieces === 0) {
       this.gameStatus = 'game-over';
       this.winner = 'black';
+      this.saveCheckersGameStatistics('win', 500);
     } else if (this.blackPieces === 0) {
       this.gameStatus = 'game-over';
       this.winner = 'red';
+      this.saveCheckersGameStatistics('loss', 0);
     } else {
       // Check if current player has valid moves
       let hasValidMoves = false;
@@ -229,7 +232,35 @@ export class CheckersComponent implements OnInit {
       if (!hasValidMoves) {
         this.gameStatus = 'game-over';
         this.winner = this.currentPlayer === 'black' ? 'red' : 'black';
+        const result = this.winner === 'black' ? 'win' : 'loss';
+        const score = this.winner === 'black' ? 400 : 100;
+        this.saveCheckersGameStatistics(result, score);
       }
+    }
+  }
+
+  saveCheckersGameStatistics(result: string, score: number): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id) {
+      this.gameStatsService.saveGameStatistic({
+        userId: currentUser.id,
+        username: currentUser.username,
+        gameName: 'checkers',
+        score: score,
+        time: this.moveHistory.length * 3, // Rough estimate: 3 seconds per move
+        difficulty: 'medium',
+        moves: this.moveHistory.length,
+        result: result as 'win' | 'loss' | 'draw'
+      }).subscribe(
+        (response) => {
+          if (response.success) {
+            console.log('Checkers statistics saved!');
+          }
+        },
+        (error) => {
+          console.error('Error saving checkers statistics:', error);
+        }
+      );
     }
   }
 

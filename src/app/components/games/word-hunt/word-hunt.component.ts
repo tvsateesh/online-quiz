@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DictionaryService } from 'src/app/service/dictionary.service';
+import { GameStatisticsService } from 'src/app/services/game-statistics.service';
 
 // Interface for word with meaning
 interface WordWithMeaning {
@@ -55,7 +56,7 @@ export class WordHuntComponent implements OnInit {
   selectionStartCol: number = -1;
   selectionDirection: string | null = null;
 
-  constructor(private dictionaryService: DictionaryService) { 
+  constructor(private dictionaryService: DictionaryService, private gameStatsService: GameStatisticsService) { 
     
 
   }
@@ -214,6 +215,34 @@ export class WordHuntComponent implements OnInit {
     this.endGameDuration = Math.round(((end - this.startGameTimer)/1000)/60);
     clearInterval(this.timer);
     this.time = 0;
+
+    // Save game statistics
+    if (this.completed) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      if (currentUser.id) {
+        // Calculate score based on words found and time taken
+        const score = this.foundCount * 100; // 100 points per word found
+        
+        this.gameStatsService.saveGameStatistic({
+          userId: currentUser.id,
+          username: currentUser.username,
+          gameName: 'word-hunt',
+          score: score,
+          time: this.endGameDuration * 60, // Convert minutes to seconds
+          difficulty: this.difficulty,
+          result: this.completed ? 'win' : 'loss'
+        }).subscribe(
+          (response) => {
+            if (response.success) {
+              console.log('Word Hunt statistics saved!');
+            }
+          },
+          (error) => {
+            console.error('Error saving Word Hunt statistics:', error);
+          }
+        );
+      }
+    }
   }
 
   generateBoard(): void {

@@ -9,6 +9,13 @@
         Brain Games
       </h2>
       <p class="sidebar-subtitle">Choose a game</p>
+      
+      <!-- Stats Button -->
+      <button class="stats-button" (click)="toggleStatsPanel()" title="View your game statistics">
+        <i class="fa fa-bar-chart"></i>
+        <span>My Stats</span>
+        <span class="stats-badge" *ngIf="userStats && userStats.totalGamesPlayed">{{ userStats?.totalGamesPlayed }}</span>
+      </button>
     </div>
     
     <nav class="games-menu">
@@ -86,6 +93,65 @@
   <!-- Right Content Area for Game Components -->
   <main class="games-content">
     <router-outlet></router-outlet>
+    
+    <!-- Stats Panel -->
+    <div class="stats-panel" *ngIf="showStatsPanel" [@fadeInOut]>
+      <div class="stats-container">
+        <div class="stats-header">
+          <h2>
+            <i class="fa fa-bar-chart"></i>
+            Game Statistics
+          </h2>
+          <button class="close-btn" (click)="toggleStatsPanel()">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="stats-content" *ngIf="userStats">
+          <!-- Overall Summary -->
+          <div class="summary-section">
+            <div class="summary-card">
+              <div class="stat-value">{{ userStats.totalGamesPlayed }}</div>
+              <div class="stat-label">Total Games</div>
+            </div>
+          </div>
+          
+          <!-- Per-Game Stats -->
+          <div class="games-detail" *ngIf="userStats.gameStats.length > 0">
+            <div class="game-stat-card" *ngFor="let game of userStats.gameStats">
+              <div class="game-header">
+                <h3>{{ game.gameName }}</h3>
+                <div class="win-rate" [ngClass]="game.winRate >= 70 ? 'high-rate' : game.winRate >= 40 ? 'medium-rate' : 'low-rate'">
+                  {{ game.winRate }}% Win Rate
+                </div>
+              </div>
+              <div class="game-stats-grid">
+                <div class="stat">
+                  <div class="label">Games</div>
+                  <div class="value">{{ game.totalGames }}</div>
+                </div>
+                <div class="stat wins">
+                  <div class="label">Wins</div>
+                  <div class="value">{{ game.wins }}</div>
+                </div>
+                <div class="stat losses">
+                  <div class="label">Losses</div>
+                  <div class="value">{{ game.losses }}</div>
+                </div>
+                <div class="stat">
+                  <div class="label">Avg Score</div>
+                  <div class="value">{{ game.avgScore }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="no-stats" *ngIf="userStats.gameStats.length === 0">
+            <p>No games played yet. Start playing to see your statistics!</p>
+          </div>
+        </div>
+      </div>
+    </div>
     
     <!-- Welcome screen shown when no game is selected -->
     <div class="welcome-screen" *ngIf="!hasActiveRoute()">
