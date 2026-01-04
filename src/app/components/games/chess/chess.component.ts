@@ -1222,9 +1222,36 @@ export class ChessComponent implements OnInit {
   }
 
   loadStats(): void {
-    const savedStats = localStorage.getItem('chessStats');
-    if (savedStats) {
-      this.stats = JSON.parse(savedStats);
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser?.userId) {
+      // Load chess statistics from database
+      this.gameStatsService.getGameStatistics(currentUser.userId, 'chess')
+        .subscribe(
+          (response: any) => {
+            if (response.success && response.data) {
+              const stats = response.data;
+              this.stats = {
+                wins: stats.wins || 0,
+                losses: stats.losses || 0,
+                draws: stats.draws || 0
+              };
+            }
+          },
+          (error) => {
+            console.error('Error loading chess statistics:', error);
+            // Fallback to localStorage
+            const savedStats = localStorage.getItem('chessStats');
+            if (savedStats) {
+              this.stats = JSON.parse(savedStats);
+            }
+          }
+        );
+    } else {
+      // Fallback to localStorage if no user logged in
+      const savedStats = localStorage.getItem('chessStats');
+      if (savedStats) {
+        this.stats = JSON.parse(savedStats);
+      }
     }
   }
 

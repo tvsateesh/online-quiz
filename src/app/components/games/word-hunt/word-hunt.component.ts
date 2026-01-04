@@ -64,6 +64,27 @@ export class WordHuntComponent implements OnInit {
   ngOnInit(): void {
     // Load words from dictionary service
     this.loadWordsFromDictionary();
+    // Load stats from database
+    this.loadStats();
+  }
+
+  loadStats(): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser?.userId) {
+      // Load word-hunt statistics from database
+      this.gameStatsService.getGameStatistics(currentUser.userId, 'word-hunt')
+        .subscribe(
+          (response: any) => {
+            if (response.success && response.data) {
+              const stats = response.data;
+              console.log('Word Hunt stats loaded from DB:', stats);
+            }
+          },
+          (error) => {
+            console.error('Error loading word-hunt statistics:', error);
+          }
+        );
+    }
   }
 
   loadWordsFromDictionary(): void {

@@ -29,7 +29,27 @@ export class CheckersComponent implements OnInit {
   constructor(private gameStatsService: GameStatisticsService) { }
 
   ngOnInit(): void {
+    this.loadStats();
     this.initializeBoard();
+  }
+
+  loadStats(): void {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser?.userId) {
+      // Load checkers statistics from database
+      this.gameStatsService.getGameStatistics(currentUser.userId, 'checkers')
+        .subscribe(
+          (response: any) => {
+            if (response.success && response.data) {
+              const stats = response.data;
+              console.log('Checkers stats loaded from DB:', stats);
+            }
+          },
+          (error) => {
+            console.error('Error loading checkers statistics:', error);
+          }
+        );
+    }
   }
 
   initializeBoard(): void {
