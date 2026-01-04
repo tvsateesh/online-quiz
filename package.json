@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
-    "build": "ng build",
+    "start": "npm run start:server",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "ng build --configuration production",
+    "build:backend": "cd backend && npm install && npm run build",
+    "start:server": "cd backend && npm start",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

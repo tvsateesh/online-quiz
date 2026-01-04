@@ -32,16 +32,28 @@ app.use('/api', routes);
 
 // Serve static files from frontend build
 const frontendPath = path.join(__dirname, '../../dist/angular-quiz');
-app.use(express.static(frontendPath));
+console.log('Frontend path:', frontendPath);
+
+const fs = require('fs');
+if (fs.existsSync(frontendPath)) {
+  app.use(express.static(frontendPath));
+  console.log('✓ Serving frontend from:', frontendPath);
+} else {
+  console.warn('⚠️  Frontend build not found at:', frontendPath);
+}
 
 // SPA fallback: redirect all non-API routes to index.html for Angular routing
 app.get('*', (req, res) => {
   const indexPath = path.join(frontendPath, 'index.html');
-  res.sendFile(indexPath, (err) => {
-    if (err) {
-      res.status(404).json({ error: 'Not found' });
-    }
-  });
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath, (err) => {
+      if (err) {
+        res.status(404).json({ error: 'Not found' });
+      }
+    });
+  } else {
+    res.status(404).json({ error: 'Frontend not found' });
+  }
 });
 
 app.use(errorHandler);
