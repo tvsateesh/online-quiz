@@ -34,10 +34,11 @@ export class CheckersComponent implements OnInit {
   }
 
   loadStats(): void {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser?.id) {
-      // Load checkers statistics from database
-      this.gameStatsService.getGameStatistics(currentUser.id, 'checkers')
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      if (currentUser?.id) {
+        // Load checkers statistics from database
+        this.gameStatsService.getGameStatistics(currentUser.id, 'checkers')
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
@@ -49,6 +50,9 @@ export class CheckersComponent implements OnInit {
             console.error('Error loading checkers statistics:', error);
           }
         );
+      }
+    } catch (error) {
+      console.error('Error parsing currentUser in loadStats:', error);
     }
   }
 

@@ -1222,10 +1222,11 @@ export class ChessComponent implements OnInit {
   }
 
   loadStats(): void {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser?.id) {
-      // Load chess statistics from database
-      this.gameStatsService.getGameStatistics(currentUser.id, 'chess')
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      if (currentUser?.id) {
+        // Load chess statistics from database
+        this.gameStatsService.getGameStatistics(currentUser.id, 'chess')
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
@@ -1251,6 +1252,18 @@ export class ChessComponent implements OnInit {
       const savedStats = localStorage.getItem('chessStats');
       if (savedStats) {
         this.stats = JSON.parse(savedStats);
+      }
+    }
+    } catch (error) {
+      console.error('Error parsing currentUser in loadStats:', error);
+      // Fallback to localStorage on parsing error
+      const savedStats = localStorage.getItem('chessStats');
+      if (savedStats) {
+        try {
+          this.stats = JSON.parse(savedStats);
+        } catch (e) {
+          console.error('Error parsing cached stats:', e);
+        }
       }
     }
   }

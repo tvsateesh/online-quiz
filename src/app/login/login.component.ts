@@ -114,7 +114,14 @@ export class LoginComponent implements OnInit {
           picture: decodedToken.picture
         });
         
-        localStorage.setItem('currentUser', decodedToken.email);
+        // Store as a proper user object (use email as ID for Google users)
+        const currentUser = {
+          id: decodedToken.email,
+          email: decodedToken.email,
+          username: decodedToken.name || decodedToken.email.split('@')[0],
+          name: decodedToken.name
+        };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
         console.log('User data saved to localStorage');
         console.log('User profile set in UserService');
         console.log('Setting isLoggingIn to true');
