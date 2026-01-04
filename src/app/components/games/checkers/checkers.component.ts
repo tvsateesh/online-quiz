@@ -42,8 +42,8 @@ export class CheckersComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
-              const stats = response.data;
-              console.log('Checkers stats loaded from DB:', stats);
+              const aggregateStats = response.data.aggregate || response.data;
+              console.log('Checkers stats loaded from DB:', aggregateStats);
             }
           },
           (error) => {

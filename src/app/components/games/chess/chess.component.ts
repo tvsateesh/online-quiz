@@ -1230,12 +1230,14 @@ export class ChessComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
-              const stats = response.data;
+              // Get aggregate stats from the response
+              const aggregateStats = response.data.aggregate || response.data;
               this.stats = {
-                wins: stats.wins || 0,
-                losses: stats.losses || 0,
-                draws: stats.draws || 0
+                wins: aggregateStats.wins || 0,
+                losses: aggregateStats.losses || 0,
+                draws: aggregateStats.draws || 0
               };
+              console.log('Chess stats loaded from database:', this.stats);
             }
           },
           (error) => {

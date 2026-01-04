@@ -77,8 +77,8 @@ export class WordHuntComponent implements OnInit {
         .subscribe(
           (response: any) => {
             if (response.success && response.data) {
-              const stats = response.data;
-              console.log('Word Hunt stats loaded from DB:', stats);
+              const aggregateStats = response.data.aggregate || response.data;
+              console.log('Word Hunt stats loaded from DB:', aggregateStats);
             }
           },
           (error) => {
