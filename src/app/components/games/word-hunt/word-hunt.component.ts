@@ -191,8 +191,6 @@ export class WordHuntComponent implements OnInit {
             });
           }
         }
-          });
-        }
         
         this.hiddenWords = selectedWords;
         this.wordsWithMeanings = selectedWordsWithMeanings;
