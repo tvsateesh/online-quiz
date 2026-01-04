@@ -33,8 +33,8 @@
           <!-- Word Game Area -->
           <div class="word-game-area" *ngIf="word">
             
-            <!-- Scrambled Letters Section -->
-            <div class="word-section">
+            <!-- Scrambled Letters Section - Hide when all letters used -->
+            <div class="word-section" *ngIf="letters.length > 0">
               <div class="section-header">
                 <i class="fa fa-puzzle-piece"></i>
                 <h3>Available Letters</h3>
@@ -45,10 +45,6 @@
                      (click)="addLetterToAnswer(letter, idx)">
                   <span>{{letter}}</span>
                 </div>
-                <div class="empty-state" *ngIf="letters.length === 0">
-                  <i class="fa fa-check-circle"></i>
-                  <span>All letters used!</span>
-                </div>
               </div>
               <p class="zone-hint">
                 <i class="fa fa-hand-pointer-o"></i>
@@ -56,8 +52,8 @@
               </p>
             </div>
             
-            <!-- Arrow Indicator -->
-            <div class="arrow-indicator">
+            <!-- Arrow Indicator - Show only when letters available -->
+            <div class="arrow-indicator" *ngIf="letters.length > 0">
               <i class="fa fa-arrow-down"></i>
             </div>
 
