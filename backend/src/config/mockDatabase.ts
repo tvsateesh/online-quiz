@@ -15,9 +15,26 @@ export interface MockUser {
   comparePassword(password: string): Promise<boolean>;
 }
 
+export interface MockGameStatistic {
+  _id: string;
+  userId: string;
+  username: string;
+  gameName: string;
+  score: number;
+  time: number;
+  difficulty?: string;
+  moves?: number;
+  result?: string;
+  details?: Record<string, any>;
+  playedAt: Date;
+  createdAt: Date;
+}
+
 class MockDatabase {
   private users: Map<string, MockUser> = new Map();
+  private gameStats: Map<string, MockGameStatistic> = new Map();
   private idCounter = 1;
+  private statsIdCounter = 1;
 
   async findOne(query: any): Promise<MockUser | null> {
     const users = Array.from(this.users.values());
@@ -61,9 +78,49 @@ class MockDatabase {
     return fullUser;
   }
 
+  // Game Statistics Methods
+  async saveGameStatistic(data: Partial<MockGameStatistic>): Promise<MockGameStatistic> {
+    const id = `mock_stat_${this.statsIdCounter++}`;
+    const now = new Date();
+    
+    const stat: MockGameStatistic = {
+      _id: id,
+      userId: data.userId || '',
+      username: data.username || '',
+      gameName: data.gameName || '',
+      score: data.score || 0,
+      time: data.time || 0,
+      difficulty: data.difficulty || 'medium',
+      moves: data.moves || 0,
+      result: data.result || 'draw',
+      details: data.details || {},
+      playedAt: data.playedAt || now,
+      createdAt: now
+    };
+
+    this.gameStats.set(id, stat);
+    return stat;
+  }
+
+  async getGameStatistics(userId: string): Promise<MockGameStatistic[]> {
+    const stats = Array.from(this.gameStats.values());
+    return stats
+      .filter(s => s.userId === userId)
+      .sort((a, b) => new Date(b.playedAt).getTime() - new Date(a.playedAt).getTime());
+  }
+
+  async getGameStatisticsByGame(userId: string, gameName: string): Promise<MockGameStatistic[]> {
+    const stats = Array.from(this.gameStats.values());
+    return stats
+      .filter(s => s.userId === userId && s.gameName === gameName)
+      .sort((a, b) => new Date(b.playedAt).getTime() - new Date(a.playedAt).getTime());
+  }
+
   clear(): void {
     this.users.clear();
+    this.gameStats.clear();
     this.idCounter = 1;
+    this.statsIdCounter = 1;
   }
 }
 

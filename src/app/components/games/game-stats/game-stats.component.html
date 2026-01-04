@@ -1,0 +1,70 @@
+<div class="stats-container">
+  <div class="stats-header">
+    <h2><i class="fa fa-chart-bar"></i> Game Statistics</h2>
+    <button *ngIf="showStatsDropdown" class="close-btn" (click)="closeStats()">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="fa fa-spinner fa-spin"></i> Loading statistics...
+  </div>
+
+  <div *ngIf="!loading && stats">
+    <!-- Summary Section -->
+    <div class="summary-section">
+      <div class="summary-card">
+        <div class="stat-value">{{ stats.totalGamesPlayed }}</div>
+        <div class="stat-label">Total Games</div>
+      </div>
+    </div>
+
+    <!-- Games Detail Section -->
+    <div *ngIf="stats.gameStats.length > 0" class="games-detail">
+      <div *ngFor="let game of stats.gameStats" class="game-stat-card">
+        <div class="game-header">
+          <h3>{{ game.gameName | uppercase }}</h3>
+          <span class="win-rate" [class.high-rate]="game.winRate >= 70" [class.medium-rate]="game.winRate >= 40" [class.low-rate]="game.winRate < 40">
+            {{ game.winRate }}% Win Rate
+          </span>
+        </div>
+
+        <div class="game-stats-grid">
+          <div class="stat">
+            <span class="label">Games Played</span>
+            <span class="value">{{ game.totalGames }}</span>
+          </div>
+          <div class="stat">
+            <span class="label">Avg Score</span>
+            <span class="value">{{ game.avgScore }}</span>
+          </div>
+          <div class="stat">
+            <span class="label">High Score</span>
+            <span class="value">{{ game.recentScore }}</span>
+          </div>
+          <div class="stat">
+            <span class="label">Total Time</span>
+            <span class="value">{{ formatTime(game.totalTime) }}</span>
+          </div>
+          <div class="stat wins">
+            <span class="label">Wins</span>
+            <span class="value">{{ game.wins }}</span>
+          </div>
+          <div class="stat losses">
+            <span class="label">Losses</span>
+            <span class="value">{{ game.losses }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="stats.gameStats.length === 0" class="no-stats">
+      <p>No game statistics yet. Start playing games to see your stats!</p>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !stats && errorMsg" class="error-message">
+    <i class="fa fa-exclamation-circle"></i>
+    {{ errorMsg }}
+  </div>
+</div>
