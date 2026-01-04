@@ -287,7 +287,7 @@ Stats displayed in dashboard
 ### Environment Configuration
 ```
 Backend (.env):
-MONGODB_URI=mongodb+srv://sateesh:Pandu%40143@rnd.yhfgr7a.mongodb.net/gamesdb
+MONGODB_URI=mongodb+srv://sateesh:password@rnd.yhfgr7a.mongodb.net/gamesdb
 JWT_SECRET=your-secret-key
 PORT=5001
 USE_MOCK=true (enables fallback)

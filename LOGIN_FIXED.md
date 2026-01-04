@@ -139,7 +139,7 @@ curl -X POST http://localhost:5001/api/auth/login \
 ### For MongoDB Atlas (Production)
 1. Ensure MongoDB Atlas credentials are correct in `.env`:
    ```env
-   MONGODB_URI=mongodb+srv://sateesh:Pandu%40143@rnd.yhfgr7a.mongodb.net/gamesdb?retryWrites=true&w=majority&appName=RnD
+   MONGODB_URI=mongodb+srv://sateesh:password@rnd.yhfgr7a.mongodb.net/gamesdb?retryWrites=true&w=majority&appName=RnD
    ```
 
 2. The app will automatically use MongoDB when the connection is available

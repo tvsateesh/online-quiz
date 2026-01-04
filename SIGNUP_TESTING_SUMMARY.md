@@ -122,7 +122,7 @@ Brain Games & Rock Stock backend listening on port 5001
 
 ### Environment Variables (.env)
 ```env
-MONGODB_URI=mongodb+srv://sateesh:Pandu%40143@rnd.yhfgr7a.mongodb.net/?retryWrites=true&w=majority&appName=RnD
+MONGODB_URI=mongodb+srv://sateesh:pass@rnd.yhfgr7a.mongodb.net/?retryWrites=true&w=majority&appName=RnD
 JWT_SECRET=your_jwt_secret_key_here_change_in_production
 PORT=5001
 NODE_ENV=development

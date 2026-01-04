@@ -182,7 +182,7 @@ GameStatistics {
 
 **Environment Variables** (Backend .env):
 ```
-MONGODB_URI=mongodb+srv://sateesh:Pandu%40143@rnd.yhfgr7a.mongodb.net/gamesdb?retryWrites=true&w=majority&appName=RnD
+MONGODB_URI=mongodb+srv://sateesh:password@rnd.yhfgr7a.mongodb.net/gamesdb?retryWrites=true&w=majority&appName=RnD
 JWT_SECRET=your-secret-key (change in production)
 PORT=5001
 USE_MOCK=true (enables mock database fallback)

@@ -142,7 +142,7 @@ The application uses MongoDB Atlas cloud database.
 
 Connection details in `.env`:
 ```env
-MONGODB_URI=mongodb+srv://sateesh:Pandu%40143@rnd.yhfgr7a.mongodb.net/gamesdb?retryWrites=true&w=majority&appName=RnD
+MONGODB_URI=mongodb+srv://sateesh:password@rnd.yhfgr7a.mongodb.net/gamesdb?retryWrites=true&w=majority&appName=RnD
 ```
 
 ## Local Testing
