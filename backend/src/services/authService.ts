@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import bcryptjs from 'bcryptjs';
+import { mockDb } from '../config/mockDatabase';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const USE_MOCK = process.env.USE_MOCK === 'true' || !process.env.MONGODB_URI;
 
 export interface SignUpData {
   username: string;
@@ -34,10 +36,18 @@ export interface AuthResponse {
 export const authService = {
   async signup(data: SignUpData): Promise<AuthResponse> {
     try {
-      // Check if user already exists
-      const existingUser = await User.findOne({
-        $or: [{ email: data.email }, { username: data.username }]
-      });
+      let existingUser;
+      
+      // Use mock database if enabled or MongoDB unavailable
+      if (USE_MOCK) {
+        existingUser = await mockDb.findOne({
+          $or: [{ email: data.email }, { username: data.username }]
+        });
+      } else {
+        existingUser = await User.findOne({
+          $or: [{ email: data.email }, { username: data.username }]
+        });
+      }
 
       if (existingUser) {
         return {
@@ -52,8 +62,9 @@ export const authService = {
 
       // Create new user
       let newUser;
-      if (User.create) {
-        newUser = await User.create({
+      
+      if (USE_MOCK) {
+        newUser = await mockDb.save({
           username: data.username,
           email: data.email,
           password: hashedPassword,
@@ -61,14 +72,24 @@ export const authService = {
           lastName: data.lastName
         });
       } else {
-        newUser = new User({
-          username: data.username,
-          email: data.email,
-          password: hashedPassword,
-          firstName: data.firstName,
-          lastName: data.lastName
-        });
-        await newUser.save();
+        if (User.create) {
+          newUser = await User.create({
+            username: data.username,
+            email: data.email,
+            password: hashedPassword,
+            firstName: data.firstName,
+            lastName: data.lastName
+          });
+        } else {
+          newUser = new User({
+            username: data.username,
+            email: data.email,
+            password: hashedPassword,
+            firstName: data.firstName,
+            lastName: data.lastName
+          });
+          await newUser.save();
+        }
       }
 
       // Generate JWT token
@@ -102,8 +123,14 @@ export const authService = {
 
   async login(data: LoginData): Promise<AuthResponse> {
     try {
-      // Find user by email and include password
-      const user = await User.findOne({ email: data.email }).select('+password') as any;
+      let user;
+      
+      // Use mock database if enabled or MongoDB unavailable
+      if (USE_MOCK) {
+        user = await mockDb.findOne({ email: data.email });
+      } else {
+        user = await User.findOne({ email: data.email }).select('+password') as any;
+      }
 
       if (!user) {
         return {

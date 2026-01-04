@@ -20,20 +20,19 @@
       <form class="login-form">
         
         <div class="form-group">
-          <label for="username" class="form-label">
-            <i class="fa fa-user"></i>
-            Username
+          <label for="email" class="form-label">
+            <i class="fa fa-envelope"></i>
+            Email
           </label>
           <div class="input-wrapper">
             <input 
-              type="text" 
-              id="username"
-              name="username" 
+              type="email" 
+              id="email"
+              name="email" 
               [(ngModel)]="userName" 
-              maxlength="20" 
               required
               class="form-input"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
             >
           </div>
         </div>

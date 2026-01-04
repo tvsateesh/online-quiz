@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgModel, FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { UserService } from '../services/user.service';
 
 declare var google: any;
@@ -18,7 +19,13 @@ export class LoginComponent implements OnInit {
   googleSignInLoading: boolean = false;
   isLoggingIn: boolean = false; // Flag to hide component during navigation
   
-  constructor(private router: Router, private cdr: ChangeDetectorRef, private userService: UserService, private ngZone: NgZone) { }
+  constructor(
+    private router: Router, 
+    private cdr: ChangeDetectorRef, 
+    private userService: UserService, 
+    private ngZone: NgZone,
+    private http: HttpClient
+  ) { }
 
   ngOnInit(): void {
     // Reset logging in flag when component initializes
@@ -164,25 +171,49 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser(): void {
-    if (this.userName == 'admin' && this.password == 'admin') {
-      console.log('Welcome');
-      localStorage.setItem('currentUser', this.userName);
-      
-      // Set admin profile in UserService
-      this.userService.setUserProfile({
-        email: 'admin@braingames.com',
-        name: 'Admin User',
-        picture: 'assets/default-avatar.svg'
-      });
-      
-      this.isLoggingIn = true;
-      this.cdr.detectChanges();
-      this.ngZone.run(() => {
-        this.router.navigate(['games']);
-      });
-    } else {
-      this.errorMsg = 'Invalid Login Details';
+    if (!this.userName || !this.password) {
+      this.errorMsg = 'Email and password are required';
+      return;
     }
+
+    this.isLoggingIn = true;
+    this.errorMsg = '';
+
+    const loginData = {
+      email: this.userName, // Use email field from form
+      password: this.password
+    };
+
+    this.http.post<any>('/api/auth/login', loginData).subscribe(
+      (response: any) => {
+        if (response.success) {
+          // Store user data and token
+          localStorage.setItem('currentUser', JSON.stringify(response.user));
+          localStorage.setItem('authToken', response.token);
+          
+          // Set user profile in UserService
+          this.userService.setUserProfile({
+            email: response.user.email,
+            name: response.user.firstName + ' ' + response.user.lastName,
+            picture: 'assets/default-avatar.svg'
+          });
+          
+          console.log('Login successful');
+          this.cdr.detectChanges();
+          this.ngZone.run(() => {
+            this.router.navigate(['games']);
+          });
+        } else {
+          this.errorMsg = response.error || response.message || 'Login failed';
+          this.isLoggingIn = false;
+        }
+      },
+      (error: any) => {
+        console.error('Login error:', error);
+        this.errorMsg = error.error?.error || 'Invalid login details. Please check your email and password.';
+        this.isLoggingIn = false;
+      }
+    );
   }
 
 }
