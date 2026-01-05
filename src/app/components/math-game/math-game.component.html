@@ -50,7 +50,7 @@
                 placeholder="Enter your answer..."
                 [disabled]="!gameActive"
                 autofocus>
-              <button class="submit-btn" (click)="submitAnswer(false)" [disabled]="!gameActive || playerAnswer === ''">
+              <button class="submit-btn" (click)="submitAnswer(false)" [disabled]="!gameActive">
                 <i class="fa fa-arrow-right"></i> Submit
               </button>
             </div>

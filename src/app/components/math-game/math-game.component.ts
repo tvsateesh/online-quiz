@@ -160,8 +160,8 @@ export class MathGameComponent implements OnInit {
   submitAnswer(timedOut: boolean = false): void {
     if (!this.gameActive || !this.currentQuestion) return;
 
-    // Don't consider empty input as a valid answer
-    if (!this.playerAnswer || this.playerAnswer.trim() === '') {
+    // Don't consider empty input as a valid answer (but allow 0)
+    if (this.playerAnswer.trim() === '') {
       this.feedbackType = 'wrong';
       this.feedbackMessage = 'Please enter a number!';
       this.showFeedback = true;
@@ -200,6 +200,8 @@ export class MathGameComponent implements OnInit {
       this.endGame();
     } else {
       setTimeout(() => {
+        this.playerAnswer = ''; // Clear the answer for the next question
+        this.showFeedback = false;
         this.generateNewQuestion();
       }, 2000);
     }
