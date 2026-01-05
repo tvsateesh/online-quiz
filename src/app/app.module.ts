@@ -44,6 +44,7 @@ import { CheckersComponent } from './components/games/checkers/checkers.componen
 import { EscapeRoomComponent } from './components/games/escape-room/escape-room.component';
 import { SignupComponent } from './signup/signup.component';
 import { SentenceGameComponent } from './components/sentence-game/sentence-game.component';
+import { MathGameComponent } from './components/math-game/math-game.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +75,7 @@ import { SentenceGameComponent } from './components/sentence-game/sentence-game.
     EscapeRoomComponent,
     SignupComponent,
     SentenceGameComponent,
+    MathGameComponent,
   ],
   imports: [
     BrowserModule,

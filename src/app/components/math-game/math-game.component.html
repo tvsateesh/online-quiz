@@ -1,0 +1,168 @@
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    <div class="game-content-card">
+      
+      <!-- Difficulty Level Selection -->
+      <div class="difficulty-selection" *ngIf="!gameActive && !gameOver">
+        <label class="difficulty-label">Difficulty Level:</label>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'easy'"
+                  (click)="setDifficulty('easy')">
+            <i class="fa fa-leaf"></i> Easy
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'medium'"
+                  (click)="setDifficulty('medium')">
+            <i class="fa fa-star"></i> Medium
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'hard'"
+                  (click)="setDifficulty('hard')">
+            <i class="fa fa-fire"></i> Hard
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Game Layout -->
+      <div class="game-layout" *ngIf="gameActive || gameOver">
+        
+        <!-- Left Side: Game Area -->
+        <div class="game-left-section">
+          
+          <!-- Question Display -->
+          <div class="question-area" *ngIf="currentQuestion && gameActive">
+            <div class="question-display">
+              <div class="question-text">{{ getQuestion() }}</div>
+              <div class="question-label">= ?</div>
+            </div>
+          </div>
+
+          <!-- Game Play Area with Falling Timer -->
+          <div class="play-area" *ngIf="gameActive">
+            <div class="falling-timer-container">
+              <!-- Falling Rectangle Timer -->
+              <div class="falling-rectangle" [style.height.%]="timerProgress" [style.background-color]="getTimerColor()">
+              </div>
+            </div>
+
+            <!-- Answer Input Area -->
+            <div class="input-area">
+              <input 
+                type="number" 
+                class="answer-input" 
+                [(ngModel)]="playerAnswer"
+                (keydown.enter)="submitAnswer(false)"
+                placeholder="Enter your answer..."
+                [disabled]="!gameActive"
+                autofocus>
+              <button class="submit-btn" (click)="submitAnswer(false)" [disabled]="!gameActive || playerAnswer === ''">
+                <i class="fa fa-arrow-right"></i> Submit
+              </button>
+            </div>
+
+            <!-- Feedback Message -->
+            <div class="feedback-message" *ngIf="showFeedback" [class.correct]="feedbackType === 'correct'" [class.wrong]="feedbackType === 'wrong'">
+              <i [class]="feedbackType === 'correct' ? 'fa fa-check-circle' : 'fa fa-times-circle'"></i>
+              <span>{{ feedbackMessage }}</span>
+            </div>
+          </div>
+
+          <!-- Game Over Screen -->
+          <div class="game-over-screen" *ngIf="gameOver">
+            <div class="game-over-card">
+              <i class="fa fa-flag-checkered game-over-icon"></i>
+              <h2>Game Over!</h2>
+              <p class="final-score">Final Score: <strong>{{ gameStats.score }}</strong></p>
+              
+              <div class="stats-summary">
+                <div class="stat-row">
+                  <span class="stat-label">Correct Answers:</span>
+                  <span class="stat-value correct">{{ gameStats.correctAnswers }}</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Wrong Answers:</span>
+                  <span class="stat-value wrong">{{ gameStats.wrongAnswers }}</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Time Spent:</span>
+                  <span class="stat-value">{{ gameStats.timeSpent }}s</span>
+                </div>
+                <div class="stat-row">
+                  <span class="stat-label">Difficulty:</span>
+                  <span class="stat-value">{{ difficulty | uppercase }}</span>
+                </div>
+              </div>
+
+              <button class="play-again-btn" (click)="resetGame()">
+                <i class="fa fa-refresh"></i> Play Again
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Side: Game Stats Panel -->
+        <div class="game-right-section" *ngIf="gameActive">
+          <div class="stats-panel">
+            <h4 class="stats-title">Game Stats</h4>
+            
+            <div class="stat-display">
+              <div class="stat-box score">
+                <i class="fa fa-trophy"></i>
+                <div class="stat-info">
+                  <span class="stat-label">Score</span>
+                  <span class="stat-value">{{ gameStats.score }}</span>
+                </div>
+              </div>
+
+              <div class="stat-box correct">
+                <i class="fa fa-check"></i>
+                <div class="stat-info">
+                  <span class="stat-label">Correct</span>
+                  <span class="stat-value">{{ gameStats.correctAnswers }}</span>
+                </div>
+              </div>
+
+              <div class="stat-box wrong">
+                <i class="fa fa-times"></i>
+                <div class="stat-info">
+                  <span class="stat-label">Wrong</span>
+                  <span class="stat-value">{{ gameStats.wrongAnswers }}/3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wrong Answers Indicator -->
+            <div class="wrong-answers-indicator">
+              <div class="wrong-life" *ngFor="let i of [1,2,3]" [class.lost]="i <= gameStats.wrongAnswers">
+                <i class="fa fa-heart"></i>
+              </div>
+            </div>
+
+            <!-- Difficulty Badge -->
+            <div class="difficulty-badge" [ngClass]="'level-' + difficulty">
+              <span>{{ difficulty | uppercase }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Game Instructions -->
+      <div class="game-info" *ngIf="!gameActive && !gameOver">
+        <div class="info-card">
+          <i class="fa fa-question-circle"></i>
+          <h3>How to Play</h3>
+          <p>Solve math problems as fast as you can! A falling rectangle shows your time limit. Enter your answer and press Enter or click Submit.</p>
+        </div>
+        <div class="info-card">
+          <i class="fa fa-gamepad"></i>
+          <h3>Game Rules</h3>
+          <p>Earn 10 points for each correct answer. You have 3 lives (wrong answers). Game over when you lose all 3 lives. The faster you answer, the higher your score!</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
