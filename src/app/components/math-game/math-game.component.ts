@@ -47,6 +47,10 @@ export class MathGameComponent implements OnInit {
   timerProgress: number = 100;
   timerInterval: any;
   currentUser: any = null;
+
+  // Previous game stats
+  previousGameStats: any = null;
+  gameHistory: any[] = [];
   
   // Difficulty settings
   difficultySettings = {
@@ -71,6 +75,7 @@ export class MathGameComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUser();
+    this.loadGameHistory();
   }
 
   loadUser(): void {
@@ -81,6 +86,25 @@ export class MathGameComponent implements OnInit {
       } catch (error) {
         console.error('Error parsing currentUser:', error);
       }
+    }
+  }
+
+  loadGameHistory(): void {
+    if (this.currentUser && this.currentUser.id) {
+      this.gameStatsService.getGameStatistics(this.currentUser.id, 'math-game').subscribe(
+        (response: any) => {
+          if (response.success && response.data) {
+            this.gameHistory = response.data;
+            if (this.gameHistory.length > 0) {
+              this.previousGameStats = this.gameHistory[0]; // Get most recent
+              console.log('Previous game stats loaded:', this.previousGameStats);
+            }
+          }
+        },
+        (error) => {
+          console.error('Error loading game history:', error);
+        }
+      );
     }
   }
 
@@ -241,6 +265,12 @@ export class MathGameComponent implements OnInit {
 
     // Save stats to database
     this.saveGameStats();
+    
+    // Reload game history after saving
+    setTimeout(() => {
+      this.loadGameHistory();
+    }, 1500);
+    
     console.log('Game Over - Stats:', this.gameStats);
   }
 

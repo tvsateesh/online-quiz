@@ -31,7 +31,7 @@ try {
       gameName: {
         type: String,
         required: [true, 'Game name is required'],
-        enum: ['word-hunt', 'chess', 'checkers', 'dice', 'stock-quiz'],
+        enum: ['word-hunt', 'chess', 'checkers', 'dice', 'stock-quiz', 'math-game', 'sentence-game'],
         index: true
       },
       score: {

@@ -152,12 +152,26 @@
       </div>
 
       <!-- Game Instructions -->
+      <!-- Game Instructions and Previous Stats -->
       <div class="game-info" *ngIf="!gameActive && !gameOver">
+        <!-- Previous Game Stats -->
+        <div class="info-card" *ngIf="previousGameStats">
+          <i class="fa fa-history"></i>
+          <h3>Last Game</h3>
+          <p><strong>Score:</strong> {{ previousGameStats.score }}</p>
+          <p><strong>Difficulty:</strong> {{ previousGameStats.difficulty | uppercase }}</p>
+          <p><strong>Correct:</strong> {{ previousGameStats.details?.correctAnswers || 0 }} | <strong>Wrong:</strong> {{ previousGameStats.details?.wrongAnswers || 0 }}</p>
+          <p><strong>Time:</strong> {{ previousGameStats.time }}s</p>
+        </div>
+
+        <!-- How to Play -->
         <div class="info-card">
           <i class="fa fa-question-circle"></i>
           <h3>How to Play</h3>
           <p>Solve math problems as fast as you can! A falling rectangle shows your time limit. Enter your answer and press Enter or click Submit.</p>
         </div>
+        
+        <!-- Game Rules -->
         <div class="info-card">
           <i class="fa fa-gamepad"></i>
           <h3>Game Rules</h3>
