@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { GameStatisticsService } from 'src/app/services/game-statistics.service';
 
 interface MathQuestion {
@@ -23,6 +23,8 @@ interface GameStats {
 })
 export class MathGameComponent implements OnInit {
   
+  @ViewChild('answerInput') answerInput: ElementRef | undefined;
+
   difficulty: string = 'easy';
   currentQuestion: MathQuestion | null = null;
   playerAnswer: string = '';
@@ -101,6 +103,7 @@ export class MathGameComponent implements OnInit {
     this.playerAnswer = '';
     this.showFeedback = false;
     this.generateNewQuestion();
+    this.focusInput(); // Focus input when game starts
   }
 
   generateNewQuestion(): void {
@@ -203,7 +206,16 @@ export class MathGameComponent implements OnInit {
         this.playerAnswer = ''; // Clear the answer for the next question
         this.showFeedback = false;
         this.generateNewQuestion();
+        this.focusInput(); // Focus input for next question
       }, 2000);
+    }
+  }
+
+  focusInput(): void {
+    if (this.answerInput && this.answerInput.nativeElement) {
+      setTimeout(() => {
+        this.answerInput!.nativeElement.focus();
+      }, 100);
     }
   }
 
