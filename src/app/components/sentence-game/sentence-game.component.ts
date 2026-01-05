@@ -27,6 +27,7 @@ export class SentenceGameComponent implements OnInit {
   showMessage: boolean = false;
   messageText: string = '';
   messageType: 'success' | 'error' = 'error';
+  gameLoaded: boolean = false;
   
   sentences = {
     easy: [
@@ -95,8 +96,11 @@ export class SentenceGameComponent implements OnInit {
     this.isCorrect = false;
     this.showMessage = false;
     this.messageText = '';
+    this.gameLoaded = true;
     
     console.log(`Loaded ${this.difficulty} sentence:`, sentence);
+    console.log('currentSentence:', this.currentSentence);
+    console.log('shuffledWords:', this.shuffledWords);
   }
 
   shuffleWords(words: string[]): Word[] {

@@ -31,7 +31,7 @@
         <div class="game-left-section">
           
           <!-- Current Sentence Display -->
-          <div class="sentence-display" *ngIf="currentSentence">
+          <div class="sentence-display" *ngIf="currentSentence && gameLoaded">
             <div class="sentence-label">Complete the sentence:</div>
             <div class="sentence-preview">
               <span class="preview-text">{{ getOrderedSentence() || '...' }}</span>
@@ -39,7 +39,7 @@
           </div>
 
           <!-- Shuffled Words Section -->
-          <div class="game-area" *ngIf="currentSentence">
+          <div class="game-area" *ngIf="currentSentence && gameLoaded">
             <div class="section-header">
               <i class="fa fa-random"></i>
               <h3>Shuffled Words</h3>
@@ -67,7 +67,7 @@
           </div>
 
           <!-- Ordered Words Section -->
-          <div class="game-area ordered-section" *ngIf="currentSentence">
+          <div class="game-area ordered-section" *ngIf="currentSentence && gameLoaded">
             <div class="section-header">
               <i class="fa fa-list-ol"></i>
               <h3>Your Sentence</h3>
