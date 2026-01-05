@@ -29,7 +29,7 @@ gameStatsRouter.post('/statistics', async (req: Request, res: Response) => {
       });
     }
 
-    if (!['word-hunt', 'chess', 'checkers', 'dice', 'stock-quiz'].includes(gameName)) {
+    if (!['word-hunt', 'chess', 'checkers', 'dice', 'stock-quiz', 'math-game', 'sentence-game'].includes(gameName)) {
       return res.status(400).json({
         success: false,
         error: 'Invalid game name'

@@ -163,7 +163,7 @@ export class MathGameComponent implements OnInit {
   submitAnswer(timedOut: boolean = false): void {
     if (!this.gameActive || !this.currentQuestion) return;
 
-    // Don't consider empty input as a valid answer (but allow 0)
+    // Convert to string and check if empty (but allow 0)
     const answerStr = String(this.playerAnswer || '').trim();
     if (answerStr === '') {
       this.feedbackType = 'wrong';
@@ -177,7 +177,17 @@ export class MathGameComponent implements OnInit {
       clearInterval(this.timerInterval);
     }
 
-    const playerNum = parseInt(this.playerAnswer, 10);
+    // Parse the answer - handle both 0 and other numbers correctly
+    const playerNum = Number(answerStr);
+    
+    // Check if it's a valid number (including 0)
+    if (isNaN(playerNum)) {
+      this.feedbackType = 'wrong';
+      this.feedbackMessage = 'Please enter a valid number';
+      this.showFeedback = true;
+      setTimeout(() => this.showFeedback = false, 1500);
+      return;
+    }
 
     if (timedOut) {
       this.feedbackType = 'wrong';
@@ -240,22 +250,21 @@ export class MathGameComponent implements OnInit {
       return;
     }
 
-    const timeInSeconds = Math.round(this.gameStats.timeSpent / 1000);
-    
     const statData = {
       userId: this.currentUser.id,
       username: this.currentUser.username || this.currentUser.email || 'Unknown',
       gameName: 'math-game',
       score: this.gameStats.score,
-      time: timeInSeconds,
+      time: this.gameStats.timeSpent,
       difficulty: this.difficulty,
-      result: this.gameStats.wrongAnswers >= 3 ? 'loss' : 'win',
+      result: 'loss',
       details: {
         correctAnswers: this.gameStats.correctAnswers,
         wrongAnswers: this.gameStats.wrongAnswers,
       }
     };
 
+    console.log('Saving game stats:', statData);
     this.gameStatsService.saveGameStatistic(statData).subscribe(
       (response: any) => {
         console.log('Game stats saved successfully:', response);
