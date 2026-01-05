@@ -164,7 +164,8 @@ export class MathGameComponent implements OnInit {
     if (!this.gameActive || !this.currentQuestion) return;
 
     // Don't consider empty input as a valid answer (but allow 0)
-    if (this.playerAnswer.trim() === '') {
+    const answerStr = String(this.playerAnswer || '').trim();
+    if (answerStr === '') {
       this.feedbackType = 'wrong';
       this.feedbackMessage = 'Please enter a number!';
       this.showFeedback = true;
