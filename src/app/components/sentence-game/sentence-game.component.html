@@ -1,0 +1,171 @@
+<div class="game-page-container">
+  <div class="game-page-wrapper">
+    <div class="game-content-card">
+      
+      <!-- Difficulty Level Selection -->
+      <div class="difficulty-selection">
+        <label class="difficulty-label">Difficulty Level:</label>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'easy'"
+                  (click)="setDifficulty('easy')">
+            <i class="fa fa-leaf"></i> Easy
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'medium'"
+                  (click)="setDifficulty('medium')">
+            <i class="fa fa-star"></i> Medium
+          </button>
+          <button class="difficulty-btn" 
+                  [class.active]="difficulty === 'hard'"
+                  (click)="setDifficulty('hard')">
+            <i class="fa fa-fire"></i> Hard
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Game Layout -->
+      <div class="game-layout">
+        
+        <!-- Left Side: Game Area -->
+        <div class="game-left-section">
+          
+          <!-- Current Sentence Display -->
+          <div class="sentence-display" *ngIf="currentSentence">
+            <div class="sentence-label">Complete the sentence:</div>
+            <div class="sentence-preview">
+              <span class="preview-text">{{ getOrderedSentence() || '...' }}</span>
+            </div>
+          </div>
+
+          <!-- Shuffled Words Section -->
+          <div class="game-area" *ngIf="currentSentence">
+            <div class="section-header">
+              <i class="fa fa-random"></i>
+              <h3>Shuffled Words</h3>
+            </div>
+            <div class="words-container">
+              <div class="word-tile clickable" 
+                   *ngFor="let word of shuffledWords; let idx = index"
+                   (click)="addWordToOrder(word, idx)">
+                <span>{{ word.text }}</span>
+              </div>
+              <div class="empty-state" *ngIf="shuffledWords.length === 0">
+                <i class="fa fa-check-circle"></i>
+                <span>All words arranged!</span>
+              </div>
+            </div>
+            <p class="zone-hint">
+              <i class="fa fa-hand-pointer-o"></i>
+              Click words to arrange them in order
+            </p>
+          </div>
+
+          <!-- Arrow Indicator -->
+          <div class="arrow-indicator" *ngIf="shuffledWords.length > 0 && orderedWords.length > 0">
+            <i class="fa fa-arrow-down"></i>
+          </div>
+
+          <!-- Ordered Words Section -->
+          <div class="game-area ordered-section" *ngIf="currentSentence">
+            <div class="section-header">
+              <i class="fa fa-list-ol"></i>
+              <h3>Your Sentence</h3>
+            </div>
+            <div class="ordered-words-container">
+              <div class="word-tile ordered clickable" 
+                   *ngFor="let word of orderedWords; let idx = index"
+                   (click)="removeWordFromOrder(idx)">
+                <span>{{ word.text }}</span>
+              </div>
+              <div class="empty-state" *ngIf="orderedWords.length === 0">
+                <i class="fa fa-inbox"></i>
+                <span>Arrange words here</span>
+              </div>
+            </div>
+            <p class="zone-hint">
+              <i class="fa fa-lightbulb-o"></i>
+              Click to remove words
+            </p>
+          </div>
+
+          <!-- Success Message -->
+          <div class="alert-message alert-success" *ngIf="isCorrect && showMessage">
+            <i class="fa fa-trophy"></i>
+            <div class="message-content">
+              <strong>{{ messageText }}</strong>
+              <p class="correct-sentence">Correct: {{ currentSentence!.text }}</p>
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div class="alert-message alert-error" *ngIf="showMessage && !isCorrect">
+            <i class="fa fa-times-circle"></i>
+            <span>{{ messageText }}</span>
+          </div>
+
+        </div>
+
+        <!-- Right Side: Game Controls -->
+        <div class="game-right-section">
+          <div class="controls-panel">
+            <h4 class="controls-title">Controls</h4>
+            
+            <div class="game-controls">
+              <button class="game-btn game-btn-primary" (click)="loadNewSentence()">
+                <i class="fa fa-refresh"></i> New Sentence
+              </button>
+              <button class="game-btn game-btn-success" 
+                      (click)="checkOrder()" 
+                      [disabled]="orderedWords.length === 0">
+                <i class="fa fa-check"></i> Check
+              </button>
+              <button class="game-btn game-btn-secondary" 
+                      (click)="resetOrder()" 
+                      [disabled]="orderedWords.length === 0">
+                <i class="fa fa-undo"></i> Reset
+              </button>
+              <button class="game-btn game-btn-warning" 
+                      (click)="revealSentence()" 
+                      [disabled]="shuffledWords.length === 0">
+                <i class="fa fa-lightbulb-o"></i> Reveal
+              </button>
+            </div>
+          </div>
+
+          <!-- Game Stats -->
+          <div class="game-stats">
+            <div class="stat-item">
+              <span class="stat-label">Words Left:</span>
+              <span class="stat-value">{{ shuffledWords.length }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Arranged:</span>
+              <span class="stat-value">{{ orderedWords.length }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total:</span>
+              <span class="stat-value">{{ currentSentence!.words.length }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Game Instructions -->
+      <div class="game-info">
+        <div class="info-card">
+          <i class="fa fa-question-circle"></i>
+          <h3>How to Play</h3>
+          <p>Click on shuffled words to arrange them in the correct order. Try to reconstruct the original sentence!</p>
+        </div>
+        <div class="info-card">
+          <i class="fa fa-gamepad"></i>
+          <h3>Tips</h3>
+          <p>Start with capital letters and look for common sentence structures. Use the "Check" button to verify your answer!</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

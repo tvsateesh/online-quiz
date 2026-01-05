@@ -21,6 +21,7 @@ import { CheckersComponent } from "./components/games/checkers/checkers.componen
 import { EscapeRoomComponent } from "./components/games/escape-room/escape-room.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { SignupComponent } from "./signup/signup.component";
+import { SentenceGameComponent } from "./components/sentence-game/sentence-game.component";
 const routes: Routes = [
   {
     path: "welcome",
@@ -54,6 +55,7 @@ const routes: Routes = [
       { path: "escape-room", component: EscapeRoomComponent},
       { path: "sudoku", component: SudokuComponent },
       { path: "tic-tac-toe", component: TicTacToeComponent },
+      { path: "sentence-game", component: SentenceGameComponent },
     ]
   },
   // Stock/Finance section
@@ -68,6 +70,7 @@ const routes: Routes = [
   { path: "escape-room", redirectTo: "games/escape-room" },
   { path: "sudoku", redirectTo: "games/sudoku" },
   { path: "tic-tac-toe", redirectTo: "games/tic-tac-toe" },
+  { path: "sentence-game", redirectTo: "games/sentence-game" },
 ];
 
 @NgModule({
