@@ -51,17 +51,17 @@ export class MathGameComponent implements OnInit {
     easy: {
       min: 1,
       max: 10,
-      timeLimit: 5000, // 5 seconds
+      timeLimit: 10000, // 30 seconds
     },
     medium: {
       min: 10,
       max: 50,
-      timeLimit: 4000, // 4 seconds
+      timeLimit: 30000, // 30 seconds
     },
     hard: {
       min: 50,
       max: 100,
-      timeLimit: 3000, // 3 seconds
+      timeLimit: 60000, // 60 seconds
     },
   };
 
@@ -159,6 +159,15 @@ export class MathGameComponent implements OnInit {
 
   submitAnswer(timedOut: boolean = false): void {
     if (!this.gameActive || !this.currentQuestion) return;
+
+    // Don't consider empty input as a valid answer
+    if (!this.playerAnswer || this.playerAnswer.trim() === '') {
+      this.feedbackType = 'wrong';
+      this.feedbackMessage = 'Please enter a number!';
+      this.showFeedback = true;
+      setTimeout(() => this.showFeedback = false, 1500);
+      return;
+    }
 
     if (this.timerInterval) {
       clearInterval(this.timerInterval);

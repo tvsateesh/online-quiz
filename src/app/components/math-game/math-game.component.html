@@ -40,12 +40,6 @@
 
           <!-- Game Play Area with Falling Timer -->
           <div class="play-area" *ngIf="gameActive">
-            <div class="falling-timer-container">
-              <!-- Falling Rectangle Timer -->
-              <div class="falling-rectangle" [style.height.%]="timerProgress" [style.background-color]="getTimerColor()">
-              </div>
-            </div>
-
             <!-- Answer Input Area -->
             <div class="input-area">
               <input 
@@ -65,6 +59,13 @@
             <div class="feedback-message" *ngIf="showFeedback" [class.correct]="feedbackType === 'correct'" [class.wrong]="feedbackType === 'wrong'">
               <i [class]="feedbackType === 'correct' ? 'fa fa-check-circle' : 'fa fa-times-circle'"></i>
               <span>{{ feedbackMessage }}</span>
+            </div>
+
+            <!-- Falling Timer at Bottom -->
+            <div class="falling-timer-container">
+              <!-- Falling Rectangle Timer -->
+              <div class="falling-rectangle" [style.width.%]="timerProgress" [style.background-color]="getTimerColor()">
+              </div>
             </div>
           </div>
 
