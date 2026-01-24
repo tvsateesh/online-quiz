@@ -97,21 +97,27 @@
 
 .words-panel {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: fit-content;
+  max-height: 500px;
+  overflow-y: auto;
 
   .panel-title {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 700;
     color: #0891b2;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 
     i {
-      font-size: 18px;
+      font-size: 14px;
     }
   }
 }
@@ -119,24 +125,24 @@
 .words-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 .word-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
+  gap: 6px;
+  padding: 8px 10px;
   background: white;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   cursor: help;
 
   .word-number {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,7 +150,7 @@
     color: white;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 10px;
     flex-shrink: 0;
   }
 
@@ -153,28 +159,33 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    min-width: 0;
   }
 
   .word-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
 
   .word-text {
     font-weight: 600;
     color: #1e293b;
-    font-size: 16px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   i {
     color: #10b981;
-    font-size: 18px;
+    font-size: 14px;
     margin-left: auto;
+    flex-shrink: 0;
   }
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     border-color: #06b6d4;
   }
 
@@ -189,42 +200,48 @@
     .word-text {
       color: #047857;
       text-decoration: line-through;
+      font-size: 11px;
     }
   }
 }
 
 .board-panel {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 200px 1fr;
   gap: 12px;
+  align-items: start;
 }
 
 .board-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
   overflow-x: auto;
-  padding: 20px;
+  padding: 12px;
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  min-height: fit-content;
+  grid-column: 2;
+  grid-row: 1 / 3;
 }
 
 .word-hunt-table {
   border-collapse: separate;
-  border-spacing: 4px;
+  border-spacing: 3px;
   background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
-  padding: 10px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(8, 145, 178, 0.3);
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
 
   td {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     text-align: center;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     background: white;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
@@ -237,13 +254,13 @@
 
     &:hover {
       background: #e0f2fe;
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
 
     &.selected {
       background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      transform: scale(1.1);
-      box-shadow: 0 0 0 3px #fbbf24;
+      transform: scale(1.08);
+      box-shadow: 0 0 0 2px #fbbf24;
       color: #92400e;
       font-weight: 800;
       animation: pulse 0.3s ease;
@@ -271,21 +288,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 15px;
+  gap: 8px;
+  padding: 10px;
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-radius: 12px;
+  border-radius: 8px;
   border: 2px solid #fbbf24;
 
   i {
     color: #d97706;
-    font-size: 20px;
+    font-size: 16px;
   }
 
   span {
     color: #92400e;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
