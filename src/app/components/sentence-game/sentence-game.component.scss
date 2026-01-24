@@ -77,18 +77,25 @@
 // Game Layout - Side by Side
 .game-layout {
   display: flex;
-  gap: 30px;
-  margin-bottom: 30px;
-  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 0;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 
   .game-left-section {
     flex: 1;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
   }
 
   .game-right-section {
-    width: 280px;
+    width: 250px;
     flex-shrink: 0;
+    overflow-y: auto;
 
     .controls-panel {
       background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
