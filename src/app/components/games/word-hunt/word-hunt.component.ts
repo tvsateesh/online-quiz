@@ -232,18 +232,106 @@ export class WordHuntComponent implements OnInit {
       this.col = config.cols;
     }
     
-    // Ensure words are loaded before starting
-    if (this.hiddenWords.length === 0) {
-      console.log('Words not loaded yet, loading from dictionary...');
-      this.dictionaryService.getWords().subscribe((result: any) => {
-        if (result) {
+    // Always reload words for a fresh game
+    console.log('Starting new game, reloading words...');
+    this.dictionaryService.getWords().subscribe((result: any) => {
+      if (result) {
+        const wordCount = config ? config.wordCount : 10;
+        const selectedWords = [];
+        const selectedWordsWithMeanings: WordWithMeaning[] = [];
+
+        if (this.difficulty === 'easy') {
+          // Use kindergarten sight words for easy level
+          const sightWords = [
+            { word: 'at', meaning: 'Used to indicate a place or time' },
+            { word: 'it', meaning: 'Used to refer to a thing or animal' },
+            { word: 'in', meaning: 'Inside or within something' },
+            { word: 'is', meaning: 'Verb to be, present tense' },
+            { word: 'on', meaning: 'Above or touching a surface' },
+            { word: 'to', meaning: 'Toward a place or person' },
+            { word: 'and', meaning: 'Used to connect words or phrases' },
+            { word: 'the', meaning: 'Definite article used before nouns' },
+            { word: 'he', meaning: 'Male pronoun' },
+            { word: 'be', meaning: 'Verb meaning to exist' },
+            { word: 'we', meaning: 'Plural pronoun for a group including the speaker' },
+            { word: 'are', meaning: 'Plural form of to be' },
+            { word: 'was', meaning: 'Past tense of to be' },
+            { word: 'for', meaning: 'Indicating purpose or reason' },
+            { word: 'you', meaning: 'Person being addressed' },
+            { word: 'she', meaning: 'Female pronoun' },
+            { word: 'that', meaning: 'Used to identify a specific thing' },
+            { word: 'have', meaning: 'To possess or own' },
+            { word: 'this', meaning: 'Used to identify a thing nearby' },
+            { word: 'they', meaning: 'Plural pronoun for multiple people or things' },
+            { word: 'with', meaning: 'Accompanied by' },
+            { word: 'from', meaning: 'Indicating a starting point' },
+            { word: 'come', meaning: 'To move toward' },
+            { word: 'my', meaning: 'Belonging to me' },
+            { word: 'see', meaning: 'To perceive with eyes' },
+            { word: 'little', meaning: 'Small in size' },
+            { word: 'play', meaning: 'To engage in activity for fun' },
+            { word: 'jump', meaning: 'To leap or spring' },
+            { word: 'one', meaning: 'The number 1' },
+            { word: 'two', meaning: 'The number 2' },
+            { word: 'three', meaning: 'The number 3' },
+            { word: 'four', meaning: 'The number 4' },
+            { word: 'five', meaning: 'The number 5' },
+            { word: 'six', meaning: 'The number 6' },
+            { word: 'seven', meaning: 'The number 7' },
+            { word: 'eight', meaning: 'The number 8' },
+            { word: 'nine', meaning: 'The number 9' },
+            { word: 'ten', meaning: 'The number 10' },
+            { word: 'eleven', meaning: 'The number 11' },
+            { word: 'look', meaning: 'To direct your eyes toward' },
+            { word: 'said', meaning: 'Past tense of say' },
+            { word: 'here', meaning: 'In this place' },
+            { word: 'put', meaning: 'To place or position' },
+            { word: 'saw', meaning: 'Past tense of see' },
+            { word: 'want', meaning: 'To desire or wish for' },
+            { word: 'went', meaning: 'Past tense of go' },
+            { word: 'which', meaning: 'What person or thing' },
+            { word: 'now', meaning: 'At the present time' },
+            { word: 'out', meaning: 'Away from inside' },
+            { word: 'them', meaning: 'Those people or things' },
+            { word: 'there', meaning: 'In that place' },
+            { word: 'good', meaning: 'Positive or favorable' },
+            { word: 'who', meaning: 'What or which person' },
+            { word: 'could', meaning: 'Able to or might' },
+            { word: 'hurt', meaning: 'To cause pain' },
+            { word: 'once', meaning: 'One time' },
+            { word: 'upon', meaning: 'On top of' },
+            { word: 'because', meaning: 'For the reason that' },
+            { word: 'when', meaning: 'At what time' },
+            { word: 'many', meaning: 'A large number of' },
+            { word: 'right', meaning: 'Correct or on the right side' },
+            { word: 'start', meaning: 'To begin' },
+            { word: 'why', meaning: 'For what reason' },
+            { word: 'find', meaning: 'To discover or locate' },
+            { word: 'how', meaning: 'In what way' },
+            { word: 'over', meaning: 'Above or across' },
+            { word: 'under', meaning: 'Below or beneath' },
+            { word: 'far', meaning: 'At or to a distance' },
+            { word: 'give', meaning: 'To hand over' },
+            { word: 'too', meaning: 'Also or excessively' },
+            { word: 'try', meaning: 'To make an effort' }
+          ];
+          
+          const sightWordsCopy = [...sightWords];
+          for (let i = 0; i < wordCount && sightWordsCopy.length > 0; i++) {
+            const randomIndex = Math.floor(Math.random() * sightWordsCopy.length);
+            const wordObj = sightWordsCopy.splice(randomIndex, 1)[0];
+            selectedWords.push(wordObj.word.toUpperCase());
+            selectedWordsWithMeanings.push({
+              word: wordObj.word.toUpperCase(),
+              meaning: wordObj.meaning
+            });
+          }
+        } else {
+          // Use dictionary filtering for medium and hard levels
           const allWords = Object.keys(result);
           let filteredWords: string[] = [];
           
-          // Filter words based on difficulty level
-          if (this.difficulty === 'easy') {
-            filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 4);
-          } else if (this.difficulty === 'medium') {
+          if (this.difficulty === 'medium') {
             filteredWords = allWords.filter(word => word.length >= 4 && word.length <= 5);
           } else if (this.difficulty === 'hard') {
             filteredWords = allWords.filter(word => word.length >= 5 && word.length <= 6);
@@ -251,11 +339,6 @@ export class WordHuntComponent implements OnInit {
             filteredWords = allWords.filter(word => word.length >= 3 && word.length <= 6);
           }
           
-          const config = this.difficultyLevels.find(d => d.value === this.difficulty);
-          const wordCount = config ? config.wordCount : 10;
-          
-          const selectedWords = [];
-          const selectedWordsWithMeanings: WordWithMeaning[] = [];
           const wordsCopy = [...filteredWords];
           for (let i = 0; i < wordCount && wordsCopy.length > 0; i++) {
             const randomIndex = Math.floor(Math.random() * wordsCopy.length);
@@ -267,17 +350,14 @@ export class WordHuntComponent implements OnInit {
               meaning: meaning
             });
           }
-          
-          this.hiddenWords = selectedWords;
-          this.wordsWithMeanings = selectedWordsWithMeanings;
-          console.log('Words loaded for game:', this.hiddenWords);
-          this.initializeGame();
         }
-      });
-    } else {
-      console.log('Words already loaded, starting game with:', this.hiddenWords);
-      this.initializeGame();
-    }
+        
+        this.hiddenWords = selectedWords;
+        this.wordsWithMeanings = selectedWordsWithMeanings;
+        console.log('Fresh words loaded for new game:', this.hiddenWords);
+        this.initializeGame();
+      }
+    });
   }
 
   private initializeGame(): void {
