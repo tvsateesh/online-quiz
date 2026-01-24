@@ -104,32 +104,33 @@
       <!-- Word Hunt Game Area -->
       <div class="word-hunt-container" *ngIf="time">
         
-        <!-- Words List -->
-        <div class="words-panel">
-          <h3 class="panel-title">
-            <i class="fa fa-list-ul"></i>
-            Words to Find
-          </h3>
-          <div class="words-list">
-            <div class="word-item" 
-                 *ngFor="let wordData of wordsWithMeanings; let i = index"
-                 [id]="wordData.word"
-                 [class.found]="!solvedWords.includes(wordData.word)"
-                 [title]="'Meaning: ' + wordData.meaning"
-                 [attr.data-tooltip]="wordData.meaning">
-              <div class="word-content">
-                <div class="word-header">
-                  <span class="word-number">{{i + 1}}</span>
-                  <span class="word-text">{{wordData.word}}</span>
-                  <i class="fa fa-check-circle" *ngIf="!solvedWords.includes(wordData.word)"></i>
+        <!-- Game Board - Left Side -->
+        <div class="board-panel">
+          <!-- Words List -->
+          <div class="words-panel">
+            <h3 class="panel-title">
+              <i class="fa fa-list-ul"></i>
+              Words to Find
+            </h3>
+            <div class="words-list">
+              <div class="word-item" 
+                   *ngFor="let wordData of wordsWithMeanings; let i = index"
+                   [id]="wordData.word"
+                   [class.found]="!solvedWords.includes(wordData.word)"
+                   [title]="'Meaning: ' + wordData.meaning"
+                   [attr.data-tooltip]="wordData.meaning">
+                <div class="word-content">
+                  <div class="word-header">
+                    <span class="word-number">{{i + 1}}</span>
+                    <span class="word-text">{{wordData.word}}</span>
+                    <i class="fa fa-check-circle" *ngIf="!solvedWords.includes(wordData.word)"></i>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <!-- Game Board -->
-        <div class="board-panel">
+          
+          <!-- Game Board -->
           <div class="board-wrapper">
             <table class="word-hunt-table">
               <tr *ngFor="let row of board; let i = index"> 
@@ -152,6 +153,44 @@
           <div class="board-hint">
             <i class="fa fa-info-circle"></i>
             <span>Click and drag to select words horizontally or vertically</span>
+          </div>
+        </div>
+
+        <!-- Right Side: Status & Controls -->
+        <div class="game-sidebar">
+          <!-- Game Status -->
+          <div class="game-status-panel">
+            <div class="status-item">
+              <i class="fa fa-trophy"></i>
+              <div class="status-content">
+                <span class="status-label">Found:</span>
+                <span class="status-value">{{foundCount}}/{{hiddenWords.length}}</span>
+              </div>
+            </div>
+            <div class="status-item">
+              <i class="fa fa-clock-o"></i>
+              <div class="status-content">
+                <span class="status-label">Time:</span>
+                <span class="status-value">{{time}}s</span>
+              </div>
+            </div>
+            <div class="status-item">
+              <i class="fa fa-signal"></i>
+              <div class="status-content">
+                <span class="status-label">Level:</span>
+                <span class="status-value">{{difficulty | titlecase}}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Action Buttons -->
+          <div class="game-actions">
+            <button class="game-btn game-btn-secondary" (click)="endGame()">
+              <i class="fa fa-stop"></i> End Game
+            </button>
+            <button class="game-btn game-btn-success" (click)="downloadPDF()">
+              <i class="fa fa-download"></i> Download PDF
+            </button>
           </div>
         </div>
         
