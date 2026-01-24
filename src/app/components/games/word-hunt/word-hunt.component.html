@@ -21,6 +21,13 @@
         </div>
       </div>
 
+      <!-- Start Game Button -->
+      <div class="game-controls" *ngIf="time === 0">
+        <button class="game-btn game-btn-primary" (click)="startGame()">
+          <i class="fa fa-play"></i> Start Game
+        </button>
+      </div>
+
       <!-- Completion Message -->
       <div class="alert-message alert-success" *ngIf="completed">
         <i class="fa fa-star"></i>
