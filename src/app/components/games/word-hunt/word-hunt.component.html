@@ -21,42 +21,10 @@
         </div>
       </div>
 
-      <!-- Game Status -->
-      <div class="game-status" *ngIf="time || completed">
-        <div class="status-item">
-          <i class="fa fa-trophy"></i>
-          <span class="status-label">Found:</span>
-          <span class="status-value">{{foundCount}}/{{hiddenWords.length}}</span>
-        </div>
-        <div class="status-item">
-          <i class="fa fa-clock-o"></i>
-          <span class="status-label">Time:</span>
-          <span class="status-value">{{time}}s</span>
-        </div>
-        <div class="status-item">
-          <i class="fa fa-signal"></i>
-          <span class="status-label">Level:</span>
-          <span class="status-value">{{difficulty | titlecase}}</span>
-        </div>
-      </div>
-
       <!-- Completion Message -->
       <div class="alert-message alert-success" *ngIf="completed">
         <i class="fa fa-star"></i>
         Congratulations! Found all words in {{endGameDuration}} minute(s)!
-      </div>
-      
-      <!-- Game Controls -->
-      <div class="game-controls">
-        <button class="game-btn game-btn-primary" *ngIf="time === 0" (click)="startGame()">
-          <i class="fa fa-play"></i> Start Game
-        </button>
-        <button class="game-btn game-btn-secondary" *ngIf="time > 0" (click)="endGame()">
-          <i class="fa fa-stop"></i> End Game
-        </button>
-        <button class="game-btn game-btn-success" (click)="downloadPDF()">
-          <i class="fa fa-download"></i> Download PDF
-        </button>
       </div>
 
       <!-- Game Statistics Dashboard -->
