@@ -4,22 +4,22 @@
 
 .difficulty-selector {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-radius: 20px;
-  padding: 25px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
   .selector-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #0891b2;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 
     i {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 }
@@ -27,38 +27,38 @@
 .difficulty-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  gap: 12px;
 }
 
 .difficulty-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 20px 15px;
+  gap: 6px;
+  padding: 15px 12px;
   background: white;
-  border: 3px solid #e2e8f0;
-  border-radius: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 
   i {
-    font-size: 28px;
+    font-size: 20px;
     color: #64748b;
     transition: all 0.3s ease;
   }
 
   .difficulty-name {
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 13px;
     color: #1e293b;
   }
 
   .difficulty-info {
-    font-size: 13px;
+    font-size: 11px;
     color: #64748b;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   &:hover {
@@ -85,28 +85,32 @@
 
 .word-hunt-container {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 30px;
-  margin-top: 30px;
+  grid-template-columns: 240px 1fr;
+  gap: 20px;
+  margin-top: 15px;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .words-panel {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
   .panel-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #0891b2;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 
     i {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 }
@@ -120,18 +124,18 @@
 .word-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 10px;
+  padding: 10px 12px;
   background: white;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   cursor: help;
 
   .word-number {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -139,7 +143,7 @@
     color: white;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12px;
     flex-shrink: 0;
   }
 

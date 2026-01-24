@@ -287,7 +287,8 @@ a {
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease-out 0.2s backwards;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
   box-sizing: border-box;
   flex: 1;
