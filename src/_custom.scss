@@ -199,12 +199,13 @@ a {
 // ========================================
 
 .game-page-container {
-  min-height: calc(100vh - 100px);
+  min-height: 100vh;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 2rem 1rem;
+  padding: 1rem 0.5rem;
   animation: fadeIn 0.3s ease-out;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   
   &::-webkit-scrollbar {
     width: 10px;
@@ -225,9 +226,13 @@ a {
 }
 
 .game-page-wrapper {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .game-page-header {
@@ -279,15 +284,20 @@ a {
 .game-content-card {
   background: white;
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.5s ease-out 0.2s backwards;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 200px);
   
   @media (max-width: 768px) {
-    padding: 1.5rem;
+    padding: 1rem;
+    max-height: calc(100vh - 150px);
   }
 }
 
