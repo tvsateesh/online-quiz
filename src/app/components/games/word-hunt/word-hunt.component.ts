@@ -40,6 +40,11 @@ export class WordHuntComponent implements OnInit {
   fillingCol = 0;
   completed: boolean = false;
   
+  // Hint display functionality
+  showHintBox: boolean = false;
+  currentHint: string = '';
+  currentHintWord: string = '';
+  
   // Game Statistics
   gameHistory: any[] = [];
   
@@ -943,6 +948,18 @@ export class WordHuntComponent implements OnInit {
       console.error('Error loading PDF libraries:', error);
       alert('Error loading PDF library. Please refresh the page and try again.');
     });
+  }
+
+  showWordHint(word: string, meaning: string): void {
+    this.currentHintWord = word;
+    this.currentHint = meaning;
+    this.showHintBox = true;
+  }
+
+  closeHint(): void {
+    this.showHintBox = false;
+    this.currentHint = '';
+    this.currentHintWord = '';
   }
  
  

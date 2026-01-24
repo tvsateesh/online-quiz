@@ -92,8 +92,8 @@
                    *ngFor="let wordData of wordsWithMeanings; let i = index"
                    [id]="wordData.word"
                    [class.found]="!solvedWords.includes(wordData.word)"
-                   [title]="'Meaning: ' + wordData.meaning"
-                   [attr.data-tooltip]="wordData.meaning">
+                   (click)="showWordHint(wordData.word, wordData.meaning)"
+                   [title]="'Click for hint'">
                 <div class="word-content">
                   <div class="word-header">
                     <span class="word-number">{{i + 1}}</span>
@@ -165,6 +165,31 @@
             </button>
             <button class="game-btn game-btn-success" (click)="downloadPDF()">
               <i class="fa fa-download"></i> Download PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Hint Box Modal -->
+        <div class="hint-overlay" *ngIf="showHintBox" (click)="closeHint()"></div>
+        <div class="hint-modal" *ngIf="showHintBox">
+          <div class="hint-modal-content">
+            <button class="hint-close-btn" (click)="closeHint()">
+              <i class="fa fa-times"></i>
+            </button>
+            <div class="hint-header">
+              <i class="fa fa-lightbulb-o"></i>
+              <h3>Word Meaning</h3>
+            </div>
+            <div class="hint-body">
+              <div class="hint-word">
+                <strong>{{currentHintWord}}</strong>
+              </div>
+              <div class="hint-meaning">
+                {{currentHint}}
+              </div>
+            </div>
+            <button class="hint-close-button" (click)="closeHint()">
+              Close
             </button>
           </div>
         </div>
