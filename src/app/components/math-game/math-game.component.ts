@@ -132,14 +132,20 @@ export class MathGameComponent implements OnInit {
 
   generateNewQuestion(): void {
     const settings = this.difficultySettings[this.difficulty as keyof typeof this.difficultySettings];
-    const num1 = Math.floor(Math.random() * (settings.max - settings.min + 1)) + settings.min;
-    const num2 = Math.floor(Math.random() * (settings.max - settings.min + 1)) + settings.min;
     const operator = Math.random() > 0.5 ? '+' : '-';
     
+    let num1: number;
+    let num2: number;
     let answer: number;
+    
     if (operator === '+') {
+      num1 = Math.floor(Math.random() * (settings.max - settings.min + 1)) + settings.min;
+      num2 = Math.floor(Math.random() * (settings.max - settings.min + 1)) + settings.min;
       answer = num1 + num2;
     } else {
+      // For subtraction, ensure num1 > num2 so answer is always positive
+      num1 = Math.floor(Math.random() * (settings.max - settings.min + 1)) + settings.min;
+      num2 = Math.floor(Math.random() * (num1)); // num2 will be between 0 and num1
       answer = num1 - num2;
     }
 
@@ -147,7 +153,7 @@ export class MathGameComponent implements OnInit {
       num1,
       num2,
       operator,
-      answer: Math.abs(answer), // Ensure positive answer for easy difficulty
+      answer: answer, // Store actual answer (can be 0)
     };
 
     this.playerAnswer = '';
@@ -217,11 +223,8 @@ export class MathGameComponent implements OnInit {
       this.feedbackType = 'wrong';
       this.feedbackMessage = `Time\'s up! The answer was ${this.currentQuestion.answer}`;
       this.gameStats.wrongAnswers++;
-    } else if (isNaN(playerNum)) {
-      this.feedbackType = 'wrong';
-      this.feedbackMessage = 'Please enter a valid number';
-      return;
     } else if (playerNum === this.currentQuestion.answer) {
+      // Correct answer - includes 0
       this.feedbackType = 'correct';
       this.feedbackMessage = 'Correct! +10 points';
       this.gameStats.score += 10;
